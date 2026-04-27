@@ -11,6 +11,16 @@
 
 Use `standards/PR_CHECKLIST.md` and `templates/PULL_REQUEST_TEMPLATE.md`.
 
+### Automation-friendly delivery (optional per repo)
+
+Some repositories add:
+
+- **Required CI** on the default branch (job/check names in branch rules must match workflow job names exactly).
+- **Auto-merge** (often squash) once required checks pass, sometimes enabled only for specific PR authors via a small workflow (`github.event.pull_request.user.login`, not `github.actor`).
+- **A “CI finished” PR comment** after the main CI workflow completes, so humans and agents can reread the thread instead of polling blindly.
+
+Agents should still **verify** final state with `gh` (or repo scripts): GitHub does not push merge results into the IDE. If auto-merge is very fast, a “notify on PR” job may race with merge; treat the API as source of truth.
+
 ## Versioning and releases
 
 - Prefer automated releases.

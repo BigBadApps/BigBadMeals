@@ -9,7 +9,7 @@ It is written to be readable by humans *and* coding agents (Cursor, Claude, Gemi
 
 ## How to use this repo
 
-- **Agents**: start with `AGENTS.md`, then follow `standards/PLAYBOOK.md`.
+- **Agents**: start with `AGENTS.md`, then follow `standards/PLAYBOOK.md`. For GitHub PRs, auto-merge, and how agents observe CI/merge (polling, PR comments), see `AGENTS.md` and `standards/DELIVERY.md`.
 - **Fast navigation**: use `standards/INDEX.md`.
 - **Humans**: skim `standards/PR_CHECKLIST.md` and `standards/TESTING.md` first.
 - **Projects**: copy or reference `templates/` and adopt the “quality gates” in `standards/DELIVERY.md`.

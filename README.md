@@ -12,8 +12,9 @@ View your app in AI Studio: https://ai.studio/apps/5e04815f-f931-4b56-b71a-66817
 
 This repo adopts **BigBadCodingStandards**.
 
-- Agent entrypoint: `AGENTS.md`
+- Agent entrypoint: `AGENTS.md` (includes **GitHub PR automation** for Claude / other agents)
 - Vendored standards: `docs/coding-standards/`
+- Open or refresh a PR from the CLI: `npm run pr:publish` — status: `npm run pr:status -- <number>`
 
 ## Run Locally
 
