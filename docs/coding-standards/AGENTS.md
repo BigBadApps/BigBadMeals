@@ -56,7 +56,7 @@ Use `standards/PLAYBOOK.md` as the detailed guide. At a minimum:
 Agents (including Claude) do not receive asynchronous events from Git or GitHub inside the chat. Treat delivery as **poll- or artifact-driven**:
 
 - **Ship via PRs** to the default branch (usually `main`); do not bypass agreed branch protection.
-- After pushing or opening a PR, **confirm state with the GitHub API/CLI** (for example `gh pr view`, or project scripts like `pr-status.sh` when the repo provides them).
+- After pushing or opening a PR, **wait for a terminal GitHub outcome** (CI pass/fail, merge or not) by polling the API/CLI—do not assume success from `git push` alone. Product repos may provide a single command (e.g. `pr-publish --wait`); otherwise poll `gh pr view` / `gh pr checks` on an interval until done or timeout, then **continue with the appropriate next step** (sync default branch, fix failures, or report). Use `gh pr view` or scripts such as `pr-status.sh` when the repo provides them.
 - Use **CI results and PR comments** from automation as the durable handoff: they are the practical substitute for a “webhook into the IDE.”
 - When the repository configures **auto-merge**, enabling it (manually or via workflow) means GitHub performs the squash/merge **after** required checks pass—agents should still **poll** until `state` is `MERGED` or a check fails.
 
