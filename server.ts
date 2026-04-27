@@ -134,9 +134,15 @@ async function startServer() {
       const ai = getAiClient();
       const response = await ai.models.generateContent({
         model: "gemini-flash-latest",
-        contents: `Generate a 7-day meal plan starting from ${startDate}. 
-        User Profile: ${JSON.stringify(userProfile)}
-        Available Recipes: ${JSON.stringify(availableRecipes)}`,
+        contents: `Generate a 7-day meal plan starting from ${startDate}.
+Return JSON only.
+Rules:
+- Every meal MUST reference a recipe from availableRecipes by exact id.
+- Set recipeId to that recipe's id.
+- Set recipeTitle to that recipe's title (must match the referenced recipe).
+
+User Profile: ${JSON.stringify(userProfile)}
+Available Recipes: ${JSON.stringify(availableRecipes)}`,
         config: {
           responseMimeType: "application/json",
           responseSchema: {
@@ -157,7 +163,7 @@ async function startServer() {
                           recipeTitle: { type: Type.STRING },
                           recipeId: { type: Type.STRING },
                         },
-                        required: ["type", "recipeTitle"]
+                        required: ["type", "recipeTitle", "recipeId"]
                       }
                     }
                   },

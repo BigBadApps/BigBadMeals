@@ -50,7 +50,9 @@ export const Shopping = () => {
 
     latestPlan.days.forEach(day => {
       day.meals.forEach(meal => {
-        const recipe = recipes.find(r => r.id === meal.recipeId);
+        const recipe =
+          recipes.find(r => r.id === meal.recipeId) ??
+          recipes.find(r => r.title.trim().toLowerCase() === meal.recipeTitle.trim().toLowerCase());
         if (recipe) {
           recipe.ingredients.forEach(ing => {
             const key = ing.name.toLowerCase();
@@ -61,6 +63,11 @@ export const Shopping = () => {
             } else {
               itemsMap.set(key, { ...ing, checked: false, category: 'Uncategorized' });
             }
+          });
+        } else {
+          console.warn('[Shopping] Meal references missing recipe', {
+            recipeId: meal.recipeId,
+            recipeTitle: meal.recipeTitle,
           });
         }
       });
