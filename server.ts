@@ -7,7 +7,7 @@ import { GoogleGenAI, Type } from "@google/genai";
 import { randomUUID } from "crypto";
 import rateLimit from "express-rate-limit";
 import admin from "firebase-admin";
-import firebaseConfig from "./firebase-applet-config.json";
+import firebaseConfig from "./firebase-applet-config.json" with { type: "json" };
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
