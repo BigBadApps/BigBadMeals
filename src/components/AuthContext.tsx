@@ -30,6 +30,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (import.meta.env.VITE_DISABLE_AUTH === 'true') {
+      const testUser = { uid: 'test-user', email: 'test@example.com', displayName: 'Test User' } as unknown as User;
+      const testProfile: UserProfile = {
+        uid: 'test-user',
+        email: 'test@example.com',
+        displayName: 'Test User',
+        familyMembers: [],
+        globalPreferences: { cuisines: [], dietaryRestrictions: [], budgetLimit: 0 },
+        inventory: [],
+      };
+      setUser(testUser);
+      setProfile(testProfile);
+      setLoading(false);
+      return;
+    }
+
     const unsub = onAuthStateChanged(auth, async (u) => {
       setUser(u);
       if (u) {
