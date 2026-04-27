@@ -4,9 +4,24 @@ import path from "path";
 import { fileURLToPath } from "url";
 import "dotenv/config";
 import { GoogleGenAI, Type } from "@google/genai";
+import { randomUUID } from "crypto";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+type ApiErrorCode =
+  | "VALIDATION_ERROR"
+  | "AI_UPSTREAM_ERROR"
+  | "AI_BAD_RESPONSE"
+  | "INTERNAL_ERROR";
+
+type ApiErrorResponse = {
+  code: ApiErrorCode;
+  message: string;
+  requestId: string;
+};
+
+type RequestWithId = express.Request & { requestId: string };
 
 // Lazy initialization of Gemini
 let aiClient: GoogleGenAI | null = null;
@@ -19,6 +34,31 @@ function getAiClient() {
     aiClient = new GoogleGenAI({ apiKey });
   }
   return aiClient;
+}
+
+function getRequestId(req: express.Request): string {
+  const existing = (req as any).requestId;
+  return typeof existing === "string" && existing.length > 0 ? existing : "unknown";
+}
+
+function respondError(
+  res: express.Response,
+  status: number,
+  code: ApiErrorCode,
+  message: string,
+  requestId: string
+) {
+  const body: ApiErrorResponse = { code, message, requestId };
+  res.status(status).json(body);
+}
+
+function parseModelJson(text: string | undefined): unknown {
+  if (!text) return {};
+  return JSON.parse(text);
+}
+
+function isNonEmptyString(v: unknown): v is string {
+  return typeof v === "string" && v.trim().length > 0;
 }
 
 const RECIPE_SCHEMA = {
@@ -62,13 +102,24 @@ async function startServer() {
   const app = express();
   const PORT = 3000;
 
+  app.use((req, res, next) => {
+    const requestId = randomUUID();
+    (req as RequestWithId).requestId = requestId;
+    res.setHeader("X-Request-Id", requestId);
+    next();
+  });
+
   // Middleware for parsing JSON
   app.use(express.json({ limit: '20mb' }));
 
   // AI API routes
   app.post("/api/ai/extract-url", async (req, res) => {
+    const requestId = getRequestId(req);
     try {
-      const { url } = req.body;
+      const { url } = req.body ?? {};
+      if (!isNonEmptyString(url)) {
+        return respondError(res, 400, "VALIDATION_ERROR", "Body.url must be a non-empty string", requestId);
+      }
       const ai = getAiClient();
       const response = await ai.models.generateContent({
         model: "gemini-flash-latest",
@@ -78,16 +129,23 @@ async function startServer() {
           responseSchema: RECIPE_SCHEMA
         }
       });
-      res.json(JSON.parse(response.text || "{}"));
+      res.json(parseModelJson(response.text));
     } catch (error: any) {
-      console.error("[AI Server Error]:", error);
-      res.status(500).json({ error: error.message });
+      console.error("[AI Server Error]", { requestId, route: "/api/ai/extract-url", error });
+      if (error instanceof SyntaxError) {
+        return respondError(res, 502, "AI_BAD_RESPONSE", "AI returned invalid JSON", requestId);
+      }
+      return respondError(res, 502, "AI_UPSTREAM_ERROR", error?.message || "AI request failed", requestId);
     }
   });
 
   app.post("/api/ai/extract-text", async (req, res) => {
+    const requestId = getRequestId(req);
     try {
-      const { text } = req.body;
+      const { text } = req.body ?? {};
+      if (!isNonEmptyString(text)) {
+        return respondError(res, 400, "VALIDATION_ERROR", "Body.text must be a non-empty string", requestId);
+      }
       const ai = getAiClient();
       const response = await ai.models.generateContent({
         model: "gemini-flash-latest",
@@ -97,16 +155,26 @@ async function startServer() {
           responseSchema: RECIPE_SCHEMA
         }
       });
-      res.json(JSON.parse(response.text || "{}"));
+      res.json(parseModelJson(response.text));
     } catch (error: any) {
-      console.error("[AI Server Error]:", error);
-      res.status(500).json({ error: error.message });
+      console.error("[AI Server Error]", { requestId, route: "/api/ai/extract-text", error });
+      if (error instanceof SyntaxError) {
+        return respondError(res, 502, "AI_BAD_RESPONSE", "AI returned invalid JSON", requestId);
+      }
+      return respondError(res, 502, "AI_UPSTREAM_ERROR", error?.message || "AI request failed", requestId);
     }
   });
 
   app.post("/api/ai/extract-image", async (req, res) => {
+    const requestId = getRequestId(req);
     try {
-      const { image, mimeType } = req.body;
+      const { image, mimeType } = req.body ?? {};
+      if (!isNonEmptyString(image)) {
+        return respondError(res, 400, "VALIDATION_ERROR", "Body.image must be a non-empty base64 string", requestId);
+      }
+      if (mimeType != null && !isNonEmptyString(mimeType)) {
+        return respondError(res, 400, "VALIDATION_ERROR", "Body.mimeType must be a non-empty string when provided", requestId);
+      }
       const ai = getAiClient();
       const response = await ai.models.generateContent({
         model: "gemini-flash-latest",
@@ -121,16 +189,29 @@ async function startServer() {
           responseSchema: RECIPE_SCHEMA
         }
       });
-      res.json(JSON.parse(response.text || "{}"));
+      res.json(parseModelJson(response.text));
     } catch (error: any) {
-      console.error("[AI Server Error]:", error);
-      res.status(500).json({ error: error.message });
+      console.error("[AI Server Error]", { requestId, route: "/api/ai/extract-image", error });
+      if (error instanceof SyntaxError) {
+        return respondError(res, 502, "AI_BAD_RESPONSE", "AI returned invalid JSON", requestId);
+      }
+      return respondError(res, 502, "AI_UPSTREAM_ERROR", error?.message || "AI request failed", requestId);
     }
   });
 
   app.post("/api/ai/meal-plan", async (req, res) => {
+    const requestId = getRequestId(req);
     try {
-      const { userProfile, availableRecipes, startDate } = req.body;
+      const { userProfile, availableRecipes, startDate } = req.body ?? {};
+      if (typeof userProfile !== "object" || userProfile == null) {
+        return respondError(res, 400, "VALIDATION_ERROR", "Body.userProfile must be an object", requestId);
+      }
+      if (!Array.isArray(availableRecipes)) {
+        return respondError(res, 400, "VALIDATION_ERROR", "Body.availableRecipes must be an array", requestId);
+      }
+      if (!isNonEmptyString(startDate)) {
+        return respondError(res, 400, "VALIDATION_ERROR", "Body.startDate must be a non-empty string (yyyy-mm-dd)", requestId);
+      }
       const ai = getAiClient();
       const response = await ai.models.generateContent({
         model: "gemini-flash-latest",
@@ -175,15 +256,18 @@ Available Recipes: ${JSON.stringify(availableRecipes)}`,
           }
         }
       });
-      res.json(JSON.parse(response.text || "{}"));
+      res.json(parseModelJson(response.text));
     } catch (error: any) {
-      console.error("[AI Server Error]:", error);
-      res.status(500).json({ error: error.message });
+      console.error("[AI Server Error]", { requestId, route: "/api/ai/meal-plan", error });
+      if (error instanceof SyntaxError) {
+        return respondError(res, 502, "AI_BAD_RESPONSE", "AI returned invalid JSON", requestId);
+      }
+      return respondError(res, 502, "AI_UPSTREAM_ERROR", error?.message || "AI request failed", requestId);
     }
   });
 
   app.get("/api/health", (req, res) => {
-    res.json({ status: "ok", env: process.env.NODE_ENV });
+    res.json({ status: "ok", env: process.env.NODE_ENV, requestId: getRequestId(req) });
   });
 
   // Vite middleware for development
