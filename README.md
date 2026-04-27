@@ -14,7 +14,7 @@ This repo adopts **BigBadCodingStandards**.
 
 - Agent entrypoint: `AGENTS.md` (includes **GitHub PR automation** for Claude / other agents)
 - Vendored standards: `docs/coding-standards/`
-- Open or refresh a PR from the CLI: `npm run pr:publish` — status: `npm run pr:status -- <number>`
+- Open or refresh a PR from the CLI: `npm run pr:publish` — wait for CI/merge: `npm run pr:publish:wait` — status: `npm run pr:status -- <number>`
 
 ## Run Locally
 

@@ -11,6 +11,20 @@ This repo adopts **BigBadCodingStandards** (vendored under `docs/coding-standard
 
 ## GitHub PR automation (this repository)
 
+### Mandatory procedure for coding agents (Cursor / Claude)
+
+When you **create or update a PR** for this repo, do all of the following in order—do not stop after only pushing:
+
+1. **Push + open/update the PR** on GitHub (never leave work only local when a PR is the goal).
+2. **Wait for the GitHub outcome** (CI + merge): run `npm run pr:publish:wait` from the PR branch after your commits, **or** run `npm run pr:publish` and then poll yourself with `npm run pr:status -- <n>` / `gh pr checks <n>` until the PR is **merged**, **checks fail**, **closed without merge**, or you hit a timeout (then report and ask how to proceed).
+3. **Act on the terminal result without waiting for the user to ask:**
+   - **`PR_WAIT_RESULT=merged`** (script exit `0`): `git fetch origin main && git checkout main && git pull origin main`, then continue the task on an updated `main` (e.g. new work, delete stale local branch if appropriate).
+   - **`checks_failed`** (exit `1`): open the linked Actions job logs from `gh pr checks`, fix, commit, re-run `npm run pr:publish:wait`.
+   - **`timeout`** (exit `2`): print last `pr-status` output and state what is still running; ask whether to keep waiting or investigate.
+   - **`closed_without_merge`**: report and wait for human direction.
+
+Use a long enough tool wait when running `pr:publish:wait` in automation (this repo’s CI is often a few minutes).
+
 Use this when you push work and need a PR, CI, merge, or status without guessing URLs.
 
 ### Prerequisites (human / org settings)
@@ -24,11 +38,14 @@ Use this when you push work and need a PR, CI, merge, or status without guessing
 | Command | Purpose |
 | --- | --- |
 | `npm run pr:publish` | Push current branch to `origin`, open a PR to `main` if none exists, print URL + copy-paste status commands. |
+| `npm run pr:publish:wait` | Same as `pr:publish`, then **poll GitHub** until merged, checks fail, closed without merge, or timeout; prints `PR_WAIT_RESULT=…` and **recommended next git commands** on success. |
 | `npm run pr:status -- <n>` | One-shot JSON: `state`, `mergedAt`, `statusCheckRollup`, `autoMergeRequest`, etc. |
 
-Shell equivalents: `bash scripts/pr-publish.sh`, `bash scripts/pr-status.sh <n>`.
+Shell equivalents: `bash scripts/pr-publish.sh`, `bash scripts/pr-publish.sh --wait`, `bash scripts/pr-status.sh <n>`.
 
-Optional env for `pr-publish`: `PR_BASE` (default `main`), `PR_REMOTE` (default `origin`), `PR_TITLE` / `PR_BODY` if `gh pr create --fill` is not suitable.
+Optional env for `pr-publish`: `PR_BASE` (default `main`), `PR_REMOTE` (default `origin`), `PR_TITLE` / `PR_BODY` if `gh pr create --fill` is not suitable. **`PR_WAIT_TIMEOUT_SEC`** (default `900`) caps `--wait` duration.
+
+`pr-publish.sh --wait` exit codes: **`0`** merged, **`1`** failed checks or closed without merge, **`2`** timeout.
 
 ### Workflows on GitHub
 
