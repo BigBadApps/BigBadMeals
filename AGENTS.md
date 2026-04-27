@@ -70,3 +70,14 @@ If **CI** finishes and **squash auto-merge** completes in the same window, **PR 
 ### Extending the allowlist
 
 To auto-enable merge for more PR authors, edit the JSON array in `.github/workflows/enable-automerge.yml` (`contains(fromJson('[...]'), github.event.pull_request.user.login)`).
+
+### Cursor IDE: fewer approval prompts (this workspace)
+
+Broad autonomy is controlled by **Cursor**, not by this repo alone.
+
+1. **Cursor Settings → Agents → Auto-Run → Auto-run mode:** set **Run Everything** so tools (terminal, edits, MCP per your other toggles) run without per-step approval. **Run in Sandbox** still auto-runs many commands but may escalate for “full system” operations—approvals then mean **full permissions outside the sandbox** ([Terminal / Sandbox docs](https://cursor.com/docs/agent/tools/terminal)).
+2. **Same page → Auto-run network access:** choose **Allow All** if you want outbound network in the sandbox without tuning domain lists (matches the intent of this repo’s `.cursor/sandbox.json`).
+3. **Protection settings** on that screen: relaxing **Dotfile Protection** / **External-File Protection** / **File-Deletion Protection** reduces prompts for `.env*`, files outside the workspace, or deletes—**only do this if you accept the risk** on this machine.
+4. **This repo:** `.cursor/sandbox.json` sets **`networkPolicy.default: "allow"`** and **`enableSharedBuildCache: true`** so sandboxed installs/builds hit registries freely and share caches. To remove the sandbox entirely (maximum risk), Cursor supports `"type": "insecure_none"` in `sandbox.json`—see [sandbox.json reference](https://cursor.com/docs/reference/sandbox); enterprise policies may still override.
+
+Commit `.cursor/sandbox.json` when you are happy with it, or delete it and rely on UI-only settings.
