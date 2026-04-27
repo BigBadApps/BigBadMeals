@@ -30,6 +30,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (import.meta.env.VITE_DISABLE_AUTH === 'true') {
+      const testUser = { uid: 'test-user', email: 'test@example.com', displayName: 'Test User' } as unknown as User;
+      const testProfile: UserProfile = {
+        uid: 'test-user',
+        email: 'test@example.com',
+        displayName: 'Test User',
+        familyMembers: [],
+        globalPreferences: { cuisines: [], dietaryRestrictions: [], budgetLimit: 0 },
+        inventory: [],
+      };
+      setUser(testUser);
+      setProfile(testProfile);
+      setLoading(false);
+      return;
+    }
+
     const unsub = onAuthStateChanged(auth, async (u) => {
       setUser(u);
       if (u) {
@@ -86,6 +102,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
 export const AuthGuard: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user, loading, signIn } = React.useContext(AuthContext);
+  const disableAuth = import.meta.env.VITE_DISABLE_AUTH === 'true';
 
   if (loading) {
     return (
@@ -93,6 +110,10 @@ export const AuthGuard: React.FC<{ children: React.ReactNode }> = ({ children })
         <Loader2 className="h-8 w-8 animate-spin text-[#d97706]" />
       </div>
     );
+  }
+
+  if (disableAuth) {
+    return <>{children}</>;
   }
 
   if (!user) {
