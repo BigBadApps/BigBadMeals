@@ -13,6 +13,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 type ApiErrorCode =
+  | "AUTH_REQUIRED"
+  | "FORBIDDEN"
+  | "RATE_LIMITED"
   | "VALIDATION_ERROR"
   | "AI_UPSTREAM_ERROR"
   | "AI_BAD_RESPONSE"
@@ -134,6 +137,21 @@ async function startServer() {
     next();
   });
 
+  app.use((req, res, next) => {
+    const startMs = Date.now();
+    res.on("finish", () => {
+      const durationMs = Date.now() - startMs;
+      console.log("[Request]", {
+        requestId: getRequestId(req),
+        method: req.method,
+        path: req.path,
+        status: res.statusCode,
+        durationMs,
+      });
+    });
+    next();
+  });
+
   // Middleware for parsing JSON
   app.use(express.json({ limit: '20mb' }));
 
@@ -146,7 +164,7 @@ async function startServer() {
       respondError(
         res,
         429,
-        "VALIDATION_ERROR",
+        "RATE_LIMITED",
         "Too many requests. Please retry later.",
         getRequestId(req)
       );
@@ -162,7 +180,7 @@ async function startServer() {
     const requestId = getRequestId(req);
     const token = getBearerToken(req);
     if (!token) {
-      return respondError(res, 401, "VALIDATION_ERROR", "Missing Authorization: Bearer <token>", requestId);
+      return respondError(res, 401, "AUTH_REQUIRED", "Missing Authorization: Bearer <token>", requestId);
     }
 
     try {
@@ -170,7 +188,7 @@ async function startServer() {
       return next();
     } catch (error) {
       console.warn("[Auth] Invalid Firebase token", { requestId, error });
-      return respondError(res, 403, "VALIDATION_ERROR", "Invalid or expired auth token", requestId);
+      return respondError(res, 403, "FORBIDDEN", "Invalid or expired auth token", requestId);
     }
   });
 
