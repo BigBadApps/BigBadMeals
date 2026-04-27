@@ -86,6 +86,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
 export const AuthGuard: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user, loading, signIn } = React.useContext(AuthContext);
+  const disableAuth = import.meta.env.VITE_DISABLE_AUTH === 'true';
 
   if (loading) {
     return (
@@ -93,6 +94,10 @@ export const AuthGuard: React.FC<{ children: React.ReactNode }> = ({ children })
         <Loader2 className="h-8 w-8 animate-spin text-[#d97706]" />
       </div>
     );
+  }
+
+  if (disableAuth) {
+    return <>{children}</>;
   }
 
   if (!user) {
