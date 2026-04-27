@@ -1,5 +1,11 @@
 import { Recipe, UserProfile, MealPlan } from "../types";
 
+type ApiErrorResponse = {
+  code?: string;
+  message?: string;
+  requestId?: string;
+};
+
 async function fetchAI<T>(endpoint: string, body: any): Promise<T> {
   const response = await fetch(`/api/ai/${endpoint}`, {
     method: 'POST',
@@ -10,8 +16,23 @@ async function fetchAI<T>(endpoint: string, body: any): Promise<T> {
   });
 
   if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.error || `AI Request failed with status ${response.status}`);
+    let errorData: ApiErrorResponse | null = null;
+    try {
+      errorData = await response.json();
+    } catch {
+      // ignore parse errors and fall back to status text
+    }
+
+    const requestId =
+      response.headers.get("x-request-id") ||
+      errorData?.requestId ||
+      undefined;
+
+    const message =
+      errorData?.message ||
+      `AI request failed with status ${response.status}${requestId ? ` (requestId: ${requestId})` : ""}`;
+
+    throw new Error(message);
   }
 
   return response.json();
