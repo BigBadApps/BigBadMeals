@@ -100,7 +100,7 @@ poll_checks_failed() {
   local out
   out=$(mktemp)
   gh pr checks "$PR_NUM" >"$out" 2>&1 || true
-  if awk '{print $2}' "$out" | grep -qx fail; then
+  if awk '{print tolower($2)}' "$out" | grep -qxE 'fail|failure'; then
     rm -f "$out"
     return 0
   fi
@@ -155,7 +155,8 @@ while true; do
 
   if [[ "$CHK" -eq 0 ]] && [[ "$S" == "OPEN" ]]; then
     echo "   [${elapsed}s] checks green; waiting for merge queue / auto-merge…"
-  elif [[ "$CHK" -eq 8 ]]; then
+  elif [[ "$CHK" -eq 8 ]] || [[ "$CHK" -eq 1 ]]; then
+    # Exit 8 = pending; exit 1 can appear briefly before checks are registered—treat as pending unless poll_checks_failed matched above.
     echo "   [${elapsed}s] checks pending or in progress…"
   else
     echo "   [${elapsed}s] state=$S gh_pr_checks_exit=$CHK (continuing to poll)…"
