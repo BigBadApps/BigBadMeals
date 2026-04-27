@@ -51,6 +51,17 @@ Use `standards/PLAYBOOK.md` as the detailed guide. At a minimum:
 - **Be traceable**: link decisions to requirements; use ADRs for durable decisions.
 - **Be concise**: avoid long prose; prefer bullets and checklists.
 
+## GitHub: agents and pull requests
+
+Agents (including Claude) do not receive asynchronous events from Git or GitHub inside the chat. Treat delivery as **poll- or artifact-driven**:
+
+- **Ship via PRs** to the default branch (usually `main`); do not bypass agreed branch protection.
+- After pushing or opening a PR, **confirm state with the GitHub API/CLI** (for example `gh pr view`, or project scripts like `pr-status.sh` when the repo provides them).
+- Use **CI results and PR comments** from automation as the durable handoff: they are the practical substitute for a “webhook into the IDE.”
+- When the repository configures **auto-merge**, enabling it (manually or via workflow) means GitHub performs the squash/merge **after** required checks pass—agents should still **poll** until `state` is `MERGED` or a check fails.
+
+Product-specific commands, workflow names, and allowlists live in the project’s root **`AGENTS.md`** (or equivalent).
+
 ## Project conventions (apply unless overridden)
 
 - **Docs live with code**: architecture and runbooks belong near the code they describe.

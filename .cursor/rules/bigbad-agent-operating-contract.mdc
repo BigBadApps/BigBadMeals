@@ -18,3 +18,9 @@ alwaysApply: true
 
 - Understand → Design → Implement → Verify (lint/typecheck/tests) → Deliver (PR summary + test plan) → Operate (logs/metrics/runbook for new critical paths).
 
+## GitHub delivery (this repo)
+
+- Ship changes through **PRs to `main`**; follow `AGENTS.md` and `docs/coding-standards/standards/DELIVERY.md`.
+- To push the current branch and open/update the PR: `npm run pr:publish` (or `bash scripts/pr-publish.sh`).
+- To read PR state and checks: `npm run pr:status -- <n>` or `gh pr view <n> --json state,mergedAt,statusCheckRollup,autoMergeRequest,url`. There is no async “push” into the chat—poll until merged or failed.
+
