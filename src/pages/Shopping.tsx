@@ -101,7 +101,8 @@ export const Shopping = () => {
           <h1 className="text-3xl font-bold font-serif text-[#451a03]">Kitchen Stock</h1>
           <p className="text-sm text-muted-foreground italic">Tick off as you shop</p>
         </div>
-        <Button 
+        <Button
+          data-testid="shopping-sync-plan"
           onClick={generateFromPlan} 
           variant="outline" 
           className="rounded-2xl border-amber-200 h-11"
