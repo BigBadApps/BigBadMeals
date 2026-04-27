@@ -19,7 +19,11 @@ export const Navigation: React.FC<NavigationProps> = ({ activeTab, setActiveTab 
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 flex h-20 items-center justify-around border-t border-amber-100 bg-white/80 px-4 pb-2 backdrop-blur-xl">
+    <nav
+      className="fixed bottom-0 left-0 right-0 z-50 flex h-20 items-center justify-around border-t border-amber-100 bg-white/80 px-4 pb-2 backdrop-blur-xl"
+      aria-label="Primary navigation"
+      data-testid="nav-primary"
+    >
       {navItems.map((item) => {
         const Icon = item.icon;
         const isActive = activeTab === item.id;
@@ -27,6 +31,7 @@ export const Navigation: React.FC<NavigationProps> = ({ activeTab, setActiveTab 
           <button
             key={item.id}
             onClick={() => setActiveTab(item.id as Tab)}
+            data-testid={`nav-${item.id}`}
             className={cn(
               "flex flex-col items-center justify-center space-y-1 transition-all duration-300",
               isActive ? "text-[#d97706]" : "text-[#92400e]/40 hover:text-[#92400e]/60"

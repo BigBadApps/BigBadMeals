@@ -10,16 +10,16 @@ test('can navigate between main tabs without auth', async ({ page }) => {
 
   await expect(page.getByText('Welcome,', { exact: false })).toBeVisible();
 
-  await page.getByRole('button', { name: 'Recipes' }).click();
+  await page.getByTestId('nav-recipes').click();
   await expect(page.getByText('Recipe Vault')).toBeVisible();
 
-  await page.getByRole('button', { name: 'Meal Prep' }).click();
+  await page.getByTestId('nav-planner').click();
   await expect(page.getByText('Meal Planner')).toBeVisible();
 
-  await page.getByRole('button', { name: 'Cart' }).click();
+  await page.getByTestId('nav-shopping').click();
   await expect(page.getByText('Kitchen Stock')).toBeVisible();
 
-  await page.getByRole('button', { name: 'Me', exact: true }).click();
+  await page.getByTestId('nav-profile').click();
   await expect(page.getByText('Family Kitchen')).toBeVisible();
 });
 
