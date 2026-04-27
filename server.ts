@@ -5,6 +5,9 @@ import { fileURLToPath } from "url";
 import "dotenv/config";
 import { GoogleGenAI, Type } from "@google/genai";
 import { randomUUID } from "crypto";
+import rateLimit from "express-rate-limit";
+import admin from "firebase-admin";
+import firebaseConfig from "./firebase-applet-config.json";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -36,6 +39,21 @@ function getAiClient() {
   return aiClient;
 }
 
+let firebaseAdminApp: admin.app.App | null = null;
+function getFirebaseAdminApp() {
+  if (!firebaseAdminApp) {
+    // Uses Application Default Credentials (ADC). In GCP/AI Studio this is typically available.
+    // For local dev, you may need GOOGLE_APPLICATION_CREDENTIALS or `gcloud auth application-default login`.
+    firebaseAdminApp = admin.initializeApp({ projectId: firebaseConfig.projectId });
+  }
+  return firebaseAdminApp;
+}
+
+async function verifyFirebaseIdToken(idToken: string) {
+  const app = getFirebaseAdminApp();
+  return admin.auth(app).verifyIdToken(idToken);
+}
+
 function getRequestId(req: express.Request): string {
   const existing = (req as any).requestId;
   return typeof existing === "string" && existing.length > 0 ? existing : "unknown";
@@ -59,6 +77,13 @@ function parseModelJson(text: string | undefined): unknown {
 
 function isNonEmptyString(v: unknown): v is string {
   return typeof v === "string" && v.trim().length > 0;
+}
+
+function getBearerToken(req: express.Request): string | null {
+  const header = req.header("authorization") || req.header("Authorization");
+  if (!header) return null;
+  const m = header.match(/^Bearer\s+(.+)$/i);
+  return m?.[1]?.trim() || null;
 }
 
 const RECIPE_SCHEMA = {
@@ -111,6 +136,43 @@ async function startServer() {
 
   // Middleware for parsing JSON
   app.use(express.json({ limit: '20mb' }));
+
+  const aiLimiter = rateLimit({
+    windowMs: 60_000,
+    limit: 30,
+    standardHeaders: true,
+    legacyHeaders: false,
+    handler: (req, res) => {
+      respondError(
+        res,
+        429,
+        "VALIDATION_ERROR",
+        "Too many requests. Please retry later.",
+        getRequestId(req)
+      );
+    },
+  });
+
+  app.use("/api/ai", aiLimiter);
+
+  const requireAiAuth = process.env.REQUIRE_AI_AUTH === "true";
+  app.use("/api/ai", async (req, res, next) => {
+    if (!requireAiAuth) return next();
+
+    const requestId = getRequestId(req);
+    const token = getBearerToken(req);
+    if (!token) {
+      return respondError(res, 401, "VALIDATION_ERROR", "Missing Authorization: Bearer <token>", requestId);
+    }
+
+    try {
+      await verifyFirebaseIdToken(token);
+      return next();
+    } catch (error) {
+      console.warn("[Auth] Invalid Firebase token", { requestId, error });
+      return respondError(res, 403, "VALIDATION_ERROR", "Invalid or expired auth token", requestId);
+    }
+  });
 
   // AI API routes
   app.post("/api/ai/extract-url", async (req, res) => {
@@ -267,7 +329,12 @@ Available Recipes: ${JSON.stringify(availableRecipes)}`,
   });
 
   app.get("/api/health", (req, res) => {
-    res.json({ status: "ok", env: process.env.NODE_ENV, requestId: getRequestId(req) });
+    res.json({
+      status: "ok",
+      env: process.env.NODE_ENV,
+      requestId: getRequestId(req),
+      requireAiAuth: process.env.REQUIRE_AI_AUTH === "true",
+    });
   });
 
   // Vite middleware for development
