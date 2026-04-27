@@ -1,0 +1,80 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 1. Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // --- Helpers ---
+    function isSignedIn() { return request.auth != null; }
+    function isOwner(userId) { return isSignedIn() && request.auth.uid == userId; }
+    function isValidId(id) { return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); }
+    function incoming() { return request.resource.data; }
+    function existing() { return resource.data; }
+
+    // --- User Rules ---
+    match /users/{userId} {
+      function isValidUser(data) {
+        return data.uid == request.auth.uid 
+          && data.email is string
+          && (!data.keys().hasAll(['familyMembers']) || data.familyMembers is list)
+          && (!data.keys().hasAll(['globalPreferences']) || data.globalPreferences is map)
+          && (!data.keys().hasAll(['inventory']) || data.inventory is list);
+      }
+      
+      allow get: if isOwner(userId);
+      allow create: if isOwner(userId) && isValidUser(incoming());
+      allow update: if isOwner(userId) && isValidUser(incoming());
+
+      // --- Recipes ---
+      match /recipes/{recipeId} {
+        function isValidRecipe(data) {
+          return data.ownerId == request.auth.uid
+            && data.title is string && data.title.size() <= 200
+            && data.ingredients is list && data.ingredients.size() <= 100
+            && data.instructions is list && data.instructions.size() <= 100
+            && (!data.keys().hasAll(['nutritionalInfo']) || data.nutritionalInfo is map);
+        }
+        allow list, get: if isOwner(userId);
+        allow create: if isOwner(userId) && isValidRecipe(incoming());
+        allow update: if isOwner(userId) && isValidRecipe(incoming()) 
+          && incoming().ownerId == existing().ownerId;
+        allow delete: if isOwner(userId);
+      }
+
+      // --- Meal Plans ---
+      match /mealPlans/{planId} {
+        function isValidMealPlan(data) {
+          return data.ownerId == request.auth.uid
+            && data.startDate is string
+            && data.endDate is string
+            && data.days is list;
+        }
+        allow list, get: if isOwner(userId);
+        allow create: if isOwner(userId) && isValidMealPlan(incoming());
+        allow update: if isOwner(userId) && isValidMealPlan(incoming())
+          && incoming().ownerId == existing().ownerId;
+        allow delete: if isOwner(userId);
+      }
+
+      // --- Grocery Lists ---
+      match /groceryLists/{listId} {
+        function isValidGroceryList(data) {
+          return data.ownerId == request.auth.uid
+            && data.items is list;
+        }
+        allow list, get: if isOwner(userId);
+        allow create: if isOwner(userId) && isValidGroceryList(incoming());
+        allow update: if isOwner(userId) && isValidGroceryList(incoming())
+          && (
+            // Action: Toggle Item
+            incoming().diff(existing()).affectedKeys().hasOnly(['items']) ||
+            // Action: General Update
+            incoming().ownerId == existing().ownerId
+          );
+        allow delete: if isOwner(userId);
+      }
+    }
+  }
+}

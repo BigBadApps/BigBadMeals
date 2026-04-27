@@ -1,0 +1,161 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "User profile with family settings and preferences",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "familyMembers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "role": { "type": "string" },
+              "preferences": { "type": "array", "items": { "type": "string" } },
+              "allergies": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        },
+        "globalPreferences": {
+          "type": "object",
+          "properties": {
+            "cuisines": { "type": "array", "items": { "type": "string" } },
+            "dietaryRestrictions": { "type": "array", "items": { "type": "string" } },
+            "budgetLimit": { "type": "number" }
+          }
+        },
+        "inventory": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "quantity": { "type": "number" },
+              "unit": { "type": "string" }
+            }
+          }
+        }
+      },
+      "required": ["uid", "email"]
+    },
+    "Recipe": {
+      "title": "Recipe",
+      "description": "Recipe details including ingredients and nutritional info",
+      "type": "object",
+      "properties": {
+        "ownerId": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "ingredients": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "amount": { "type": "string" },
+              "unit": { "type": "string" }
+            }
+          }
+        },
+        "instructions": { "type": "array", "items": { "type": "string" } },
+        "nutritionalInfo": {
+          "type": "object",
+          "properties": {
+            "calories": { "type": "number" },
+            "protein": { "type": "number" },
+            "carbs": { "type": "number" },
+            "fat": { "type": "number" }
+          }
+        },
+        "prepTime": { "type": "number" },
+        "cookTime": { "type": "number" },
+        "servings": { "type": "number" },
+        "category": { "type": "string" },
+        "isFavorite": { "type": "boolean" },
+        "sourceUrl": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["ownerId", "title", "ingredients", "instructions"]
+    },
+    "MealPlan": {
+      "title": "Meal Plan",
+      "description": "Weekly meal schedule",
+      "type": "object",
+      "properties": {
+        "ownerId": { "type": "string" },
+        "startDate": { "type": "string", "format": "date" },
+        "endDate": { "type": "string", "format": "date" },
+        "days": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "date": { "type": "string", "format": "date" },
+              "meals": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "type": { "type": "string", "enum": ["breakfast", "lunch", "dinner", "snack"] },
+                    "recipeId": { "type": "string" },
+                    "recipeTitle": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "required": ["ownerId", "startDate", "endDate", "days"]
+    },
+    "GroceryList": {
+      "title": "Grocery List",
+      "description": "Shopping list generated from meal plans",
+      "type": "object",
+      "properties": {
+        "ownerId": { "type": "string" },
+        "mealPlanId": { "type": "string" },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "amount": { "type": "string" },
+              "unit": { "type": "string" },
+              "checked": { "type": "boolean" },
+              "category": { "type": "string" },
+              "estimatedPrice": { "type": "number" }
+            }
+          }
+        },
+        "totalEstimatedCost": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["ownerId", "items"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Individual user profiles"
+    },
+    "/users/{userId}/recipes/{recipeId}": {
+      "schema": "Recipe",
+      "description": "Recipes saved by the user"
+    },
+    "/users/{userId}/mealPlans/{planId}": {
+      "schema": "MealPlan",
+      "description": "Meal plans created by the user"
+    },
+    "/users/{userId}/groceryLists/{listId}": {
+      "schema": "GroceryList",
+      "description": "Grocery lists for the user"
+    }
+  }
+}

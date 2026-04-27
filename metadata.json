@@ -1,0 +1,6 @@
+{
+  "name": "BigBadMeal Prep",
+  "description": "Smart meal and grocery planning for families, powered by AI recipe extraction and automated meal plans.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["Recipe Extraction", "Meal Planning", "Grocery Lists", "Budget Tracking"]
+}
