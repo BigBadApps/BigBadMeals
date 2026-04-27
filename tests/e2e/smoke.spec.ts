@@ -1,11 +1,11 @@
 import { test, expect } from '@playwright/test';
 
-test('app boots and health endpoint responds', async ({ request }) => {
+test('app boots and health endpoint responds @smoke', async ({ request }) => {
   const res = await request.get('/api/health');
   expect(res.ok()).toBeTruthy();
 });
 
-test('can navigate between main tabs without auth', async ({ page }) => {
+test('can navigate between main tabs without auth @smoke', async ({ page }) => {
   await page.goto('/');
 
   await expect(page.getByText('Welcome,', { exact: false })).toBeVisible();
