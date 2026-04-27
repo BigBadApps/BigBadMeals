@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('imports a recipe from text with AI mocked', async ({ page }) => {
+test('imports a recipe from text with AI mocked @smoke', async ({ page }) => {
   await page.route('**/api/ai/extract-text', async (route) => {
     await route.fulfill({
       status: 200,
