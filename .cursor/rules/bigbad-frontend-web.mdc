@@ -1,0 +1,25 @@
+---
+description: BigBad frontend web standards (React/Vite)
+globs: "**/*.{ts,tsx,js,jsx}"
+alwaysApply: false
+---
+
+# BigBad Frontend Web Standards
+
+## Architecture
+
+- Prefer **feature-oriented** structure; keep domain logic separate from UI where feasible.
+- Separate concerns: **UI rendering**, **state/data**, **side effects** (network/storage/analytics).
+- Avoid “god components”; extract when state/logic grows.
+
+## Responsive + UX
+
+- Mobile-first; scale up via breakpoints.
+- Avoid hover-only interactions; provide tap equivalents.
+- Accessible controls and comfortable touch targets.
+
+## Error handling
+
+- User-friendly messages; log technical detail **safely** (no secrets/PII).
+- Handle offline/partial failure states when relevant.
+

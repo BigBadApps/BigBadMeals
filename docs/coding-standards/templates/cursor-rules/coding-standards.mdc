@@ -1,0 +1,22 @@
+---
+description: Always follow shared coding standards in docs/coding-standards
+alwaysApply: true
+---
+
+# Shared Coding Standards
+
+You are working in a repository that follows shared coding standards.
+
+## Mandatory
+
+- Read `docs/coding-standards/AGENTS.md` first.
+- Use `docs/coding-standards/standards/INDEX.md` to navigate standards quickly.
+- Follow the lifecycle in `docs/coding-standards/standards/PLAYBOOK.md`.
+- Use templates in `docs/coding-standards/templates/` for PRs, ADRs, and design docs.
+
+## Output expectations
+
+- Keep diffs small and coherent.
+- Include a test plan for changes.
+- Call out risks and rollout/rollback if relevant.
+

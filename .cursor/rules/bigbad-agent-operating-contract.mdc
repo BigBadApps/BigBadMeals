@@ -1,0 +1,20 @@
+---
+description: BigBad Agent Operating Contract (always apply)
+alwaysApply: true
+---
+
+# BigBad Agent Operating Contract (AOC)
+
+## Non‑negotiables
+
+- Restate **objective + success criteria** before changes when ambiguous.
+- Prefer **small, reviewable diffs**; avoid mega-refactors.
+- **No silent behavior changes**: if semantics change, document it.
+- **Test changes that matter**: bug fixes + non-trivial logic require tests/updates.
+- **Defense in depth**: validate inputs, handle edge cases, fail safely.
+- **Security hygiene**: never commit secrets; minimize sensitive data exposure in logs/errors.
+
+## Default workflow
+
+- Understand → Design → Implement → Verify (lint/typecheck/tests) → Deliver (PR summary + test plan) → Operate (logs/metrics/runbook for new critical paths).
+

@@ -8,6 +8,13 @@ This contains everything you need to run your app locally.
 
 View your app in AI Studio: https://ai.studio/apps/5e04815f-f931-4b56-b71a-66817a111c98
 
+## Coding standards (BigBad)
+
+This repo adopts **BigBadCodingStandards**.
+
+- Agent entrypoint: `AGENTS.md`
+- Vendored standards: `docs/coding-standards/`
+
 ## Run Locally
 
 **Prerequisites:**  Node.js
