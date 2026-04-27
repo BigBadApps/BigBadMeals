@@ -8,6 +8,7 @@ import { randomUUID } from "crypto";
 import rateLimit from "express-rate-limit";
 import admin from "firebase-admin";
 import firebaseConfig from "./firebase-applet-config.json" with { type: "json" };
+import { loadServerConfig } from "./server/config.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -33,7 +34,7 @@ type RequestWithId = express.Request & { requestId: string };
 let aiClient: GoogleGenAI | null = null;
 function getAiClient() {
   if (!aiClient) {
-    const apiKey = process.env.GEMINI_API_KEY || process.env.API_KEY || process.env.GOOGLE_API_KEY;
+    const apiKey = loadServerConfig().geminiApiKey;
     if (!apiKey) {
       throw new Error("GEMINI_API_KEY is not set in the environment.");
     }
@@ -127,8 +128,9 @@ const RECIPE_SCHEMA = {
 };
 
 async function startServer() {
+  const config = loadServerConfig();
   const app = express();
-  const PORT = 3000;
+  const PORT = config.port;
 
   app.use((req, res, next) => {
     const requestId = randomUUID();
@@ -156,8 +158,8 @@ async function startServer() {
   app.use(express.json({ limit: '20mb' }));
 
   const aiLimiter = rateLimit({
-    windowMs: 60_000,
-    limit: 30,
+    windowMs: config.aiRateLimit.windowMs,
+    limit: config.aiRateLimit.limit,
     standardHeaders: true,
     legacyHeaders: false,
     handler: (req, res) => {
@@ -173,9 +175,8 @@ async function startServer() {
 
   app.use("/api/ai", aiLimiter);
 
-  const requireAiAuth = process.env.REQUIRE_AI_AUTH === "true";
   app.use("/api/ai", async (req, res, next) => {
-    if (!requireAiAuth) return next();
+    if (!config.requireAiAuth) return next();
 
     const requestId = getRequestId(req);
     const token = getBearerToken(req);
@@ -349,9 +350,9 @@ Available Recipes: ${JSON.stringify(availableRecipes)}`,
   app.get("/api/health", (req, res) => {
     res.json({
       status: "ok",
-      env: process.env.NODE_ENV,
+      env: config.env,
       requestId: getRequestId(req),
-      requireAiAuth: process.env.REQUIRE_AI_AUTH === "true",
+      requireAiAuth: config.requireAiAuth,
     });
   });
 
