@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { ShoppingBasket, Receipt, Trash2, Plus, Loader2, ArrowRight } from 'lucide-react';
-import { firestoreService } from '../services/firestoreService';
+import { dataService } from '../services/dataService';
 import { Recipe, MealPlan, GroceryList, GroceryItem } from '../types';
 import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
@@ -21,7 +21,7 @@ export const Shopping = () => {
   }, [user]);
 
   const loadLists = async () => {
-    const data = await firestoreService.getGroceryLists(user!.uid);
+    const data = await dataService.getGroceryLists(user!.uid);
     setLists(data);
     if (data.length > 0) setActiveList(data[0]);
     setLoading(false);
@@ -33,12 +33,12 @@ export const Shopping = () => {
     newItems[index].checked = !newItems[index].checked;
     const updated = { ...activeList, items: newItems };
     setActiveList(updated);
-    await firestoreService.updateGroceryList(user!.uid, activeList.id!, { items: newItems });
+    await dataService.updateGroceryList(user!.uid, activeList.id!, { items: newItems });
   };
 
   const generateFromPlan = async () => {
-    const plans = await firestoreService.getMealPlans(user!.uid);
-    const recipes = await firestoreService.getRecipes(user!.uid);
+    const plans = await dataService.getMealPlans(user!.uid);
+    const recipes = await dataService.getRecipes(user!.uid);
     
     if (plans.length === 0) {
       toast.error('Generate a meal plan first!');
@@ -81,7 +81,7 @@ export const Shopping = () => {
       createdAt: new Date().toISOString()
     };
 
-    await firestoreService.addGroceryList(user!.uid, newList);
+    await dataService.addGroceryList(user!.uid, newList);
     await loadLists();
     toast.success('Shopping list synced with your plan!');
   };
@@ -89,7 +89,7 @@ export const Shopping = () => {
   const clearChecked = async () => {
     if (!activeList) return;
     const newItems = activeList.items.filter(i => !i.checked);
-    await firestoreService.updateGroceryList(user!.uid, activeList.id!, { items: newItems });
+    await dataService.updateGroceryList(user!.uid, activeList.id!, { items: newItems });
     setActiveList({ ...activeList, items: newItems });
     toast.success('Cleaned up your list');
   };

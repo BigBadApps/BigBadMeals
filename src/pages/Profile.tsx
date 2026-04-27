@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { User, Users, Plus, X, Heart, ShieldAlert, LogOut, Save, Activity, CheckCircle2, XCircle } from 'lucide-react';
-import { firestoreService } from '../services/firestoreService';
+import { dataService } from '../services/dataService';
 import { toast } from 'sonner';
 import { testAiIntegration } from '../lib/aiTest';
 import { testConnection } from '../lib/firebaseTest';
@@ -42,7 +42,7 @@ export const Profile = () => {
   const handleSave = async () => {
     if (!formData) return;
     try {
-      await firestoreService.saveUserProfile(formData);
+      await dataService.saveUserProfile(formData);
       await refreshProfile();
       setEditing(false);
       toast.success('Preferences updated!');

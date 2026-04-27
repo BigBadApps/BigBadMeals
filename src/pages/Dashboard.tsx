@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { ChefHat, Calendar, TrendingUp, DollarSign, ArrowRight, Star, Clock, AlertCircle, Plus } from 'lucide-react';
-import { firestoreService } from '../services/firestoreService';
+import { dataService } from '../services/dataService';
 import { Recipe, MealPlan } from '../types';
 import { format, isToday } from 'date-fns';
 
@@ -16,8 +16,8 @@ export const Dashboard = () => {
 
   useEffect(() => {
     if (user) {
-      firestoreService.getRecipes(user.uid).then(setRecipes);
-      firestoreService.getMealPlans(user.uid).then(plans => {
+      dataService.getRecipes(user.uid).then(setRecipes);
+      dataService.getMealPlans(user.uid).then(plans => {
         if (plans.length > 0) setActivePlan(plans[0]);
       });
     }
