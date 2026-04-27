@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Search, Plus, Filter, ChefHat, Timer, Flame, Heart, Trash2, Camera, Link, FileText, Loader2, X } from 'lucide-react';
-import { firestoreService } from '../services/firestoreService';
+import { dataService } from '../services/dataService';
 import { extractRecipeFromText, extractRecipeFromImage, extractRecipeFromUrl } from '../services/geminiService';
 import { Recipe } from '../types';
 import { toast } from 'sonner';
@@ -30,7 +30,7 @@ export const Recipes = () => {
   }, [user]);
 
   const loadRecipes = async () => {
-    const data = await firestoreService.getRecipes(user!.uid);
+    const data = await dataService.getRecipes(user!.uid);
     setRecipes(data);
     setLoading(false);
   };
@@ -54,7 +54,7 @@ export const Recipes = () => {
         isFavorite: false,
         createdAt: new Date().toISOString(),
       };
-      await firestoreService.addRecipe(user!.uid, recipe);
+      await dataService.addRecipe(user!.uid, recipe);
       await loadRecipes();
       setImportUrl('');
       setShowUrlInput(false);
@@ -88,7 +88,7 @@ export const Recipes = () => {
         isFavorite: false,
         createdAt: new Date().toISOString(),
       };
-      await firestoreService.addRecipe(user!.uid, recipe);
+      await dataService.addRecipe(user!.uid, recipe);
       await loadRecipes();
       setImportText('');
       setDialogOpen(false);
@@ -191,7 +191,7 @@ export const Recipes = () => {
           isFavorite: false,
           createdAt: new Date().toISOString(),
         };
-        await firestoreService.addRecipe(user!.uid, recipe);
+        await dataService.addRecipe(user!.uid, recipe);
         await loadRecipes();
         setDialogOpen(false);
         toast.success('Recipe extracted from image!');
@@ -209,13 +209,13 @@ export const Recipes = () => {
   };
 
   const toggleFavorite = async (recipe: Recipe) => {
-    await firestoreService.updateRecipe(user!.uid, recipe.id!, { isFavorite: !recipe.isFavorite });
+    await dataService.updateRecipe(user!.uid, recipe.id!, { isFavorite: !recipe.isFavorite });
     await loadRecipes();
   };
 
   const deleteRecipe = async (id: string) => {
     if (!confirm('Are you sure you want to delete this recipe?')) return;
-    await firestoreService.deleteRecipe(user!.uid, id);
+    await dataService.deleteRecipe(user!.uid, id);
     await loadRecipes();
     setActiveRecipe(null);
     toast.success('Recipe deleted');
@@ -280,6 +280,7 @@ export const Recipes = () => {
               <div className="space-y-2">
                 <Label className="text-xs uppercase tracking-widest font-bold ml-1 text-muted-foreground">Text Entry / Transcription</Label>
                 <textarea 
+                  data-testid="recipes-import-text"
                   className="w-full min-h-[150px] p-4 rounded-2xl border border-amber-100 bg-amber-50/20 focus:ring-1 focus:ring-[#d97706] outline-none text-sm leading-relaxed"
                   placeholder="Paste recipe instructions and ingredients here..."
                   value={importText}
@@ -295,7 +296,7 @@ export const Recipes = () => {
               )}
             </div>
             <DialogFooter className="p-6 bg-amber-50/30">
-              <Button onClick={handleImportText} disabled={importing || !importText.trim()} className="w-full rounded-xl bg-[#d97706] hover:bg-[#b45309]">
+              <Button data-testid="recipes-import-submit" onClick={handleImportText} disabled={importing || !importText.trim()} className="w-full rounded-xl bg-[#d97706] hover:bg-[#b45309]">
                 Extract & Save Recipe
               </Button>
             </DialogFooter>

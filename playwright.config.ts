@@ -21,6 +21,7 @@ export default defineConfig({
     env: {
       NODE_ENV: 'development',
       VITE_DISABLE_AUTH: 'true',
+      VITE_USE_INMEMORY_DB: 'true',
       REQUIRE_AI_AUTH: 'false',
     },
   },

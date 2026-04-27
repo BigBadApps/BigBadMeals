@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Calendar as CalendarIcon, Sparkles, Loader2, ChevronLeft, ChevronRight, Plus, Utensils, Check } from 'lucide-react';
 import { format, addDays, startOfWeek, isSameDay } from 'date-fns';
-import { firestoreService } from '../services/firestoreService';
+import { dataService } from '../services/dataService';
 import { generateWeeklyMealPlan } from '../services/geminiService';
 import { Recipe, MealPlan } from '../types';
 import { toast } from 'sonner';
@@ -27,8 +27,8 @@ export const Planner = () => {
 
   const loadData = async () => {
     const [r, p] = await Promise.all([
-      firestoreService.getRecipes(user!.uid),
-      firestoreService.getMealPlans(user!.uid)
+      dataService.getRecipes(user!.uid),
+      dataService.getMealPlans(user!.uid)
     ]);
     setRecipes(r);
     setPlans(p);
@@ -49,7 +49,7 @@ export const Planner = () => {
         days: planRes.days || []
       };
       
-      const id = await firestoreService.addMealPlan(user!.uid, newPlan);
+      const id = await dataService.addMealPlan(user!.uid, newPlan);
       await loadData();
       toast.success('AI Weekly Meal Plan Generated!');
     } catch (e) {
