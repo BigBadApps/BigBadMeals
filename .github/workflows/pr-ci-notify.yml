@@ -1,0 +1,55 @@
+name: PR CI notify
+
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
+
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    if: github.event.workflow_run.event == 'pull_request'
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Comment on PR with CI outcome + agent commands
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+          RUN_URL: ${{ github.event.workflow_run.html_url }}
+          SHA: ${{ github.event.workflow_run.head_sha }}
+          BRANCH: ${{ github.event.workflow_run.head_branch }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          SHORT_SHA=$(echo "$SHA" | cut -c1-7)
+          NUMBER=$(gh api "repos/$REPO/commits/$SHA/pulls" \
+            -H "Accept: application/vnd.github+json" \
+            --jq '.[0].number // empty')
+          if [[ -z "${NUMBER:-}" ]]; then
+            echo "No PR associated with commit $SHORT_SHA; skipping."
+            exit 0
+          fi
+          STATE=$(gh pr view "$NUMBER" --repo "$REPO" --json state --jq .state)
+          if [[ "$STATE" != "OPEN" ]]; then
+            echo "PR #$NUMBER is $STATE; skipping comment."
+            exit 0
+          fi
+          BODY_FILE=$(mktemp)
+          {
+            echo "## CI finished for \`${BRANCH}\` @ \`${SHORT_SHA}\`"
+            echo ""
+            echo "| Field | Value |"
+            echo "| --- | --- |"
+            echo "| **CI conclusion** | \`${CONCLUSION}\` |"
+            echo "| **Workflow run** | [open logs](${RUN_URL}) |"
+            echo ""
+            echo "**Agent / human — refresh status locally:**"
+            echo '```bash'
+            echo "bash scripts/pr-status.sh ${NUMBER}"
+            echo '```'
+            echo ""
+            echo "Or: \`gh pr view ${NUMBER} --json state,mergedAt,statusCheckRollup,autoMergeRequest,url\`"
+          } > "$BODY_FILE"
+          gh pr comment "$NUMBER" --repo "$REPO" --body-file "$BODY_FILE"
+          rm -f "$BODY_FILE"

@@ -15,7 +15,9 @@
     "lint": "npm run typecheck",
     "test:e2e": "playwright test",
     "test:e2e:smoke": "playwright test --grep @smoke",
-    "test:e2e:ui": "playwright test --ui"
+    "test:e2e:ui": "playwright test --ui",
+    "pr:publish": "bash scripts/pr-publish.sh",
+    "pr:status": "bash scripts/pr-status.sh"
   },
   "dependencies": {
     "@base-ui/react": "^1.4.1",
