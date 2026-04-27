@@ -73,7 +73,8 @@ export const Planner = () => {
           <h1 className="text-3xl font-bold font-serif text-[#451a03]">Meal Planner</h1>
           <p className="text-sm text-muted-foreground italic">Balance your week with AI assistance</p>
         </div>
-        <Button 
+        <Button
+          data-testid="planner-generate"
           onClick={handleGenerate} 
           disabled={generating}
           className="rounded-2xl bg-gradient-to-r from-amber-500 to-orange-600 border-none shadow-xl shadow-amber-200 h-12 px-6"
