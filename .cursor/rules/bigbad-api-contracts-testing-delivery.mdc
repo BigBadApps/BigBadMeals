@@ -1,0 +1,26 @@
+---
+description: BigBad API contracts + testing + delivery standards
+globs: "{server.ts,src/services/**,src/lib/**,**/*.{test,spec}.*}"
+alwaysApply: false
+---
+
+# BigBad API Contracts, Testing, Delivery
+
+## API contracts (frontend ↔ backend)
+
+- APIs are **product interfaces**: be compatible by default.
+- Define auth requirements, request/response shapes, and a stable **error model**:
+  - validation 4xx, auth 401/403, not found 404, conflict 409, rate limit 429, dependency 502/503/504, unexpected 500
+- Return errors that are **actionable** (code + message), **safe** (no secrets/PII), and **debuggable** (correlation ID where possible).
+
+## Testing
+
+- Bug fixes: reproduce with a test, then fix.
+- Prioritize determinism, isolation, readability (AAA / given-when-then).
+- Treat flaky tests as urgent; fix root cause.
+
+## Delivery
+
+- Keep PRs small and focused.
+- PR description must include **Summary**, **Risk**, **Test plan**, and (if relevant) **Rollout/Rollback**.
+

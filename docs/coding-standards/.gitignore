@@ -1,0 +1,29 @@
+.DS_Store
+.idea/
+.vscode/
+
+# Logs
+*.log
+
+# Env / secrets
+.env
+.env.*
+*.pem
+*.key
+
+# Node
+node_modules/
+dist/
+build/
+.turbo/
+.next/
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
