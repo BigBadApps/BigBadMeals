@@ -10,6 +10,13 @@ Deploy BigBadMeals to a public HTTPS URL (Cloud Run) so it can be opened from mo
 - Project set: `gcloud config set project <YOUR_GCP_PROJECT_ID>`
 - Billing enabled for the project
 
+macOS note: if `gcloud` errors while creating its virtualenv (Python/expat issues), run:
+
+```bash
+export CLOUDSDK_PYTHON=/usr/bin/python3
+gcloud config virtualenv create
+```
+
 Enable APIs (one-time):
 
 ```bash

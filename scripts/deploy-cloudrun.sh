@@ -18,6 +18,13 @@ if ! command -v gcloud >/dev/null 2>&1; then
   exit 1
 fi
 
+# On some macOS setups, Homebrew Python can be incompatible with system libexpat
+# and break gcloud's internal virtualenv bootstrap. The system python3 usually
+# works and is sufficient for deployment.
+if [[ -z "${CLOUDSDK_PYTHON:-}" ]] && [[ -x "/usr/bin/python3" ]]; then
+  export CLOUDSDK_PYTHON="/usr/bin/python3"
+fi
+
 PROJECT="$(gcloud config get-value project 2>/dev/null || true)"
 if [[ -z "${PROJECT}" || "${PROJECT}" == "(unset)" ]]; then
   echo "error: no gcloud project configured. Run: gcloud config set project <YOUR_GCP_PROJECT_ID>" >&2
@@ -35,6 +42,13 @@ echo "==> Project: ${PROJECT}"
 echo "==> Region:  ${REGION}"
 echo "==> Service: ${SERVICE}"
 echo "==> Image:   ${IMAGE}"
+
+echo "==> Checking gcloud Python/virtualenv bootstrap"
+if ! gcloud config virtualenv create >/dev/null 2>&1; then
+  echo "error: gcloud failed to create its virtualenv." >&2
+  echo "hint: try running: CLOUDSDK_PYTHON=/usr/bin/python3 gcloud config virtualenv create" >&2
+  exit 1
+fi
 
 echo "==> Building with Cloud Build"
 gcloud builds submit --tag "${IMAGE}" .
