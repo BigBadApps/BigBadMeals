@@ -72,6 +72,12 @@ printf '%s' "YOUR_GEMINI_API_KEY" | gcloud secrets versions add gemini-api-key -
 
 ### Build and deploy (Dockerfile in repo root)
 
+Recommended (script):
+
+```bash
+npm run deploy:cloudrun
+```
+
 Replace region / names as you like:
 
 ```bash
@@ -96,6 +102,8 @@ gcloud run deploy "${SERVICE}" \
 1. Note the **Service URL** from the deploy output.
 2. **Firebase Console** → Authentication → Settings → **Authorized domains** → add your **`*.run.app`** host (or the exact hostname).
 3. Optional: set **`REQUIRE_AI_AUTH=true`** on the service if you want `/api/ai/*` to require a Firebase ID token in production.
+
+Runbook: [`docs/runbooks/cloud-run.md`](docs/runbooks/cloud-run.md)
 
 ### Optional: deploy again from AI Studio
 
