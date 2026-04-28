@@ -24,6 +24,8 @@
 - `standards/DELIVERY.md`
 - `standards/PR_CHECKLIST.md`
 
+Product repos may add `docs/STATUS.md` (pause/resume handoff; optional).
+
 ## Security and operations
 
 - `standards/SECURITY.md`

@@ -7,6 +7,7 @@ One paragraph description of the app and who it is for.
 ## Key links
 
 - Design docs: `docs/`
+- **Status / handoff (optional):** `docs/STATUS.md` — snapshot when pausing long work (deploy, env, next steps)
 - Runbooks (if production): `docs/runbooks/`
 - ADRs: `docs/adrs/`
 

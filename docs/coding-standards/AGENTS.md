@@ -62,6 +62,8 @@ Agents (including Claude) do not receive asynchronous events from Git or GitHub 
 
 Product-specific commands, workflow names, and allowlists live in the project’s root **`AGENTS.md`** (or equivalent).
 
+Long-running work may also use a **`docs/STATUS.md`** (or similar) file as a pause/resume handoff: last verification, deploy/env state, and the next three actions.
+
 ## Project conventions (apply unless overridden)
 
 - **Docs live with code**: architecture and runbooks belong near the code they describe.

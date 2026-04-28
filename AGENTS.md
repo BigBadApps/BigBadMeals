@@ -81,3 +81,9 @@ Broad autonomy is controlled by **Cursor**, not by this repo alone.
 4. **This repo:** `.cursor/sandbox.json` sets **`networkPolicy.default: "allow"`** and **`enableSharedBuildCache: true`** so sandboxed installs/builds hit registries freely and share caches. To remove the sandbox entirely (maximum risk), Cursor supports `"type": "insecure_none"` in `sandbox.json`—see [sandbox.json reference](https://cursor.com/docs/reference/sandbox); enterprise policies may still override.
 
 Commit `.cursor/sandbox.json` when you are happy with it, or delete it and rely on UI-only settings.
+
+---
+
+## Handoff / progress file
+
+Before ending a long session, update **[`docs/STATUS.md`](docs/STATUS.md)** (what merged, what was tested, what is next—especially deploy and Firebase domains). New agents should read it after `README.md`.

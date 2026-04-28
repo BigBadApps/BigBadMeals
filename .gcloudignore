@@ -1,0 +1,19 @@
+# Same idea as .dockerignore for `gcloud builds submit`
+.git
+.github
+.cursor
+docs
+coverage
+playwright-report
+test-results
+tests
+playwright
+playwright.config.ts
+**/*.md
+.env*
+!.env.example
+*.log
+.DS_Store
+node_modules
+build
+dist

@@ -21,6 +21,10 @@ Some repositories add:
 
 Agents should still **verify** final state with `gh` (or repo scripts): GitHub does not push merge results into the IDE. If auto-merge is very fast, a “notify on PR” job may race with merge; treat the API as source of truth.
 
+### Container deploy + session handoff (optional)
+
+For **full-stack** Node apps, teams often add a **`Dockerfile`** (multi-stage `npm run build` + `npm ci --omit=dev` runtime) and document **one** target (e.g. **Google Cloud Run**, **Fly.io**, **AWS App Runner**) with env/secrets expectations. Keep a short **`docs/STATUS.md`** (or equivalent) updated when pausing so the next human or agent knows what was last verified and what deploy step remains.
+
 ## Versioning and releases
 
 - Prefer automated releases.
