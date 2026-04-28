@@ -18,11 +18,19 @@ if ! command -v gcloud >/dev/null 2>&1; then
   exit 1
 fi
 
-# On some macOS setups, Homebrew Python can be incompatible with system libexpat
-# and break gcloud's internal virtualenv bootstrap. The system python3 usually
-# works and is sufficient for deployment.
-if [[ -z "${CLOUDSDK_PYTHON:-}" ]] && [[ -x "/usr/bin/python3" ]]; then
-  export CLOUDSDK_PYTHON="/usr/bin/python3"
+# gcloud requires Python >= 3.10. On some macOS versions, Homebrew Python may
+# fail to import `pyexpat` unless we point it at Homebrew's keg-only expat.
+# We prefer a supported Homebrew Python if available; otherwise fall back.
+if [[ -z "${CLOUDSDK_PYTHON:-}" ]]; then
+  if [[ -x "/opt/homebrew/bin/python3.12" ]]; then
+    # Ensure expat is discoverable for pyexpat.
+    if [[ -d "/opt/homebrew/opt/expat/lib" ]]; then
+      export DYLD_LIBRARY_PATH="/opt/homebrew/opt/expat/lib${DYLD_LIBRARY_PATH:+:$DYLD_LIBRARY_PATH}"
+    fi
+    export CLOUDSDK_PYTHON="/opt/homebrew/bin/python3.12"
+  elif [[ -x "/usr/bin/python3" ]]; then
+    export CLOUDSDK_PYTHON="/usr/bin/python3"
+  fi
 fi
 
 PROJECT="$(gcloud config get-value project 2>/dev/null || true)"
@@ -43,10 +51,18 @@ echo "==> Region:  ${REGION}"
 echo "==> Service: ${SERVICE}"
 echo "==> Image:   ${IMAGE}"
 
-echo "==> Checking gcloud Python/virtualenv bootstrap"
-if ! gcloud config virtualenv create >/dev/null 2>&1; then
-  echo "error: gcloud failed to create its virtualenv." >&2
-  echo "hint: try running: CLOUDSDK_PYTHON=/usr/bin/python3 gcloud config virtualenv create" >&2
+echo "==> Ensuring required APIs are enabled"
+gcloud services enable \
+  run.googleapis.com \
+  artifactregistry.googleapis.com \
+  cloudbuild.googleapis.com \
+  secretmanager.googleapis.com
+
+echo "==> Ensuring Secret Manager secret exists: gemini-api-key"
+if ! gcloud secrets describe gemini-api-key >/dev/null 2>&1; then
+  echo "error: Secret Manager secret 'gemini-api-key' does not exist." >&2
+  echo "Create it with:" >&2
+  echo "  printf '%s' \"YOUR_GEMINI_API_KEY\" | gcloud secrets create gemini-api-key --data-file=-" >&2
   exit 1
 fi
 
