@@ -16,6 +16,7 @@
     "test:e2e": "playwright test",
     "test:e2e:smoke": "playwright test --grep @smoke",
     "test:e2e:ui": "playwright test --ui",
+    "deploy:cloudrun": "bash scripts/deploy-cloudrun.sh",
     "pr:publish": "bash scripts/pr-publish.sh",
     "pr:publish:wait": "bash scripts/pr-publish.sh --wait",
     "pr:status": "bash scripts/pr-status.sh"
