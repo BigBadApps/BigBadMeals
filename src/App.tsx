@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState } from 'react';
 import { AuthProvider, AuthGuard, AuthContext } from './components/AuthContext';
 import { Navigation, Tab } from './components/Navigation';
 import { Dashboard } from './pages/Dashboard';
@@ -8,14 +8,8 @@ import { Shopping } from './pages/Shopping';
 import { Profile } from './pages/Profile';
 import { Toaster } from 'sonner';
 import { motion, AnimatePresence } from 'motion/react';
-import { testConnection } from './lib/firebaseTest';
-
 export default function App() {
   const [activeTab, setActiveTab] = useState<Tab>('dashboard');
-
-  useEffect(() => {
-    testConnection();
-  }, []);
 
   const renderTab = () => {
     switch (activeTab) {

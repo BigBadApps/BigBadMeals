@@ -246,7 +246,12 @@ export const Profile = () => {
                 </div>
                 <div className="flex items-center justify-between p-3 bg-white rounded-xl border border-amber-100">
                     <span className="font-medium">Firebase Firestore</span>
-                    {testResults.firebase?.success ? (
+                    {testResults.firebase?.skipped ? (
+                        <span className="flex items-center text-amber-700 text-sm font-medium gap-1 text-right max-w-[60%]">
+                            <ShieldAlert className="h-4 w-4 shrink-0" />
+                            {testResults.firebase?.warning || 'Sign in to verify'}
+                        </span>
+                    ) : testResults.firebase?.success ? (
                         <span className="flex items-center text-green-600 text-sm font-bold gap-1">
                             <CheckCircle2 className="h-4 w-4" /> Operational
                         </span>
