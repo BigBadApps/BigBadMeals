@@ -1,18 +1,35 @@
 import { doc, getDocFromServer } from 'firebase/firestore';
-import { db } from './firebase';
+import { auth, db } from './firebase';
 
-export async function testConnection() {
+/**
+ * Verifies Firestore is reachable using a path allowed by firestore.rules
+ * (`users/{uid}` for the signed-in user). Does not probe legacy `test/*`
+ * paths (those are denied by rules and spam the console).
+ */
+export async function testConnection(): Promise<{
+  success: boolean;
+  skipped?: boolean;
+  warning?: string;
+  error?: string;
+}> {
+  const user = auth.currentUser;
+  if (!user) {
+    return {
+      success: true,
+      skipped: true,
+      warning: 'Sign in to verify Firestore reads against your user document.',
+    };
+  }
+
   try {
-    await getDocFromServer(doc(db, 'test', 'connection'));
-    console.log('Firebase connection verified');
+    await getDocFromServer(doc(db, 'users', user.uid));
     return { success: true };
   } catch (error) {
     if (error instanceof Error && error.message.includes('the client is offline')) {
-      console.error("Please check your Firebase configuration.");
+      console.error('Firebase appears offline; check configuration and network.');
       return { success: false, error: 'Offline' };
-    } else {
-      console.warn("Initial connection test failed (expected if collection 'test' doesn't exist).", error);
-      return { success: true, warning: 'Connection active but test document not found' };
     }
+    console.warn('Firestore verification failed:', error);
+    return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
   }
 }
