@@ -30,6 +30,24 @@ export const Recipes = () => {
     if (user) loadRecipes();
   }, [user]);
 
+  useEffect(() => {
+    if (!user) return;
+    if (loading) return;
+
+    const openAdd = sessionStorage.getItem('bb:recipes:openAdd');
+    if (openAdd === '1') {
+      sessionStorage.removeItem('bb:recipes:openAdd');
+      setDialogOpen(true);
+    }
+
+    const openRecipeId = sessionStorage.getItem('bb:recipes:openRecipeId');
+    if (openRecipeId) {
+      sessionStorage.removeItem('bb:recipes:openRecipeId');
+      const match = recipes.find((r) => r.id === openRecipeId);
+      if (match) setActiveRecipe(match);
+    }
+  }, [user, loading, recipes]);
+
   const loadRecipes = async () => {
     const data = await dataService.getRecipes(user!.uid);
     setRecipes(data);

@@ -8,8 +8,13 @@ import { ChefHat, Calendar, TrendingUp, DollarSign, ArrowRight, Star, Clock, Ale
 import { dataService } from '../services/dataService';
 import { Recipe, MealPlan } from '../types';
 import { format, isToday } from 'date-fns';
+import { Tab } from '../components/Navigation';
 
-export const Dashboard = () => {
+type DashboardProps = {
+  navigate: (tab: Tab) => void;
+};
+
+export const Dashboard = ({ navigate }: DashboardProps) => {
   const { user, profile } = useContext(AuthContext);
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [activePlan, setActivePlan] = useState<MealPlan | null>(null);
@@ -25,6 +30,32 @@ export const Dashboard = () => {
 
   const todaysMeals = activePlan?.days.find(d => d.date === format(new Date(), 'yyyy-MM-dd'))?.meals || [];
   const nextMeal = todaysMeals[0]; // Simplistic logic for "Next"
+
+  const openAddRecipe = () => {
+    sessionStorage.setItem('bb:recipes:openAdd', '1');
+    navigate('recipes');
+  };
+
+  const openRecipe = (recipeId: string | undefined) => {
+    if (!recipeId) {
+      navigate('recipes');
+      return;
+    }
+    sessionStorage.setItem('bb:recipes:openRecipeId', recipeId);
+    navigate('recipes');
+  };
+
+  const handleLetsCook = () => {
+    if (nextMeal?.recipeId) {
+      openRecipe(nextMeal.recipeId);
+      return;
+    }
+    if (recipes.length > 0) {
+      openRecipe(recipes[0]?.id);
+      return;
+    }
+    openAddRecipe();
+  };
 
   return (
     <div className="p-6 pb-24 space-y-8 max-w-4xl mx-auto">
@@ -51,7 +82,11 @@ export const Dashboard = () => {
                <span className="text-[10px] uppercase font-bold text-amber-200">Difficulty</span>
                <span className="text-xl font-bold">Easy</span>
              </div>
-             <Button className="ml-auto rounded-2xl bg-white text-[#d97706] hover:bg-amber-50 h-12 px-6 font-bold shadow-lg">
+             <Button
+               className="ml-auto rounded-2xl bg-white text-[#d97706] hover:bg-amber-50 h-12 px-6 font-bold shadow-lg"
+               onClick={handleLetsCook}
+               data-testid="dashboard-lets-cook"
+             >
                Let's Cook <ArrowRight className="ml-2 h-4 w-4" />
              </Button>
           </div>
@@ -72,7 +107,14 @@ export const Dashboard = () => {
           <h2 className="text-2xl font-bold font-serif flex items-center gap-2">
             <Calendar className="h-6 w-6 text-[#d97706]" /> Today's Schedule
           </h2>
-          <Button variant="ghost" className="text-[#d97706] font-bold">View Week</Button>
+          <Button
+            variant="ghost"
+            className="text-[#d97706] font-bold"
+            onClick={() => navigate('planner')}
+            data-testid="dashboard-view-week"
+          >
+            View Week
+          </Button>
         </div>
         
         <div className="grid gap-4">
@@ -90,11 +132,22 @@ export const Dashboard = () => {
                    </p>
                  </div>
                  {meal ? (
-                   <div className="flex items-center gap-2 text-amber-600 font-bold bg-amber-100/50 px-4 py-2 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity">
+                   <button
+                     type="button"
+                     className="flex items-center gap-2 text-amber-600 font-bold bg-amber-100/50 px-4 py-2 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"
+                     onClick={() => openRecipe(meal.recipeId)}
+                   >
                       Start <ChefHat className="h-4 w-4" />
-                   </div>
+                   </button>
                  ) : (
-                   <Plus className="h-6 w-6 text-amber-200 group-hover:text-amber-500 cursor-pointer" />
+                   <button
+                     type="button"
+                     className="p-1"
+                     onClick={() => navigate('planner')}
+                     aria-label={`Add ${type} meal`}
+                   >
+                     <Plus className="h-6 w-6 text-amber-200 group-hover:text-amber-500" />
+                   </button>
                  )}
                </div>
              );
