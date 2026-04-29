@@ -98,14 +98,14 @@ export const Shopping = () => {
     <div className="p-6 pb-24 space-y-6 max-w-2xl mx-auto">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold font-serif text-[#451a03]">Kitchen Stock</h1>
+          <h1 className="font-heading text-3xl font-black tracking-tight text-primary">Kitchen Stock</h1>
           <p className="text-sm text-muted-foreground italic">Tick off as you shop</p>
         </div>
         <Button
           data-testid="shopping-sync-plan"
           onClick={generateFromPlan} 
           variant="outline" 
-          className="rounded-2xl border-amber-200 h-11"
+          className="rounded-2xl border-border h-11 bg-background/50"
         >
           <Receipt className="h-4 w-4 mr-2" /> Sync Plan
         </Button>
@@ -113,40 +113,40 @@ export const Shopping = () => {
 
       {!activeList ? (
         <div className="py-20 text-center space-y-4">
-          <ShoppingBasket className="h-16 w-16 mx-auto text-amber-100" />
-          <p className="text-lg text-amber-900/40">Your cart is empty.</p>
-          <Button onClick={generateFromPlan} className="rounded-xl bg-[#d97706]">Sync from latest plan</Button>
+          <ShoppingBasket className="h-16 w-16 mx-auto text-muted-foreground/30" />
+          <p className="text-lg text-muted-foreground">Your cart is empty.</p>
+          <Button onClick={generateFromPlan} className="rounded-xl bg-primary hover:bg-primary/90">Sync from latest plan</Button>
         </div>
       ) : (
         <div className="space-y-4">
           <div className="flex items-center justify-between px-2">
-            <span className="text-sm font-bold text-[#92400e]/60">{activeList.items.filter(i => i.checked).length} of {activeList.items.length} items collected</span>
+            <span className="text-sm font-semibold text-muted-foreground">{activeList.items.filter(i => i.checked).length} of {activeList.items.length} items collected</span>
             <Button variant="ghost" size="sm" onClick={clearChecked} className="text-red-500 hover:bg-red-50 rounded-xl">Clear Finished</Button>
           </div>
 
-          <Card className="rounded-[2.5rem] border-none shadow-xl shadow-amber-900/5 bg-white overflow-hidden">
+          <Card className="rounded-[1.75rem] border border-border/50 shadow-sm bg-card overflow-hidden">
             <CardContent className="p-6 space-y-1">
               {activeList.items.map((item, i) => (
                 <div 
                   key={i} 
                   className={cn(
-                    "flex items-center gap-4 py-4 px-2 hover:bg-amber-50/50 rounded-2xl transition-colors group",
+                    "flex items-center gap-4 py-4 px-2 hover:bg-muted/50 rounded-2xl transition-colors group",
                     item.checked && "opacity-50"
                   )}
                   onClick={() => toggleItem(i)}
                 >
-                  <Checkbox checked={item.checked} className="h-6 w-6 rounded-lg border-amber-200 data-[state=checked]:bg-amber-500 data-[state=checked]:border-amber-500" />
+                  <Checkbox checked={item.checked} className="h-6 w-6 rounded-lg border-border data-[state=checked]:bg-primary data-[state=checked]:border-primary" />
                   <div className="flex-1">
                     <p className={cn("font-bold text-lg", item.checked && "line-through")}>{item.name}</p>
-                    <p className="text-sm text-amber-600/70">{item.amount} {item.unit}</p>
+                    <p className="text-sm text-muted-foreground">{item.amount} {item.unit}</p>
                   </div>
-                  <Badge className="bg-amber-50 text-amber-600 border-none rounded-lg group-hover:bg-amber-100">{item.category}</Badge>
+                  <Badge className="bg-muted text-primary border-none rounded-lg group-hover:bg-muted/80">{item.category}</Badge>
                 </div>
               ))}
             </CardContent>
           </Card>
 
-          <Button className="w-full h-14 rounded-2xl bg-black text-white gap-2 mt-4">
+          <Button className="w-full h-14 rounded-2xl bg-primary text-primary-foreground gap-2 mt-4 hover:bg-primary/90">
             <Trash2 className="h-5 w-5" /> Delete List
           </Button>
         </div>

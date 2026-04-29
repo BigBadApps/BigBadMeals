@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Epicurean Shopping List</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700&amp;family=Noto+Serif:ital,wght@0,500;0,600;0,700;1,700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-variant": "#fddada",
+                    "primary-fixed": "#e2e8f0",
+                    "on-secondary-fixed": "#2e0d35",
+                    "inverse-surface": "#402b2b",
+                    "secondary-container": "#facbfd",
+                    "secondary-fixed": "#fdd6ff",
+                    "surface-container": "#f8fafc",
+                    "on-secondary-container": "#77527d",
+                    "inverse-primary": "#94a3b8",
+                    "surface-bright": "#fff8f7",
+                    "on-error-container": "#93000a",
+                    "surface-container-high": "#f1f5f9",
+                    "on-tertiary": "#ffffff",
+                    "tertiary-fixed-dim": "#72d7ca",
+                    "background": "#f8fafc",
+                    "on-surface-variant": "#475569",
+                    "surface": "#ffffff",
+                    "error": "#ba1a1a",
+                    "surface-container-low": "#f8fafc",
+                    "surface-container-highest": "#e2e8f0",
+                    "on-tertiary-fixed": "#00201d",
+                    "primary-fixed-dim": "#94a3b8",
+                    "surface-dim": "#e2e8f0",
+                    "on-primary-container": "#ffffff",
+                    "on-primary-fixed-variant": "#1e293b",
+                    "secondary": "#77517c",
+                    "on-tertiary-fixed-variant": "#005049",
+                    "on-secondary": "#ffffff",
+                    "on-background": "#1e293b",
+                    "outline-variant": "#cbd5e1",
+                    "error-container": "#ffdad6",
+                    "surface-container-lowest": "#ffffff",
+                    "outline": "#64748b",
+                    "on-tertiary-container": "#f4fffc",
+                    "surface-tint": "#374151",
+                    "inverse-on-surface": "#f8fafc",
+                    "on-primary": "#ffffff",
+                    "on-error": "#ffffff",
+                    "tertiary-fixed": "#8ff4e6",
+                    "on-primary-fixed": "#0f172a",
+                    "primary": "#374151",
+                    "tertiary": "#00685f",
+                    "tertiary-container": "#008378",
+                    "on-surface": "#1e293b",
+                    "secondary-fixed-dim": "#e5b8e9",
+                    "on-secondary-fixed-variant": "#5d3a63",
+                    "primary-container": "#4b5563"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "sm": "8px",
+                    "unit": "4px",
+                    "xl": "48px",
+                    "lg": "24px",
+                    "xs": "4px",
+                    "md": "16px",
+                    "container-margin": "24px",
+                    "xxl": "80px",
+                    "gutter": "16px"
+            },
+            "fontFamily": {
+                    "body-lg": ["Be Vietnam Pro"],
+                    "headline-md": ["Noto Serif"],
+                    "label-bold": ["Be Vietnam Pro"],
+                    "headline-sm": ["Noto Serif"],
+                    "body-md": ["Be Vietnam Pro"],
+                    "display-lg": ["Noto Serif"],
+                    "label-sm": ["Be Vietnam Pro"]
+            },
+            "fontSize": {
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-md": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "label-bold": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                    "headline-sm": ["24px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-sm": ["12px", {"lineHeight": "1.2", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .custom-checkbox:checked + span {
+            background-color: #374151; /* grey primary */
+            border-color: #374151;
+        }
+        .custom-checkbox:checked + span::after {
+            content: 'check';
+            font-family: 'Material Symbols Outlined';
+            font-size: 14px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="bg-white dark:bg-neutral-900 border-b border-slate-100 dark:border-neutral-800 docked full-width top-0 flex justify-between items-center w-full px-6 py-4 sticky z-50">
+<div class="flex items-center gap-4">
+<button class="text-slate-600 dark:text-slate-400 hover:opacity-80 transition-opacity active:scale-95">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h1 class="text-2xl font-black font-serif italic text-slate-800 dark:text-slate-200">Epicurean</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="bg-primary hover:bg-primary/90 text-on-primary rounded-full px-4 py-2 flex items-center gap-2 active:scale-95 transition-all shadow-sm">
+<span class="material-symbols-outlined text-[18px]">sync</span>
+<span class="font-label-bold text-label-sm uppercase">Sync</span>
+</button>
+<button class="border-2 border-secondary text-secondary hover:bg-secondary/5 rounded-full px-4 py-2 flex items-center gap-2 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[18px]">delete_sweep</span>
+<span class="font-label-bold text-label-sm uppercase">Clear</span>
+</button>
+<div class="w-10 h-10 rounded-full bg-surface-container overflow-hidden border-2 border-primary-fixed">
+<img alt="Profile" data-alt="A professional headshot of a food critic with a warm, discerning expression, set against a blurred background of a high-end bistro kitchen. The lighting is editorial and soft-key, highlighting the sophistication of the Epicurean brand identity. The color palette features warm creams and deep reds to maintain visual cohesion with the luxury minimalist theme." src="https://lh3.googleusercontent.com/aida-public/AB6AXuChUqFwiMGAjYrGQTovlNjppPZnmrufLqk5ElPz-xZVBVU27VbVQRKoRd_x05GdSF_F7igyqtt3xVXLbVVsBBVKXLjg8uWZZYdJo5PrTg-YiV-vNUMcHI0XShrDQ23010VRnx7ycecJ9IzoH8Wn5ak8dtY_gzpEykPuxGy_dDu1FDWfJITlu_T2SBD-oe3ct_1QX0rMxAUXs6Q15ErkPx0-RmhHeHZXUIdLIVyxl_O-Z9pe7BPV2pfjA6s3qfzkIsQUPHktyIklAYMH"/>
+</div>
+</div>
+</header>
+<main class="max-w-4xl mx-auto px-container-margin py-xl" data-testid="SCREEN_14">
+<!-- Header Section -->
+<div class="mb-xl">
+<h2 class="font-display-lg text-display-lg text-on-background mb-sm">Shopping List</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl">Organize your weekly culinary essentials with editorial precision and effortless flair.</p>
+</div>
+<!-- Bento Layout for Categories -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-lg">
+<!-- Produce Section (Large Column) -->
+<section class="md:col-span-8 bg-surface-container-lowest rounded-xl p-lg shadow-[0_32px_64px_-12px_rgba(55,65,81,0.05)] border border-slate-50">
+<div class="flex justify-between items-center mb-lg">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-tertiary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-on-tertiary-fixed">eco</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm">Produce</h3>
+</div>
+<span class="bg-[#d6ffb7] text-[#005049] px-4 py-1 rounded-full font-label-bold text-label-sm uppercase">Fresh Arrival</span>
+</div>
+<div class="space-y-md">
+<!-- Item 1 -->
+<label class="flex items-center justify-between p-md bg-surface-container-low rounded-lg group cursor-pointer hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-4">
+<div class="relative flex items-center">
+<input class="sr-only custom-checkbox" data-testid="item-1" type="checkbox"/>
+<span class="w-6 h-6 border-2 border-outline rounded-md flex items-center justify-center transition-all group-hover:border-primary"></span>
+</div>
+<div>
+<p class="font-body-md text-body-md font-bold">Organic Heirloom Tomatoes</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">4 large, vine-ripened</p>
+</div>
+</div>
+<span class="font-label-bold text-label-sm text-primary">BISTRO SELECT</span>
+</label>
+<!-- Item 2 -->
+<label class="flex items-center justify-between p-md bg-surface-container-low rounded-lg group cursor-pointer hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-4">
+<div class="relative flex items-center">
+<input class="sr-only custom-checkbox" data-testid="item-2" type="checkbox"/>
+<span class="w-6 h-6 border-2 border-outline rounded-md flex items-center justify-center transition-all group-hover:border-primary"></span>
+</div>
+<div>
+<p class="font-body-md text-body-md font-bold">Wild Arugula</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">2 bunches, triple washed</p>
+</div>
+</div>
+<span class="font-label-bold text-label-sm text-on-surface-variant">250G</span>
+</label>
+<!-- Item 3 -->
+<label class="flex items-center justify-between p-md bg-surface-container-low rounded-lg group cursor-pointer hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-4">
+<div class="relative flex items-center">
+<input class="sr-only custom-checkbox" data-testid="item-3" type="checkbox"/>
+<span class="w-6 h-6 border-2 border-outline rounded-md flex items-center justify-center transition-all group-hover:border-primary"></span>
+</div>
+<div>
+<p class="font-body-md text-body-md font-bold">Sicilian Lemons</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">3 units, high acidity</p>
+</div>
+</div>
+<span class="font-label-bold text-label-sm text-on-surface-variant">ESSENTIAL</span>
+</label>
+</div>
+</section>
+<!-- Quick Add Sidebar (Pantry) -->
+<section class="md:col-span-4 space-y-lg">
+<!-- Dairy Section -->
+<div class="bg-surface-container-lowest rounded-xl p-lg border border-slate-50 shadow-sm">
+<div class="flex items-center gap-3 mb-md">
+<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-secondary-container scale-75">bakery_dining</span>
+</div>
+<h3 class="font-headline-sm text-[20px]">Dairy</h3>
+</div>
+<div class="space-y-sm">
+<label class="flex items-center gap-3 p-sm hover:bg-surface-container rounded-md transition-all cursor-pointer group">
+<input class="sr-only custom-checkbox" data-testid="dairy-1" type="checkbox"/>
+<span class="w-5 h-5 border-2 border-outline rounded flex items-center justify-center"></span>
+<span class="font-body-md text-body-md text-on-surface group-hover:text-primary">Burrata Cheese</span>
+</label>
+<label class="flex items-center gap-3 p-sm hover:bg-surface-container rounded-md transition-all cursor-pointer group">
+<input class="sr-only custom-checkbox" data-testid="dairy-2" type="checkbox"/>
+<span class="w-5 h-5 border-2 border-outline rounded flex items-center justify-center"></span>
+<span class="font-body-md text-body-md text-on-surface group-hover:text-primary">Cultured Butter</span>
+</label>
+</div>
+</div>
+<!-- Pantry Section -->
+<div class="bg-primary-container text-on-primary-container rounded-xl p-lg shadow-lg relative overflow-hidden">
+<div class="relative z-10">
+<div class="flex items-center gap-3 mb-md">
+<span class="material-symbols-outlined">inventory_2</span>
+<h3 class="font-headline-sm text-[20px]">Pantry</h3>
+</div>
+<div class="space-y-sm">
+<label class="flex items-center gap-3 p-sm bg-white/10 rounded-md cursor-pointer group">
+<input class="sr-only custom-checkbox" type="checkbox"/>
+<span class="w-5 h-5 border-2 border-white/40 rounded flex items-center justify-center"></span>
+<span class="font-body-md text-body-md font-medium">Fleur de Sel</span>
+</label>
+<label class="flex items-center gap-3 p-sm bg-white/10 rounded-md cursor-pointer group">
+<input class="sr-only custom-checkbox" type="checkbox"/>
+<span class="w-5 h-5 border-2 border-white/40 rounded flex items-center justify-center"></span>
+<span class="font-body-md text-body-md font-medium">Cold Pressed Olive Oil</span>
+</label>
+</div>
+<button class="mt-lg w-full bg-[#7ae7c7] text-[#00201d] font-label-bold py-3 rounded-full uppercase tracking-tighter hover:brightness-105 transition-all">
+                            Add Custom Item
+                        </button>
+</div>
+<!-- Decorative element -->
+<div class="absolute -right-4 -bottom-4 opacity-10">
+<span class="material-symbols-outlined text-9xl">kitchen</span>
+</div>
+</div>
+</section>
+<!-- Featured List Footer / Suggestions -->
+<section class="md:col-span-12 mt-lg">
+<div class="bg-[#f4fffc] border-2 border-[#7ae7c7] rounded-xl p-lg flex flex-col md:flex-row items-center gap-lg justify-between">
+<div class="flex items-center gap-lg">
+<div class="w-24 h-24 rounded-lg overflow-hidden flex-shrink-0 shadow-md">
+<img alt="Suggested Meal" data-alt="A top-down vibrant culinary photography shot of a deconstructed Caprese salad. The image features bright red organic tomatoes, creamy white burrata, and electric green basil oil. The lighting is high-contrast and daylight-balanced, emphasizing the freshness and luxury minimalist aesthetic of the Epicurean brand. The background is a subtle banana cream ceramic surface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKYl9fE9zaI9n2BNknMLgx1KVafxNlcZKuHrD6Cro_q4i1B_Mg1PKsWY5oHmEmkNCOlDcJ-vBO8Bai4EW5CD76DdPT_m85cDdWVgFxCe8R3sdrcQvEMnxp_szrmrx16NuFc-ZfU7u7vTlLUIpmgkx29w1mzWBMj150SYRh-3B3QgtBU-SAoCbuVB8gGLEDOOE2Wvdb_JVoj0IhyKCgGsKD_tI3Kymb0fG4NGSlWeyeZEJsTCv1YFHGI8rz__ZeZAnoYv2bVqOCfW4s"/>
+</div>
+<div>
+<span class="bg-[#7ae7c7] text-[#00201d] px-3 py-0.5 rounded-full font-label-bold text-[10px] uppercase">Recipe Suggestion</span>
+<h4 class="font-headline-sm text-headline-sm mt-1">Caprese with Wild Arugula</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">You have 4 of 5 ingredients in your list.</p>
+</div>
+</div>
+<button class="bg-[#00685f] text-white px-8 py-3 rounded-full font-label-bold hover:bg-[#008378] transition-colors whitespace-nowrap">
+                        Complete My List
+                    </button>
+</div>
+</section>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-white dark:bg-neutral-900 border-t-2 border-slate-50 dark:border-neutral-800 rounded-t-[2.5rem] shadow-[0_-10px_40px_rgba(55,65,81,0.08)] flex justify-around items-center px-4 py-4">
+<button class="flex flex-col items-center justify-center text-slate-400 dark:text-neutral-500 px-5 py-2 hover:bg-slate-50 dark:hover:bg-neutral-800 rounded-full transition-all">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="text-[10px] font-sans font-medium uppercase tracking-wider mt-1">Dashboard</span>
+</button>
+<button class="flex flex-col items-center justify-center text-slate-400 dark:text-neutral-500 px-5 py-2 hover:bg-slate-50 dark:hover:bg-neutral-800 rounded-full transition-all">
+<span class="material-symbols-outlined">restaurant_menu</span>
+<span class="text-[10px] font-sans font-medium uppercase tracking-wider mt-1">Recipes</span>
+</button>
+<button class="flex flex-col items-center justify-center text-slate-400 dark:text-neutral-500 px-5 py-2 hover:bg-slate-50 dark:hover:bg-neutral-800 rounded-full transition-all">
+<span class="material-symbols-outlined">calendar_today</span>
+<span class="text-[10px] font-sans font-medium uppercase tracking-wider mt-1">Planner</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-200 rounded-full px-5 py-2 active:scale-90 duration-150 ease-in-out">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">shopping_bag</span>
+<span class="text-[10px] font-sans font-medium uppercase tracking-wider mt-1">Shopping</span>
+</button>
+<button class="flex flex-col items-center justify-center text-slate-400 dark:text-neutral-500 px-5 py-2 hover:bg-slate-50 dark:hover:bg-neutral-800 rounded-full transition-all">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px] font-sans font-medium uppercase tracking-wider mt-1">Profile</span>
+</button>
+</nav>
+</body></html>

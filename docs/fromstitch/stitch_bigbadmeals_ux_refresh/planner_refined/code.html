@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;600;700&amp;family=Work+Sans:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error-container": "#93000a",
+                        "outline-variant": "#c5c6cb",
+                        "on-surface-variant": "#44474a",
+                        "error-container": "#ffdad6",
+                        "on-surface": "#1b1c15",
+                        "secondary": "#67587c",
+                        "on-secondary-fixed": "#221535",
+                        "error": "#ba1a1a",
+                        "primary-container": "#2f353b",
+                        "inverse-primary": "#c1c7cf",
+                        "tertiary-fixed": "#b0eeed",
+                        "on-primary-fixed-variant": "#41474e",
+                        "surface-dim": "#dbdbcf",
+                        "on-tertiary-fixed": "#002020",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-fixed": "#ecdcff",
+                        "background": "#fbfaee",
+                        "surface-container": "#efeee3",
+                        "surface-container-highest": "#e4e3d7",
+                        "on-secondary": "#ffffff",
+                        "surface-bright": "#fbfaee",
+                        "on-tertiary-container": "#6aa7a6",
+                        "surface": "#fbfaee",
+                        "on-secondary-fixed-variant": "#4e4063",
+                        "on-background": "#1b1c15",
+                        "on-secondary-container": "#67587d",
+                        "primary-fixed": "#dde3eb",
+                        "tertiary-container": "#003b3b",
+                        "outline": "#75777b",
+                        "primary-fixed-dim": "#c1c7cf",
+                        "on-primary-fixed": "#161c22",
+                        "on-error": "#ffffff",
+                        "primary": "#1a2025",
+                        "on-primary-container": "#989da5",
+                        "inverse-on-surface": "#f2f1e5",
+                        "surface-tint": "#595f66",
+                        "tertiary-fixed-dim": "#94d1d0",
+                        "surface-container-high": "#e9e9dd",
+                        "surface-variant": "#e4e3d7",
+                        "surface-container-low": "#f5f4e8",
+                        "secondary-fixed-dim": "#d1bfe9",
+                        "tertiary": "#002424",
+                        "on-tertiary": "#ffffff",
+                        "secondary-container": "#e5d2fe",
+                        "on-primary": "#ffffff",
+                        "inverse-surface": "#303129",
+                        "on-tertiary-fixed-variant": "#034f4f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "md": "1.5rem",
+                        "base-unit": "4px",
+                        "sm": "1rem",
+                        "margin": "32px",
+                        "xs": "0.5rem",
+                        "lg": "2.5rem",
+                        "xl": "4rem",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "title-sm": ["Noto Serif"],
+                        "label-caps": ["Work Sans"],
+                        "display-lg": ["Noto Serif"],
+                        "body-md": ["Noto Serif"],
+                        "headline-md": ["Noto Serif"]
+                    },
+                    "fontSize": {
+                        "title-sm": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-md": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-md selection:bg-tertiary-fixed selection:text-on-tertiary-fixed">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 bg-[#FCFAF7] dark:bg-stone-950 shadow-[0_2px_15px_-3px_rgba(47,53,59,0.07)] border-b border-stone-200/10 dark:border-stone-800/30 flex justify-between items-center px-6 h-16">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#2F353B] dark:text-stone-200 cursor-pointer hover:bg-stone-100 dark:hover:bg-stone-900 transition-colors p-2 rounded-lg" data-icon="menu">menu</span>
+<h1 class="text-xl font-serif italic font-semibold text-[#2F353B] dark:text-stone-100 tracking-tight">BISTRO MÉNAGE</h1>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden border border-outline/10">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="A professional headshot of a sophisticated individual with a calm expression, set against a minimalist architectural background with soft, natural side lighting. The aesthetic is clean and editorial, matching a high-end luxury brand identity with muted tones and a premium feel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHwzpWhEmAmsMJqTEQlGXHROFploRwjnv589zZB-YfaYq7WXdJ47jTAfDfPiYcdJ1uUpYtnWUI1pDc7jo4RLQ-MpcOEhfpZvXLJuHPcGzg2InaojoVdD52pvZQOdHGDNZSX9PFt7m_CCi1h0PoiFnrsFos_p1VNmsgQVDGa1qcRaRPMMsQgYPJHvl6iPBGk8t-N5EDjR0Gffs6uAwTjXmHwlmODA-sC-6V397psktSkoX5RGaFHf3NiMHy3013Z28iuztK1c0XH6Lr"/>
+</div>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-6 pt-24 pb-32">
+<!-- Hero & Action Header -->
+<section class="flex flex-col md:flex-row md:items-end justify-between mb-lg gap-sm">
+<div>
+<span class="font-label-caps text-label-caps text-on-primary-container mb-xs block">CURATED CULINARY ITINERARY</span>
+<h2 class="font-display-lg text-display-lg text-primary">Weekly Planner</h2>
+</div>
+<button class="flex items-center gap-2 bg-primary-container text-on-primary rounded-lg px-md py-sm transition-all active:scale-95 shadow-sm hover:brightness-110">
+<span class="material-symbols-outlined" data-icon="auto_awesome">auto_awesome</span>
+<span class="font-label-caps text-label-caps">AUTO-GENERATE PLAN</span>
+</button>
+</section>
+<!-- Week Day Selector (Desktop View) -->
+<nav class="hidden md:flex gap-md mb-lg border-b border-outline/10 pb-sm overflow-x-auto hide-scrollbar">
+<button class="flex flex-col items-start min-w-[100px] group transition-all">
+<span class="font-label-caps text-label-caps text-outline-variant group-hover:text-primary">OCT 23</span>
+<span class="font-title-sm text-title-sm text-primary border-b-2 border-primary-container pt-1">Monday</span>
+</button>
+<button class="flex flex-col items-start min-w-[100px] group opacity-40 hover:opacity-100 transition-all">
+<span class="font-label-caps text-label-caps text-outline-variant">OCT 24</span>
+<span class="font-title-sm text-title-sm text-on-surface-variant pt-1">Tuesday</span>
+</button>
+<button class="flex flex-col items-start min-w-[100px] group opacity-40 hover:opacity-100 transition-all">
+<span class="font-label-caps text-label-caps text-outline-variant">OCT 25</span>
+<span class="font-title-sm text-title-sm text-on-surface-variant pt-1">Wednesday</span>
+</button>
+<button class="flex flex-col items-start min-w-[100px] group opacity-40 hover:opacity-100 transition-all">
+<span class="font-label-caps text-label-caps text-outline-variant">OCT 26</span>
+<span class="font-title-sm text-title-sm text-on-surface-variant pt-1">Thursday</span>
+</button>
+<button class="flex flex-col items-start min-w-[100px] group opacity-40 hover:opacity-100 transition-all">
+<span class="font-label-caps text-label-caps text-outline-variant">OCT 27</span>
+<span class="font-title-sm text-title-sm text-on-surface-variant pt-1">Friday</span>
+</button>
+</nav>
+<!-- Itinerary View -->
+<div class="space-y-xl">
+<!-- Day Group: Monday -->
+<div class="relative">
+<div class="md:grid md:grid-cols-12 gap-gutter items-start">
+<!-- Day Indicator (Mobile) -->
+<div class="md:hidden mb-sm">
+<h3 class="font-title-sm text-title-sm text-primary">Monday, Oct 23</h3>
+</div>
+<!-- Breakfast Card -->
+<div class="md:col-span-4 group cursor-pointer">
+<div class="relative overflow-hidden rounded-lg bg-surface-container mb-sm aspect-[4/3] transition-transform duration-500 group-hover:scale-[1.01]">
+<img class="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all" data-alt="A gourmet breakfast spread featuring avocado toast with poached eggs and microgreens on a minimalist ceramic plate. The setting is a bright, sunlit bistro table with a soft focus background. The color palette is composed of natural greens and warm neutral tones, evoking a sense of morning freshness and health-conscious luxury." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJHAUiu4zrvohbXKlxKS_J61tBnPXdspx7Znvv4kfHMCWyY1_QbIQh-LPf4I6cMvbnv_l_Ire53FTnFStgb8xI1Ll8pznA4vdRMBJ5svupIFqDydrljlWJ192MG2dWhG0-PruWrkIFDbM-YqxOkknzF-P8WwsfWHHjmrhMbPmfhfdDfRXMR-imykPRcMTNJAKTVzZmvaHMjQcO0C6LsrioNyO5eoL2QjkiYj_HdzsMU0_a-GHn3ZEypQkkZxnpbIvrUdqI-P8fgrDY"/>
+<div class="absolute top-sm left-sm px-xs py-[2px] bg-white/90 backdrop-blur-sm rounded-sm">
+<span class="font-label-caps text-[10px] text-primary">BREAKFAST • 08:30 AM</span>
+</div>
+</div>
+<h4 class="font-title-sm text-title-sm text-primary mb-xs">Artisan Avocado Tartine</h4>
+<p class="text-on-surface-variant text-sm line-clamp-2 mb-sm">Sourdough, heirloom radish, toasted pepitas, and cold-pressed olive oil.</p>
+<div class="flex gap-xs">
+<span class="px-xs py-[2px] bg-on-tertiary-container/10 text-on-tertiary-fixed-variant font-label-caps text-[10px] rounded-full">VEGETARIAN</span>
+<span class="px-xs py-[2px] bg-secondary-container/30 text-secondary font-label-caps text-[10px] rounded-full">420 KCAL</span>
+</div>
+</div>
+<!-- Lunch Card -->
+<div class="md:col-span-4 group cursor-pointer mt-md md:mt-0">
+<div class="relative overflow-hidden rounded-lg bg-surface-container mb-sm aspect-[4/3] transition-transform duration-500 group-hover:scale-[1.01]">
+<img class="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all" data-alt="A refined Mediterranean power bowl with grilled salmon, quinoa, cucumber salad, and tahini dressing. The dish is presented in a deep charcoal stoneware bowl against a clean, off-white background. The lighting is sharp and professional, highlighting the textures of the fresh ingredients and the vibrant colors of the seafood." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJdrF3gkmZGXbGwLjYfHr-fLgPt7RXk8rpB5T1frkQIVpHLzzplwmmOqcmCYgZn0Wf7Flz7AxWf-zqPMzRRz6XRGZtSqnenyWjxAFabEYL0lTggpdhryL-SUjpK3p4XnABHw3Qpn6Sb-FHvurjW6F3tlH2NTgZroaShUdrOlXptfso4PGX_MOdD055oVZfMzoeHyYFGaNWxXtzwpG61yFtW30ovLv7k1sr2cinVRa1ug8EE22OPCKyRllYuR31l5d-hmdepB6-oy6z"/>
+<div class="absolute top-sm left-sm px-xs py-[2px] bg-white/90 backdrop-blur-sm rounded-sm">
+<span class="font-label-caps text-[10px] text-primary">LUNCH • 12:45 PM</span>
+</div>
+</div>
+<h4 class="font-title-sm text-title-sm text-primary mb-xs">Mediterranean Salmon Bowl</h4>
+<p class="text-on-surface-variant text-sm line-clamp-2 mb-sm">Wild-caught salmon, ancient grains, cucumber ribbons, and lemon herb drizzle.</p>
+<div class="flex gap-xs">
+<span class="px-xs py-[2px] bg-on-tertiary-container/10 text-on-tertiary-fixed-variant font-label-caps text-[10px] rounded-full">PESCATARIAN</span>
+<span class="px-xs py-[2px] bg-secondary-container/30 text-secondary font-label-caps text-[10px] rounded-full">650 KCAL</span>
+</div>
+</div>
+<!-- Dinner Card -->
+<div class="md:col-span-4 group cursor-pointer mt-md md:mt-0">
+<div class="relative overflow-hidden rounded-lg bg-surface-container mb-sm aspect-[4/3] transition-transform duration-500 group-hover:scale-[1.01]">
+<img class="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all" data-alt="An elegant evening meal featuring a perfectly seared flat iron steak with roasted seasonal roots and a dark red wine reduction. The plate is a minimalist, wide-rimmed design set on a dark slate surface. Low, moody lighting creates dramatic shadows and emphasizes the rich, warm tones of the meat and the sophisticated dinner setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCEuXi8gr3a3zL9chEfWQK74nhfF7cjCAvOg0booFXprXOnKCd1FWVEGOjIfcrhOliudMhZDhpZTaAEIL_pWsEvjsfVSaTyXK7wsPaJYPHGQ3Ic7RJwPF9kVOpmkzcKUgd3BTNj4H5RW8xT85HJCF2S3i7WRUQiNLylEVm_bAkPG0Wq7PIX6PV1obsF9-rq1x0H1C3wwcE5uvFV463Web59SwTNE0317JkJMcfD9EcZvZSO6yXfh3DjHtL9W8elpIDRD1O4FjJLTsao"/>
+<div class="absolute top-sm left-sm px-xs py-[2px] bg-white/90 backdrop-blur-sm rounded-sm">
+<span class="font-label-caps text-[10px] text-primary">DINNER • 07:30 PM</span>
+</div>
+</div>
+<h4 class="font-title-sm text-title-sm text-primary mb-xs">Flat Iron &amp; Root Purée</h4>
+<p class="text-on-surface-variant text-sm line-clamp-2 mb-sm">Sous-vide steak, parsnip purée, wilted kale, and peppercorn reduction.</p>
+<div class="flex gap-xs">
+<span class="px-xs py-[2px] bg-secondary-container/30 text-secondary font-label-caps text-[10px] rounded-full">780 KCAL</span>
+</div>
+</div>
+</div>
+</div>
+<div class="h-px bg-outline/10 w-full"></div>
+<!-- Day Group: Tuesday (Condensed/Placeholder) -->
+<div class="opacity-80">
+<div class="flex items-center justify-between mb-md">
+<h3 class="font-title-sm text-title-sm text-primary">Tuesday, Oct 24</h3>
+<button class="text-primary-container flex items-center gap-1">
+<span class="font-label-caps text-[11px]">EXPAND DAY</span>
+<span class="material-symbols-outlined text-sm" data-icon="keyboard_arrow_down">keyboard_arrow_down</span>
+</button>
+</div>
+<div class="flex gap-sm overflow-x-auto hide-scrollbar">
+<div class="min-w-[280px] h-20 bg-surface-container-low rounded-lg flex items-center p-sm gap-sm border border-outline/5">
+<div class="w-12 h-12 rounded bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A top-down view of a small bowl of chia seed pudding with fresh berries and toasted almond slivers. The minimalist presentation highlights the delicate textures and vibrant colors of the fruit. The overall aesthetic is clean and serene, fitting a light-mode gourmet breakfast concept." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBP3DxIcs8SekoSnKzNoV83h-Kqa_ZiJ36y4k-zIgY7GsP_XofmFFJdxA4Skhi3I8mRVFIPZFvIXcAserHkY9Tu5sgGWiWfoNsY3qz7r-nCcSDQyQ1oPJSBmywR0aIkQMwxQjEkR_feHw2iAND1pklL4P9jsMj12boSnf0zpCJwVooOdt4njG9kYqJy3YHjq0PJO2oyElhrZILws29dgZJsDHNYTFTCgOjrVEz_j_uJJl7gWYErcdYxT58jvrJb0JYaYQ1LWYcDEVaO"/>
+</div>
+<div>
+<span class="font-label-caps text-[10px] text-outline">BREAKFAST</span>
+<p class="font-title-sm text-sm text-primary">Chia Seed Parfait</p>
+</div>
+</div>
+<div class="min-w-[280px] h-20 bg-surface-container-low rounded-lg flex items-center p-sm gap-sm border border-outline/5">
+<div class="w-12 h-12 rounded bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A fresh garden salad in a sleek white bowl, featuring heirloom tomatoes, baby greens, and a light balsamic glaze. The lighting is airy and bright, emphasizing the crispness of the vegetables and the sophisticated, healthy nature of the meal." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1mTUvXxjoEq8QBBWYB7fj3RyRUdsHCI3zQqTdHK5_tM1jd9Cxf4UIchFplZH3-Xn2CmKj8EM_sGaWyej2agfXTwzJC8oSOGvSioTppEoFCgJKqRg01yQbfAI6aUac5DJYA-fIAInFWHWcHx0qQMWK2dgb4cN5Qcy8gF6lH81KX8JJnyejBMw9ewk1W0WQxHIGqEquOWVnIjx5DFtDzvp2Ne449Q9Jydy7sgR4AEEuFFHGmWn8_djr_8-IFLz_cH5GajxbfvW8bFLk"/>
+</div>
+<div>
+<span class="font-label-caps text-[10px] text-outline">LUNCH</span>
+<p class="font-title-sm text-sm text-primary">Garden Harvest Salad</p>
+</div>
+</div>
+<div class="min-w-[280px] h-20 bg-surface-container-low rounded-lg flex items-center p-sm gap-sm border border-outline/5">
+<div class="w-12 h-12 rounded bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A beautifully plated dish of roasted duck breast with a cherry gastrique and braised endive. The lighting is warm and directional, typical of a high-end evening dining experience, highlighting the deep rich tones of the dish." src="https://lh3.googleusercontent.com/aida-public/AB6AXuClf4p-1pvUVlZXLcNGdtyvG5WGnIY1aR6n0DVvAFQO9fLdfwSAnjbE-a0i05yFiAu0V7q2-VfFRIsNC8PzeIgNdqcrOTT_rO3mX_UI44gkjm3pSAcx8aNVX4SE2FP5iRYEe3Ske08kGByj0p6xm4KdBewHEsquXTOV9FiPHqiTKCFgxTpY34dFIuqbTmtY0Pi0rhuMSNjfumfLYFND-6PB8DUOGNxz7YbJSoQh89DZVRMApnOH1qLYweIU3qIrjr9pQLDxBLlVHTUk"/>
+</div>
+<div>
+<span class="font-label-caps text-[10px] text-outline">DINNER</span>
+<p class="font-title-sm text-sm text-primary">Roasted Duck Breast</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-[#FCFAF7] dark:bg-stone-950 flex justify-around items-center h-20 pb-safe px-4 border-t border-stone-200/20 dark:border-stone-800/40 shadow-[0_-4px_20px_-5px_rgba(47,53,59,0.05)]">
+<button class="flex flex-col items-center justify-center text-stone-400 dark:text-stone-500 px-3 py-1 hover:text-stone-700 dark:hover:text-stone-300 transition-transform active:scale-95 duration-150">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-serif text-[11px] uppercase tracking-widest mt-1">Dashboard</span>
+</button>
+<button class="flex flex-col items-center justify-center text-stone-400 dark:text-stone-500 px-3 py-1 hover:text-stone-700 dark:hover:text-stone-300 transition-transform active:scale-95 duration-150">
+<span class="material-symbols-outlined" data-icon="restaurant_menu">restaurant_menu</span>
+<span class="font-serif text-[11px] uppercase tracking-widest mt-1">Recipes</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#2F353B] dark:text-stone-50 bg-[#E8EAE3] dark:bg-stone-800 rounded-md px-3 py-1 transition-transform active:scale-95 duration-150">
+<span class="material-symbols-outlined" data-icon="calendar_month" style="font-variation-settings: 'FILL' 1;">calendar_month</span>
+<span class="font-serif text-[11px] uppercase tracking-widest mt-1 font-semibold">Planner</span>
+</button>
+<button class="flex flex-col items-center justify-center text-stone-400 dark:text-stone-500 px-3 py-1 hover:text-stone-700 dark:hover:text-stone-300 transition-transform active:scale-95 duration-150">
+<span class="material-symbols-outlined" data-icon="shopping_bag">shopping_bag</span>
+<span class="font-serif text-[11px] uppercase tracking-widest mt-1">Shopping</span>
+</button>
+<button class="flex flex-col items-center justify-center text-stone-400 dark:text-stone-500 px-3 py-1 hover:text-stone-700 dark:hover:text-stone-300 transition-transform active:scale-95 duration-150">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-serif text-[11px] uppercase tracking-widest mt-1">Profile</span>
+</button>
+</nav>
+</body></html>

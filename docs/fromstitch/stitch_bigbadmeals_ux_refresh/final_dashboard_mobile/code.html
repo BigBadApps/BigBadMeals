@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;600;700;900&amp;family=Work+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#002424",
+                        "outline-variant": "#c5c6cb",
+                        "surface-container-high": "#e9e9dd",
+                        "on-tertiary-container": "#6aa7a6",
+                        "surface-container-low": "#f5f4e8",
+                        "inverse-surface": "#303129",
+                        "on-error": "#ffffff",
+                        "inverse-primary": "#c1c7cf",
+                        "on-background": "#1b1c15",
+                        "surface-dim": "#dbdbcf",
+                        "on-error-container": "#93000a",
+                        "surface-container": "#efeee3",
+                        "secondary-fixed-dim": "#d1bfe9",
+                        "primary-fixed-dim": "#c1c7cf",
+                        "error": "#ba1a1a",
+                        "primary-container": "#2f353b",
+                        "background": "#fbfaee",
+                        "surface": "#fbfaee",
+                        "surface-tint": "#595f66",
+                        "primary-fixed": "#dde3eb",
+                        "tertiary-fixed": "#b0eeed",
+                        "tertiary-container": "#003b3b",
+                        "on-surface-variant": "#44474a",
+                        "secondary-container": "#e5d2fe",
+                        "secondary": "#67587c",
+                        "tertiary-fixed-dim": "#94d1d0",
+                        "on-secondary-fixed-variant": "#4e4063",
+                        "outline": "#75777b",
+                        "on-surface": "#1b1c15",
+                        "error-container": "#ffdad6",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "surface-variant": "#e4e3d7",
+                        "on-tertiary-fixed": "#002020",
+                        "primary": "#1a2025",
+                        "on-secondary-fixed": "#221535",
+                        "surface-bright": "#fbfaee",
+                        "on-primary-container": "#989da5",
+                        "on-primary-fixed": "#161c22",
+                        "on-tertiary-fixed-variant": "#034f4f",
+                        "secondary-fixed": "#ecdcff",
+                        "on-secondary": "#ffffff",
+                        "on-primary-fixed-variant": "#41474e",
+                        "surface-container-highest": "#e4e3d7",
+                        "on-secondary-container": "#67587d",
+                        "inverse-on-surface": "#f2f1e5"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "base-unit": "4px",
+                        "xl": "4rem",
+                        "xs": "0.5rem",
+                        "sm": "1rem",
+                        "lg": "2.5rem",
+                        "gutter": "24px",
+                        "md": "1.5rem",
+                        "margin": "32px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Noto Serif"],
+                        "title-sm": ["Noto Serif"],
+                        "headline-md": ["Noto Serif"],
+                        "display-lg": ["Noto Serif"],
+                        "label-caps": ["Work Sans"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "title-sm": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "headline-md": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md min-h-screen pb-24">
+<!-- TopAppBar -->
+<header class="bg-[#F5F5F0] dark:bg-[#1A1C1E] border-b border-[#2F353B]/10 sticky top-0 z-50">
+<div class="flex justify-between items-center px-6 py-4 w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#2F353B] dark:text-[#E2E2E6]" data-icon="menu">menu</span>
+<h1 class="text-2xl font-['Noto_Serif'] font-black text-[#2F353B] dark:text-white uppercase tracking-widest">BigBadMeals</h1>
+</div>
+<div class="w-10 h-10 rounded-full overflow-hidden border border-outline/20">
+<img alt="Chef profile picture" class="w-full h-full object-cover" data-alt="A professional headshot of a refined executive chef in a minimalist studio. The lighting is dramatic and high-contrast, casting soft shadows against a deep slate background. The chef wears a crisp white uniform, projecting authority and culinary excellence. The overall aesthetic is editorial and premium, consistent with a high-end bistro brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIm-LqI6uxOsZJevERswN2Er4r36laJElfI87TpMjW4oXm4y-eKHucRG4AEe4ZnfSUBQOFl8ulp0hJUTuBQ0RMF-mdNz8twO3wT1w5Z3WnZC8uqvEWRtlzljN4u4LjvZ6RNXo5RlGhdojdHJyMiEvIaaUp9TQnRck_QA-JIOdFpO5auA45V1Js4Dc8-ygD4QJPUiiEJzQUWPWTl18Lxgy6PSKxr0H0Jze_1HIzlu42Tl0pSdQVIxe0TCX2ANTyFiN0tlfBDfVS3yAw"/>
+</div>
+</div>
+</header>
+<main class="px-6 py-8 space-y-lg">
+<!-- Hero: Next Serving -->
+<section class="relative rounded-xl overflow-hidden bg-primary-container text-white aspect-[4/3] flex flex-col justify-end p-6">
+<div class="absolute inset-0 z-0">
+<img alt="Next Serving" class="w-full h-full object-cover opacity-60" data-alt="A meticulously plated gourmet dish featuring pan-seared scallops with a vibrant pea purée and microgreens. The scene is shot from a top-down perspective on a dark, textured slate tabletop. Warm, ambient lighting highlights the textures of the food, creating a sophisticated and professional culinary atmosphere. The color palette consists of deep charcoals, earthy greens, and warm golden tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnz6NjlgWCUCS9k54nw46A3RR4M7VezQrBHJVSzln5GRm5J1xrRSP0aYxdD1RJr2NN7Hv0B6NF37-Fn8I7v7BXXHsQcS9V1h2BdIB_uY9EvTKp_35UN8zN3B_tczvV1BB76k2JAiVw6Cg_c4OYsN6il5HX06nJ8dIqg34OHgU6PpAQ1cThiHF4Wmc6QZuRieD4RRnQ6jBkaRT0ZQJBY0MxjAXRUgnChA6ntMH0Q9ICG0mX9xdUJzTQ53mPyZu-Dzj_OTqDQkKOuPMc"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary-container via-transparent to-transparent"></div>
+</div>
+<div class="relative z-10 space-y-2">
+<span class="font-label-caps text-label-caps text-on-primary-container bg-background/10 backdrop-blur-md px-3 py-1 rounded-full inline-block">NEXT SERVING • 19:30</span>
+<h2 class="font-display-lg text-[36px] leading-tight">Braised Wagyu &amp; Truffle Root</h2>
+<div class="flex items-center gap-4 pt-2">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]" data-icon="timer">timer</span>
+<span class="font-label-caps text-[10px]">45 MIN</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]" data-icon="local_fire_department">local_fire_department</span>
+<span class="font-label-caps text-[10px]">680 KCAL</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Stats Grid -->
+<section class="grid grid-cols-2 gap-4">
+<div class="bg-surface-container p-5 rounded-xl border border-outline/5 space-y-1">
+<span class="font-label-caps text-[10px] text-on-surface-variant">DAILY CALORIES</span>
+<p class="font-headline-md text-primary">1,840<span class="text-body-md font-normal text-on-surface-variant"> / 2.2k</span></p>
+<div class="w-full bg-outline-variant h-1 rounded-full mt-2">
+<div class="bg-primary w-[80%] h-full rounded-full"></div>
+</div>
+</div>
+<div class="bg-surface-container p-5 rounded-xl border border-outline/5 space-y-1">
+<span class="font-label-caps text-[10px] text-on-surface-variant">HYDRATION</span>
+<p class="font-headline-md text-primary">2.4<span class="text-body-md font-normal text-on-surface-variant"> L</span></p>
+<div class="w-full bg-outline-variant h-1 rounded-full mt-2">
+<div class="bg-tertiary w-[65%] h-full rounded-full"></div>
+</div>
+</div>
+</section>
+<!-- Vertical Schedule List -->
+<section class="space-y-md">
+<div class="flex justify-between items-end">
+<h3 class="font-title-sm text-primary">Today's Schedule</h3>
+<span class="font-label-caps text-[10px] text-on-tertiary-container underline cursor-pointer">VIEW FULL WEEK</span>
+</div>
+<div class="space-y-4">
+<!-- Breakfast -->
+<div class="flex gap-4 items-start group">
+<div class="flex flex-col items-center pt-1">
+<span class="font-label-caps text-[10px] text-on-surface-variant">08:00</span>
+<div class="w-px h-16 bg-outline/20 mt-2"></div>
+</div>
+<div class="flex-1 bg-surface-container-low p-4 rounded-lg flex items-center gap-4 transition-all group-active:scale-[0.98]">
+<div class="w-12 h-12 rounded bg-surface-variant overflow-hidden flex-shrink-0">
+<img alt="Breakfast" class="w-full h-full object-cover" data-alt="A minimalist breakfast scene featuring a bowl of organic overnight oats with berries. The image is clean and bright, utilizing a high-key lighting style that emphasizes the freshness of the ingredients. Set on a light wood surface with subtle linen textures, the aesthetic is calm and health-focused, fitting the bistro's minimalist identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_xs_oWOa2bCejggofTRaUuLEzHpWQbBiZCq1jDeEG_gjQLtY7gXxBWzMeRInmPbFJD8hnY4iHxwhdyY2ZoWQJjlD-MkNLr0g92fERA5nVQNKFaYIh8h3de_Xf8RXiZl6yd19MiKbFfOMgyNV7DqTay0sHgDI_q48ITFQdc0YQdR5OmuOt6Lmnwm_YdglDuJP-Amv_p9O_6F2VfJZxCeA7hhLp2lYigoqREYis338GSREs-FDuLZ0iOGMF28t1kX_-SlxuyXqo6OAN"/>
+</div>
+<div class="flex-1">
+<p class="font-label-caps text-[10px] text-on-tertiary-container">BREAKFAST</p>
+<h4 class="font-title-sm text-base text-primary">Organic Berry Muesli</h4>
+</div>
+<span class="material-symbols-outlined text-on-tertiary-container" data-icon="check_circle" data-weight="fill" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+<!-- Lunch -->
+<div class="flex gap-4 items-start group">
+<div class="flex flex-col items-center pt-1">
+<span class="font-label-caps text-[10px] text-on-surface-variant">13:00</span>
+<div class="w-px h-16 bg-outline/20 mt-2"></div>
+</div>
+<div class="flex-1 bg-surface-container-low p-4 rounded-lg flex items-center gap-4 transition-all group-active:scale-[0.98]">
+<div class="w-12 h-12 rounded bg-surface-variant overflow-hidden flex-shrink-0">
+<img alt="Lunch" class="w-full h-full object-cover" data-alt="A vibrant salmon poke bowl with fresh avocado, radish, and edamame. The shot is tightly cropped and professional, showcasing the vivid colors and textures of the raw ingredients. The lighting is natural and soft, coming from the side to create gentle highlights. The background is a muted tea green, maintaining the brand's sophisticated and editorial look." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8RCB5JJKC4t7OHP3sH0T0mI8LpE1NX9HpHmcVjpt5bP5vvmBApMv9K8k4t_THp6uH_Gm9CyFzQ2lmkhOpj9x6J_01GuCLs4KMS58hMk-dSKYjniWGvnmedC4eM9f6QwRtLR2fKDF7NMws6FxeRgYyF7x33OSvwEeAhCZRLQROjlbrh3LDW9-MO_FeikmZTeIJ8TkVR2AUB_xlcXCP3nVWSXuRKXeTQZrVN2r6W7__dZ3n_DY1wIdGAkkJkM7v7ZPns5Nbeth229Sz"/>
+</div>
+<div class="flex-1">
+<p class="font-label-caps text-[10px] text-on-tertiary-container">LUNCH</p>
+<h4 class="font-title-sm text-base text-primary">Sashimi Salmon Bowl</h4>
+</div>
+<span class="material-symbols-outlined text-on-tertiary-container" data-icon="check_circle" data-weight="fill" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+<!-- Dinner (Active) -->
+<div class="flex gap-4 items-start group">
+<div class="flex flex-col items-center pt-1">
+<span class="font-label-caps text-[10px] text-primary font-bold">19:30</span>
+<div class="w-px h-16 bg-outline/20 mt-2"></div>
+</div>
+<div class="flex-1 bg-primary-container p-4 rounded-lg flex items-center gap-4 ring-2 ring-primary/10 transition-all group-active:scale-[0.98]">
+<div class="w-12 h-12 rounded bg-primary overflow-hidden flex-shrink-0">
+<img alt="Dinner" class="w-full h-full object-cover" data-alt="Close-up of a slow-cooked beef wagyu dish with a glossy red wine reduction. The focus is sharp on the texture of the meat, with a shallow depth of field blurring the dark slate plate in the background. The mood is luxurious and moody, emphasizing the premium nature of the dinner service. Lighting is focused and theatrical, creating a high-end dining atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxnjqBoJ87KQK24S7QlItjeNlgh4craz97ZnhM8PvFdK1OUPf7_CugLGnYjHgkQ7OARCGlst3dDi_FImpBe-7zbY4kqzsgwjZIOOUUX2gFmE-sQpI6Eb5sCFR4csyWXmgkDoNnhbd1Nc4o-AAKvm6RNz2pd_h62swXAwkeOKp9CO8xzEJCNiT53cC3oNDrL_dL6VcM9gNgz68IWJ0TZDLq4JPa8QyK9zohRBxqbpcSPQtrd4Bq-Xvyh8gOvQanLjPPOjNWnY1AHG23"/>
+</div>
+<div class="flex-1">
+<p class="font-label-caps text-[10px] text-on-primary-container">DINNER</p>
+<h4 class="font-title-sm text-base text-white">Braised Wagyu</h4>
+</div>
+<span class="material-symbols-outlined text-white" data-icon="restaurant">restaurant</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full h-16 flex justify-around items-center bg-[#F5F5F0] dark:bg-[#1A1C1E] border-t border-[#2F353B]/10 z-50 pb-safe">
+<button class="flex flex-col items-center justify-center text-[#2F353B] dark:text-[#BananaCream] scale-110 transition-transform">
+<span class="material-symbols-outlined" data-icon="home" data-weight="fill" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-['Work_Sans'] text-[10px] font-medium uppercase tracking-tighter">Home</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#2F353B]/40 dark:text-[#E2E2E6]/40 hover:opacity-80 transition-all active:scale-95">
+<span class="material-symbols-outlined" data-icon="restaurant_menu">restaurant_menu</span>
+<span class="font-['Work_Sans'] text-[10px] font-medium uppercase tracking-tighter">Recipes</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#2F353B]/40 dark:text-[#E2E2E6]/40 hover:opacity-80 transition-all active:scale-95">
+<span class="material-symbols-outlined" data-icon="event_note">event_note</span>
+<span class="font-['Work_Sans'] text-[10px] font-medium uppercase tracking-tighter">Meal Plan</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#2F353B]/40 dark:text-[#E2E2E6]/40 hover:opacity-80 transition-all active:scale-95">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-['Work_Sans'] text-[10px] font-medium uppercase tracking-tighter">Profile</span>
+</button>
+</nav>
+</body></html>
