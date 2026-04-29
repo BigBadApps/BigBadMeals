@@ -74,30 +74,30 @@ export const Profile = () => {
   };
 
   return (
-    <div className="p-6 pb-12 space-y-8 max-w-2xl mx-auto">
+    <div className="p-6 pb-24 space-y-8 max-w-2xl mx-auto">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold font-serif text-[#451a03]">Family Kitchen</h1>
-          <p className="text-[#92400e]/60 italic">Personalize your household experience</p>
+          <h1 className="font-heading text-3xl font-black tracking-tight text-primary">Family Kitchen</h1>
+          <p className="text-muted-foreground italic">Personalize your household experience</p>
         </div>
-        <Button variant="outline" size="sm" onClick={logout} className="rounded-xl border-amber-200">
+        <Button variant="outline" size="sm" onClick={logout} className="rounded-xl border-border bg-background/50">
           <LogOut className="h-4 w-4 mr-2" /> Sign Out
         </Button>
       </div>
 
-      <Card className="rounded-[2rem] border-none shadow-xl shadow-amber-900/5 bg-white overflow-hidden">
-        <CardHeader className="bg-amber-50/50 pb-6">
+      <Card className="rounded-[1.75rem] border border-border/50 shadow-sm bg-card overflow-hidden">
+        <CardHeader className="bg-muted/60 pb-6">
           <div className="flex items-center justify-between">
             <div className="space-y-1">
               <CardTitle className="flex items-center gap-2">
-                <User className="h-5 w-5 text-[#d97706]" /> User Profile
+                <User className="h-5 w-5 text-primary" /> User Profile
               </CardTitle>
               <CardDescription>{profile.email}</CardDescription>
             </div>
             {!editing ? (
-              <Button onClick={() => setEditing(true)} variant="secondary" className="rounded-xl bg-white shadow-sm border border-amber-100">Edit</Button>
+              <Button onClick={() => setEditing(true)} variant="secondary" className="rounded-xl bg-background shadow-sm border border-border">Edit</Button>
             ) : (
-              <Button onClick={handleSave} className="rounded-xl bg-[#d97706] hover:bg-[#b45309]">
+              <Button onClick={handleSave} className="rounded-xl bg-primary hover:bg-primary/90">
                 <Save className="h-4 w-4 mr-2" /> Save
               </Button>
             )}
@@ -112,7 +112,7 @@ export const Profile = () => {
                 placeholder="e.g. Vegan, Keto, Nut-free" 
                 value={formData?.globalPreferences.dietaryRestrictions.join(', ')}
                 onChange={(e) => setFormData({...formData!, globalPreferences: {...formData!.globalPreferences, dietaryRestrictions: e.target.value.split(',').map(s => s.trim())}})}
-                className="rounded-xl border-amber-100 focus-visible:ring-[#d97706]"
+                className="rounded-xl border-border focus-visible:ring-primary bg-background/60"
               />
             </div>
             <div className="space-y-2">
@@ -122,7 +122,7 @@ export const Profile = () => {
                 placeholder="e.g. Italian, Mexican, Thai" 
                 value={formData?.globalPreferences.cuisines.join(', ')}
                 onChange={(e) => setFormData({...formData!, globalPreferences: {...formData!.globalPreferences, cuisines: e.target.value.split(',').map(s => s.trim())}})}
-                className="rounded-xl border-amber-100 focus-visible:ring-[#d97706]"
+                className="rounded-xl border-border focus-visible:ring-primary bg-background/60"
               />
             </div>
           </div>
@@ -132,10 +132,10 @@ export const Profile = () => {
       <div className="space-y-4">
         <div className="flex items-center justify-between px-2">
           <h2 className="text-xl font-bold flex items-center gap-2">
-            <Users className="h-5 w-5 text-[#d97706]" /> Family Members
+            <Users className="h-5 w-5 text-primary" /> Family Members
           </h2>
           {editing && (
-            <Button size="sm" variant="ghost" onClick={addFamilyMember} className="text-[#d97706] hover:text-[#b45309] hover:bg-amber-50">
+            <Button size="sm" variant="ghost" onClick={addFamilyMember} className="text-primary hover:text-primary/90 hover:bg-muted">
               <Plus className="h-4 w-4 mr-1" /> Add Member
             </Button>
           )}
@@ -143,19 +143,19 @@ export const Profile = () => {
 
         <div className="grid gap-4">
           {(editing ? formData?.familyMembers : profile.familyMembers).map((member, i) => (
-            <Card key={i} className="rounded-3xl border border-amber-50 bg-white/50 backdrop-blur-sm group">
+            <Card key={i} className="rounded-3xl border border-border/50 bg-background/50 backdrop-blur-sm group">
               <CardContent className="p-5 relative">
                 {editing && (
                   <button 
                     onClick={() => removeFamilyMember(i)}
-                    className="absolute -top-2 -right-2 bg-white rounded-full p-1 shadow-md border border-amber-100 text-red-500 hover:scale-110 transition-transform"
+                    className="absolute -top-2 -right-2 bg-background rounded-full p-1 shadow-md border border-border text-red-500 hover:scale-110 transition-transform"
                   >
                     <X className="h-4 w-4" />
                   </button>
                 )}
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-1">
-                    <Label className="text-[10px] uppercase tracking-widest text-[#92400e]/50 font-bold">Name</Label>
+                    <Label className="font-label text-[10px] uppercase tracking-[0.22em] text-muted-foreground font-semibold">Name</Label>
                     <Input 
                       disabled={!editing}
                       value={member.name}
@@ -165,7 +165,7 @@ export const Profile = () => {
                     />
                   </div>
                   <div className="space-y-1 text-right">
-                    <Label className="text-[10px] uppercase tracking-widest text-[#92400e]/50 font-bold">Role</Label>
+                    <Label className="font-label text-[10px] uppercase tracking-[0.22em] text-muted-foreground font-semibold">Role</Label>
                     <Input 
                       disabled={!editing}
                       value={member.role}
@@ -175,22 +175,22 @@ export const Profile = () => {
                     />
                   </div>
                 </div>
-                <div className="mt-4 pt-4 border-t border-amber-50/50 grid grid-cols-2 gap-4">
+                <div className="mt-4 pt-4 border-t border-border/60 grid grid-cols-2 gap-4">
                   <div>
-                    <span className="flex items-center gap-1.5 text-[10px] uppercase tracking-widest text-[#92400e]/50 font-bold mb-2">
+                    <span className="flex items-center gap-1.5 font-label text-[10px] uppercase tracking-[0.22em] text-muted-foreground font-semibold mb-2">
                        <Heart className="h-3 w-3 fill-pink-500/10 text-pink-500" /> Prefers
                     </span>
                     <Input 
                       disabled={!editing}
                       value={member.preferences.join(', ')}
                       onChange={(e) => updateFamilyMember(i, 'preferences', e.target.value.split(',').map(s => s.trim()))}
-                      className="text-xs border-none bg-amber-50/50 rounded-xl px-3"
+                      className="text-xs border-none bg-muted/60 rounded-xl px-3"
                       placeholder="e.g. Pasta, Fruit"
                     />
                   </div>
                   <div>
-                    <span className="flex items-center gap-1.5 text-[10px] uppercase tracking-widest text-[#92400e]/50 font-bold mb-2">
-                       <ShieldAlert className="h-3 w-3 text-amber-600" /> Allergies
+                    <span className="flex items-center gap-1.5 font-label text-[10px] uppercase tracking-[0.22em] text-muted-foreground font-semibold mb-2">
+                       <ShieldAlert className="h-3 w-3 text-muted-foreground" /> Allergies
                     </span>
                     <Input 
                       disabled={!editing}
@@ -205,17 +205,17 @@ export const Profile = () => {
             </Card>
           ))}
           {(!editing ? profile.familyMembers : formData?.familyMembers).length === 0 && (
-            <div className="text-center py-12 border-2 border-dashed border-amber-100 rounded-[2rem] text-[#92400e]/40 italic">
+            <div className="text-center py-12 border-2 border-dashed border-border rounded-[2rem] text-muted-foreground italic">
               No family members added yet. Add them to personalize plans!
             </div>
           )}
         </div>
       </div>
 
-      <Card className="rounded-[2rem] border border-amber-100 bg-amber-50/20">
+      <Card className="rounded-[1.75rem] border border-border bg-muted/30">
         <CardHeader>
           <CardTitle className="text-xl flex items-center gap-2">
-            <Activity className="h-5 w-5 text-amber-600" /> System Diagnostics
+            <Activity className="h-5 w-5 text-primary" /> System Diagnostics
           </CardTitle>
           <CardDescription>Verify AI and Database connectivity</CardDescription>
         </CardHeader>
@@ -232,7 +232,7 @@ export const Profile = () => {
           
           {testResults && (
             <div className="space-y-3 pt-2">
-                <div className="flex items-center justify-between p-3 bg-white rounded-xl border border-amber-100">
+                <div className="flex items-center justify-between p-3 bg-card rounded-xl border border-border/50">
                     <span className="font-medium">Gemini AI Service</span>
                     {testResults.ai?.success ? (
                         <span className="flex items-center text-green-600 text-sm font-bold gap-1">
@@ -244,10 +244,10 @@ export const Profile = () => {
                         </span>
                     )}
                 </div>
-                <div className="flex items-center justify-between p-3 bg-white rounded-xl border border-amber-100">
+                <div className="flex items-center justify-between p-3 bg-card rounded-xl border border-border/50">
                     <span className="font-medium">Firebase Firestore</span>
                     {testResults.firebase?.skipped ? (
-                        <span className="flex items-center text-amber-700 text-sm font-medium gap-1 text-right max-w-[60%]">
+                        <span className="flex items-center text-muted-foreground text-sm font-medium gap-1 text-right max-w-[60%]">
                             <ShieldAlert className="h-4 w-4 shrink-0" />
                             {testResults.firebase?.warning || 'Sign in to verify'}
                         </span>

@@ -61,29 +61,35 @@ export const Dashboard = ({ navigate }: DashboardProps) => {
     <div className="p-6 pb-24 space-y-8 max-w-4xl mx-auto">
       {/* Greeting */}
       <div>
-        <h1 className="text-4xl font-bold font-serif text-[#451a03]">Welcome, {profile?.displayName?.split(' ')[0]}</h1>
-        <p className="text-lg text-[#92400e]/60 font-medium">Ready for a smart kitchen today?</p>
+        <h1 className="font-heading text-4xl font-black tracking-tight text-primary">
+          Welcome, {profile?.displayName?.split(' ')[0]}
+        </h1>
+        <p className="text-lg text-muted-foreground">Ready for a smart kitchen today?</p>
       </div>
 
       {/* Main Action Card: Current Meal */}
-      <Card className="rounded-[2.5rem] border-none bg-gradient-to-br from-[#d97706] to-[#b45309] text-white shadow-2xl shadow-amber-900/20 overflow-hidden">
+      <Card className="rounded-[1.75rem] border-none bg-primary text-primary-foreground shadow-[0_24px_60px_-30px_rgba(47,53,59,0.35)] overflow-hidden">
         <CardContent className="p-8 relative">
           <Utensils className="absolute -right-8 -top-8 h-48 w-48 opacity-10 rotate-12" />
           <div className="space-y-1 mb-8">
-            <span className="text-xs uppercase tracking-widest font-black text-amber-200 bg-black/10 px-3 py-1 rounded-full">Next Serving</span>
-            <h2 className="text-4xl font-bold font-serif">{nextMeal?.recipeTitle || 'No meal scheduled'}</h2>
+            <span className="font-label text-xs uppercase tracking-[0.22em] font-semibold text-primary-foreground/80 bg-black/10 px-3 py-1 rounded-full w-fit">
+              Next Serving
+            </span>
+            <h2 className="font-heading text-4xl font-bold">
+              {nextMeal?.recipeTitle || 'No meal scheduled'}
+            </h2>
           </div>
           <div className="flex items-center gap-6">
              <div className="flex flex-col">
-               <span className="text-[10px] uppercase font-bold text-amber-200">Prepare</span>
+               <span className="font-label text-[10px] uppercase font-semibold tracking-widest text-primary-foreground/70">Prepare</span>
                <span className="text-xl font-bold">~35 min</span>
              </div>
              <div className="flex flex-col">
-               <span className="text-[10px] uppercase font-bold text-amber-200">Difficulty</span>
+               <span className="font-label text-[10px] uppercase font-semibold tracking-widest text-primary-foreground/70">Difficulty</span>
                <span className="text-xl font-bold">Easy</span>
              </div>
              <Button
-               className="ml-auto rounded-2xl bg-white text-[#d97706] hover:bg-amber-50 h-12 px-6 font-bold shadow-lg"
+               className="ml-auto rounded-2xl bg-background text-primary hover:bg-background/90 h-12 px-6 font-semibold shadow-sm"
                onClick={handleLetsCook}
                data-testid="dashboard-lets-cook"
              >
@@ -95,21 +101,21 @@ export const Dashboard = ({ navigate }: DashboardProps) => {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <StatCard icon={ChefHat} label="Recipes" value={recipes.length.toString()} trend="+2 this week" color="bg-orange-50 text-orange-600" />
-        <StatCard icon={Star} label="Favorites" value={recipes.filter(r => r.isFavorite).length.toString()} color="bg-amber-50 text-amber-600" />
-        <StatCard icon={DollarSign} label="Weekly Budget" value="$140" trend="On Track" color="bg-green-50 text-green-600" />
-        <StatCard icon={TrendingUp} label="Nutrition" value="B+" trend="Improving" color="bg-blue-50 text-blue-600" />
+        <StatCard icon={ChefHat} label="Recipes" value={recipes.length.toString()} trend="+2 this week" color="bg-muted text-primary" />
+        <StatCard icon={Star} label="Favorites" value={recipes.filter(r => r.isFavorite).length.toString()} color="bg-muted text-primary" />
+        <StatCard icon={DollarSign} label="Weekly Budget" value="$140" trend="On Track" color="bg-muted text-primary" />
+        <StatCard icon={TrendingUp} label="Nutrition" value="B+" trend="Improving" color="bg-muted text-primary" />
       </div>
 
       {/* Today's Schedule (Bento Style) */}
       <div className="space-y-4">
         <div className="flex items-center justify-between px-2">
-          <h2 className="text-2xl font-bold font-serif flex items-center gap-2">
-            <Calendar className="h-6 w-6 text-[#d97706]" /> Today's Schedule
+          <h2 className="font-heading text-2xl font-bold flex items-center gap-2 text-primary">
+            <Calendar className="h-6 w-6 text-primary" /> Today's Schedule
           </h2>
           <Button
             variant="ghost"
-            className="text-[#d97706] font-bold"
+            className="font-label text-primary font-semibold uppercase tracking-widest text-xs"
             onClick={() => navigate('planner')}
             data-testid="dashboard-view-week"
           >
@@ -121,20 +127,23 @@ export const Dashboard = ({ navigate }: DashboardProps) => {
           {['Breakfast', 'Lunch', 'Dinner'].map((type) => {
              const meal = todaysMeals.find(m => m.type.toLowerCase() === type.toLowerCase());
              return (
-               <div key={type} className="flex items-center gap-6 p-6 bg-white rounded-[2rem] shadow-xl shadow-amber-900/5 hover:bg-amber-50/30 transition-colors group">
-                 <div className="w-16 h-16 rounded-3xl bg-amber-50 flex items-center justify-center font-black text-amber-200 text-2xl">
+               <div
+                 key={type}
+                 className="flex items-center gap-6 p-6 bg-card rounded-[1.5rem] border border-border/50 shadow-sm hover:bg-muted/40 transition-colors group"
+               >
+                 <div className="w-16 h-16 rounded-3xl bg-muted flex items-center justify-center font-heading font-black text-muted-foreground text-2xl">
                     {type[0]}
                  </div>
                  <div className="flex-1">
-                   <p className="text-[10px] uppercase tracking-widest font-black text-amber-500/50">{type}</p>
-                   <p className={cn("text-xl font-bold", !meal && "text-[#92400e]/20 italic")}>
+                   <p className="font-label text-[10px] uppercase tracking-[0.22em] font-semibold text-muted-foreground">{type}</p>
+                   <p className={cn("text-xl font-semibold text-primary", !meal && "text-muted-foreground/40 italic font-normal")}>
                      {meal?.recipeTitle || `No ${type} planned`}
                    </p>
                  </div>
                  {meal ? (
                    <button
                      type="button"
-                     className="flex items-center gap-2 text-amber-600 font-bold bg-amber-100/50 px-4 py-2 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"
+                     className="flex items-center gap-2 text-primary font-semibold bg-muted px-4 py-2 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"
                      onClick={() => openRecipe(meal.recipeId)}
                    >
                       Start <ChefHat className="h-4 w-4" />
@@ -146,7 +155,7 @@ export const Dashboard = ({ navigate }: DashboardProps) => {
                      onClick={() => navigate('planner')}
                      aria-label={`Add ${type} meal`}
                    >
-                     <Plus className="h-6 w-6 text-amber-200 group-hover:text-amber-500" />
+                     <Plus className="h-6 w-6 text-muted-foreground/40 group-hover:text-muted-foreground" />
                    </button>
                  )}
                </div>
@@ -159,17 +168,17 @@ export const Dashboard = ({ navigate }: DashboardProps) => {
 };
 
 const StatCard = ({ icon: Icon, label, value, trend, color }: any) => (
-  <Card className="rounded-[2rem] border-none shadow-xl shadow-amber-900/5 bg-white p-6">
+  <Card className="rounded-[1.5rem] border border-border/50 shadow-sm bg-card p-6">
     <div className="flex items-center gap-4 mb-4">
       <div className={cn("p-3 rounded-2xl", color)}>
         <Icon className="h-6 w-6" />
       </div>
       <div>
-        <p className="text-[10px] uppercase font-black text-amber-900/30 tracking-widest">{label}</p>
-        <p className="text-2xl font-bold text-[#451a03]">{value}</p>
+        <p className="font-label text-[10px] uppercase font-semibold text-muted-foreground tracking-[0.22em]">{label}</p>
+        <p className="text-2xl font-bold text-primary">{value}</p>
       </div>
     </div>
-    {trend && <p className="text-xs font-bold text-green-600/80 bg-green-50/50 px-3 py-1 rounded-full w-fit">{trend}</p>}
+    {trend && <p className="text-xs font-semibold text-muted-foreground bg-muted px-3 py-1 rounded-full w-fit">{trend}</p>}
   </Card>
 );
 

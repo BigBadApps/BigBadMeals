@@ -306,36 +306,36 @@ export const Recipes = () => {
   return (
     <div className="p-6 pb-24 space-y-6 max-w-4xl mx-auto">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold font-serif text-[#451a03]">Recipe Vault</h1>
+        <h1 className="font-heading text-3xl font-black tracking-tight text-primary">Recipe Vault</h1>
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger render={
-            <button type="button" className="rounded-2xl bg-[#d97706] hover:bg-[#b45309] shadow-lg shadow-amber-200 inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white cursor-pointer">
+            <button type="button" className="rounded-2xl bg-primary hover:bg-primary/90 shadow-sm inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-primary-foreground cursor-pointer">
               <Plus className="mr-2 h-4 w-4" /> Add New
             </button>
           } />
-          <DialogContent className="sm:max-w-xl rounded-[2rem] border-none shadow-2xl p-0 overflow-hidden">
-            <div className="bg-amber-50/50 p-6">
+          <DialogContent className="sm:max-w-xl rounded-[1.75rem] border border-border/50 shadow-2xl p-0 overflow-hidden bg-card">
+            <div className="bg-muted/60 p-6">
               <DialogHeader>
-                <DialogTitle className="text-2xl font-serif">Add New Recipe</DialogTitle>
+                <DialogTitle className="font-heading text-2xl font-bold text-primary">Add New Recipe</DialogTitle>
                 <p className="text-sm text-muted-foreground italic">Paste text, upload an image, or drop a URL</p>
               </DialogHeader>
             </div>
             <div className="p-6 space-y-6">
               <div className="grid grid-cols-2 gap-4">
-                <Button variant="outline" className="h-24 flex-col rounded-2xl gap-2 border-amber-100 bg-white shadow-sm" onClick={() => document.getElementById('img-up')?.click()}>
-                  <Camera className="h-6 w-6 text-[#d97706]" />
+                <Button variant="outline" className="h-24 flex-col rounded-2xl gap-2 border-border bg-background/60 shadow-sm" onClick={() => document.getElementById('img-up')?.click()}>
+                  <Camera className="h-6 w-6 text-primary" />
                   <span className="text-xs uppercase tracking-wider font-bold">Image/Scan</span>
                   <input type="file" id="img-up" hidden accept="image/*" onChange={handleImageUpload} />
                 </Button>
                 <Button 
                   variant="outline" 
                   className={cn(
-                    "h-24 flex-col rounded-2xl gap-2 border-amber-100 bg-white shadow-sm transition-all",
-                    showUrlInput && "ring-2 ring-amber-500 scale-95"
+                    "h-24 flex-col rounded-2xl gap-2 border-border bg-background/60 shadow-sm transition-all",
+                    showUrlInput && "ring-2 ring-primary scale-95"
                   )}
                   onClick={() => setShowUrlInput(!showUrlInput)}
                 >
-                  <Link className="h-6 w-6 text-[#d97706]" />
+                  <Link className="h-6 w-6 text-primary" />
                   <span className="text-xs uppercase tracking-wider font-bold">URL Import</span>
                 </Button>
               </div>
@@ -346,11 +346,11 @@ export const Recipes = () => {
                   <div className="flex gap-2">
                     <Input 
                       placeholder="https://cooking.nytimes.com/..." 
-                      className="rounded-xl border-amber-100 h-11"
+                      className="rounded-xl border-border h-11 bg-background"
                       value={importUrl}
                       onChange={(e) => setImportUrl(e.target.value)}
                     />
-                    <Button onClick={handleImportUrl} disabled={importing || !importUrl.trim()} className="bg-[#d97706] rounded-xl px-6">
+                    <Button onClick={handleImportUrl} disabled={importing || !importUrl.trim()} className="bg-primary rounded-xl px-6">
                       Fetch
                     </Button>
                   </div>
@@ -361,7 +361,7 @@ export const Recipes = () => {
                 <Label className="text-xs uppercase tracking-widest font-bold ml-1 text-muted-foreground">Text Entry / Transcription</Label>
                 <textarea 
                   data-testid="recipes-import-text"
-                  className="w-full min-h-[150px] p-4 rounded-2xl border border-amber-100 bg-amber-50/20 focus:ring-1 focus:ring-[#d97706] outline-none text-sm leading-relaxed"
+                  className="w-full min-h-[150px] p-4 rounded-2xl border border-border bg-background/60 focus:ring-1 focus:ring-primary outline-none text-sm leading-relaxed"
                   placeholder="Paste recipe instructions and ingredients here..."
                   value={importText}
                   onChange={(e) => setImportText(e.target.value)}
@@ -369,14 +369,14 @@ export const Recipes = () => {
               </div>
 
               {importing && (
-                <div className="flex items-center justify-center py-4 gap-3 bg-amber-50 rounded-2xl animate-pulse">
-                  <Loader2 className="h-5 w-5 animate-spin text-[#d97706]" />
-                  <span className="text-sm font-medium text-[#92400e]">Gemini is analyzing context...</span>
+                <div className="flex items-center justify-center py-4 gap-3 bg-muted rounded-2xl animate-pulse">
+                  <Loader2 className="h-5 w-5 animate-spin text-primary" />
+                  <span className="text-sm font-medium text-muted-foreground">Gemini is analyzing context...</span>
                 </div>
               )}
             </div>
-            <DialogFooter className="p-6 bg-amber-50/30">
-              <Button data-testid="recipes-import-submit" onClick={handleImportText} disabled={importing || !importText.trim()} className="w-full rounded-xl bg-[#d97706] hover:bg-[#b45309]">
+            <DialogFooter className="p-6 bg-muted/40">
+              <Button data-testid="recipes-import-submit" onClick={handleImportText} disabled={importing || !importText.trim()} className="w-full rounded-xl bg-primary hover:bg-primary/90">
                 Extract & Save Recipe
               </Button>
             </DialogFooter>
@@ -385,20 +385,20 @@ export const Recipes = () => {
       </div>
 
       <div className="relative group">
-        <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-amber-400" />
+        <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
         <Input 
           placeholder="Search recipes, ingredients..." 
-          className="pl-12 h-14 rounded-2xl border-amber-100 bg-white/80 backdrop-blur-sm shadow-xl shadow-amber-900/5 focus-visible:ring-[#d97706]"
+          className="pl-12 h-14 rounded-2xl border-border bg-background/70 backdrop-blur-sm shadow-sm focus-visible:ring-primary"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <Button size="icon" variant="ghost" className="absolute right-2 top-1/2 -translate-y-1/2 h-10 w-10 text-amber-500 hover:bg-amber-50 rounded-xl">
+        <Button size="icon" variant="ghost" className="absolute right-2 top-1/2 -translate-y-1/2 h-10 w-10 text-muted-foreground hover:bg-muted rounded-xl">
           <Filter className="h-5 w-5" />
         </Button>
       </div>
 
       {loading ? (
-        <div className="py-20 flex flex-col items-center justify-center gap-4 text-amber-200">
+        <div className="py-20 flex flex-col items-center justify-center gap-4 text-muted-foreground/40">
           <Loader2 className="h-10 w-10 animate-spin" />
           <p className="font-medium italic">Opening the vault...</p>
         </div>
@@ -407,15 +407,15 @@ export const Recipes = () => {
           {filteredRecipes.map((recipe) => (
             <Card 
               key={recipe.id} 
-              className="rounded-[2.5rem] border-none shadow-xl shadow-amber-900/5 overflow-hidden group cursor-pointer hover:scale-[1.02] transition-transform duration-300"
+              className="rounded-[1.75rem] border border-border/50 shadow-sm overflow-hidden group cursor-pointer hover:scale-[1.02] transition-transform duration-300 bg-card"
               onClick={() => setActiveRecipe(recipe)}
             >
-              <div className="relative h-48 bg-amber-100 overflow-hidden">
+              <div className="relative h-48 bg-muted overflow-hidden">
                 {recipe.imageUrl ? (
                   <img src={recipe.imageUrl} alt={recipe.title} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-amber-50 to-amber-100">
-                    <ChefHat className="h-16 w-16 text-amber-200" />
+                  <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-muted/50 to-muted">
+                    <ChefHat className="h-16 w-16 text-muted-foreground/30" />
                   </div>
                 )}
                 <div className="absolute top-4 right-4 z-10">
@@ -432,45 +432,45 @@ export const Recipes = () => {
                   </Button>
                 </div>
                 <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 to-transparent">
-                  <Badge className="bg-amber-500 border-none text-white font-bold">{recipe.category || 'Entree'}</Badge>
+                  <Badge className="bg-primary border-none text-primary-foreground font-semibold">{recipe.category || 'Entree'}</Badge>
                 </div>
               </div>
               <CardContent className="p-6 space-y-4">
                 <div>
                   <h3 className="font-bold text-xl mb-2 line-clamp-1">{recipe.title}</h3>
-                  <div className="flex items-center gap-4 text-sm text-[#92400e]/60">
+                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
                     <span className="flex items-center gap-1"><Timer className="h-4 w-4" /> {(recipe.prepTime || 0) + (recipe.cookTime || 0) || 30}m</span>
                     <span className="flex items-center gap-1"><Flame className="h-4 w-4" /> {recipe.nutritionalInfo?.calories || 450} kcal</span>
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <div className="flex items-center justify-between text-xs font-bold uppercase tracking-widest text-amber-500/70">
+                  <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-widest text-muted-foreground">
                     <span>Ingredients</span>
                     <span>{recipe.ingredients.length} total</span>
                   </div>
                   <div className="flex flex-wrap gap-1.5">
                     {recipe.ingredients.slice(0, 3).map((ing, i) => (
-                      <Badge key={i} variant="secondary" className="bg-amber-50 text-[10px] py-0 px-2 font-medium text-amber-800 border-amber-100">
+                      <Badge key={i} variant="secondary" className="bg-muted text-[10px] py-0 px-2 font-medium text-primary border-border">
                         {ing.name}
                       </Badge>
                     ))}
                     {recipe.ingredients.length > 3 && (
-                      <span className="text-[10px] text-amber-400 font-bold">+{recipe.ingredients.length - 3} more</span>
+                      <span className="text-[10px] text-muted-foreground font-semibold">+{recipe.ingredients.length - 3} more</span>
                     )}
                   </div>
                 </div>
 
                 {recipe.instructions.length > 0 && (
                   <div className="space-y-1.5">
-                    <p className="text-xs font-bold uppercase tracking-widest text-amber-500/70">First Step</p>
-                    <p className="text-sm text-[#451a03]/70 line-clamp-2 italic leading-snug">
+                    <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">First Step</p>
+                    <p className="text-sm text-muted-foreground line-clamp-2 italic leading-snug">
                       "{recipe.instructions[0]}"
                     </p>
                   </div>
                 )}
                 
-                <div className="pt-2 border-t border-amber-50 flex items-center justify-between group-hover:text-[#d97706] transition-colors">
+                <div className="pt-2 border-t border-border flex items-center justify-between group-hover:text-primary transition-colors">
                   <span className="text-xs font-bold uppercase tracking-widest">View Full Recipe</span>
                   <Plus className="h-4 w-4 transform group-hover:rotate-90 transition-transform" />
                 </div>
@@ -485,7 +485,7 @@ export const Recipes = () => {
       }}>
         <DialogContent 
           className={cn(
-            "p-0 overflow-hidden border-none shadow-2xl flex flex-col outline-none bg-white",
+            "p-0 overflow-hidden border border-border/50 shadow-2xl flex flex-col outline-none bg-card",
             "w-full max-w-full h-full sm:w-[calc(100%-2rem)] sm:h-[90dvh] sm:max-w-2xl sm:rounded-[2.5rem]",
             "m-0 sm:m-auto",
             "z-[100]"
@@ -493,7 +493,7 @@ export const Recipes = () => {
           showCloseButton={false}
         >
           <div 
-            className="flex-1 overflow-y-auto overscroll-contain scroll-smooth -webkit-overflow-scrolling-touch bg-[#fdfaf6]"
+            className="flex-1 overflow-y-auto overscroll-contain scroll-smooth -webkit-overflow-scrolling-touch bg-background"
             style={{ 
               // Fix for Safari mobile viewport height issues with nested scrolls
               height: '100%',
@@ -502,7 +502,7 @@ export const Recipes = () => {
               flexDirection: 'column'
             }}
           >
-            <div className="relative h-64 sm:h-80 bg-amber-100">
+            <div className="relative h-64 sm:h-80 bg-muted">
               <Button 
                 size="icon" 
                 variant="ghost" 
@@ -514,48 +514,48 @@ export const Recipes = () => {
               {activeRecipe?.imageUrl ? (
                 <img src={activeRecipe.imageUrl} alt={activeRecipe.title} className="w-full h-full object-cover" />
               ) : (
-                <div className="w-full h-full flex items-center justify-center bg-[#fdfaf6]">
-                  <ChefHat className="h-24 w-24 text-amber-100" />
+                <div className="w-full h-full flex items-center justify-center bg-background">
+                  <ChefHat className="h-24 w-24 text-muted-foreground/30" />
                 </div>
               )}
-              <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8 pt-16 sm:pt-20 bg-gradient-to-t from-[#fdfaf6] via-[#fdfaf6]/80 to-transparent">
-                 <h2 className="text-2xl sm:text-4xl font-bold font-serif leading-tight">{activeRecipe?.title}</h2>
+              <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8 pt-16 sm:pt-20 bg-gradient-to-t from-background via-background/80 to-transparent">
+                 <h2 className="font-heading text-2xl sm:text-4xl font-bold leading-tight text-primary">{activeRecipe?.title}</h2>
               </div>
             </div>
             
-            <div className="p-6 sm:p-8 space-y-6 sm:space-y-8 bg-[#fdfaf6] pb-12">
+            <div className="p-6 sm:p-8 space-y-6 sm:space-y-8 bg-background pb-12">
               {activeRecipe?.description && (
-                <div className="bg-amber-50/50 rounded-3xl p-5 sm:p-6 border border-amber-100/50">
-                  <p className="text-[#451a03]/80 italic leading-relaxed text-base sm:text-lg">
+                <div className="bg-muted/60 rounded-3xl p-5 sm:p-6 border border-border/50">
+                  <p className="text-muted-foreground italic leading-relaxed text-base sm:text-lg">
                     "{activeRecipe.description}"
                   </p>
                 </div>
               )}
 
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-                <div className="bg-white rounded-2xl sm:rounded-3xl p-3 sm:p-4 shadow-sm border border-amber-50">
+                <div className="bg-card rounded-2xl sm:rounded-3xl p-3 sm:p-4 shadow-sm border border-border/50">
                    <div className="flex items-center gap-2 mb-1">
-                     <Timer className="h-3 w-3 text-amber-500" />
-                     <p className="text-[10px] uppercase tracking-widest font-bold text-amber-500">Time</p>
+                     <Timer className="h-3 w-3 text-primary" />
+                     <p className="font-label text-[10px] uppercase tracking-widest font-semibold text-muted-foreground">Time</p>
                    </div>
                    <p className="font-bold text-base sm:text-lg">{(activeRecipe?.prepTime || 0) + (activeRecipe?.cookTime || 0)}m</p>
                 </div>
-                <div className="bg-white rounded-2xl sm:rounded-3xl p-3 sm:p-4 shadow-sm border border-amber-50">
+                <div className="bg-card rounded-2xl sm:rounded-3xl p-3 sm:p-4 shadow-sm border border-border/50">
                    <div className="flex items-center gap-2 mb-1">
-                     <ChefHat className="h-3 w-3 text-amber-500" />
-                     <p className="text-[10px] uppercase tracking-widest font-bold text-amber-500">Servings</p>
+                     <ChefHat className="h-3 w-3 text-primary" />
+                     <p className="font-label text-[10px] uppercase tracking-widest font-semibold text-muted-foreground">Servings</p>
                    </div>
                    <p className="font-bold text-base sm:text-lg">{activeRecipe?.servings || 2}</p>
                 </div>
-                <div className="bg-white rounded-2xl sm:rounded-3xl p-3 sm:p-4 shadow-sm border border-amber-50">
+                <div className="bg-card rounded-2xl sm:rounded-3xl p-3 sm:p-4 shadow-sm border border-border/50">
                    <div className="flex items-center gap-2 mb-1">
-                     <Flame className="h-3 w-3 text-amber-500" />
-                     <p className="text-[10px] uppercase tracking-widest font-bold text-amber-500">Calories</p>
+                     <Flame className="h-3 w-3 text-primary" />
+                     <p className="font-label text-[10px] uppercase tracking-widest font-semibold text-muted-foreground">Calories</p>
                    </div>
                    <p className="font-bold text-base sm:text-lg">{activeRecipe?.nutritionalInfo?.calories || '--'} <span className="text-sm font-normal">kcal</span></p>
                 </div>
-                <div className="bg-white rounded-2xl sm:rounded-3xl p-3 sm:p-4 shadow-sm border border-amber-50">
-                   <p className="text-[10px] uppercase tracking-widest font-bold text-amber-500 mb-1">Nutrients (P/C/F)</p>
+                <div className="bg-card rounded-2xl sm:rounded-3xl p-3 sm:p-4 shadow-sm border border-border/50">
+                   <p className="font-label text-[10px] uppercase tracking-widest font-semibold text-muted-foreground mb-1">Nutrients (P/C/F)</p>
                    <p className="font-bold text-xs sm:text-sm">
                      {activeRecipe?.nutritionalInfo?.protein || 0}g / {activeRecipe?.nutritionalInfo?.carbs || 0}g / {activeRecipe?.nutritionalInfo?.fat || 0}g
                    </p>
@@ -565,44 +565,44 @@ export const Recipes = () => {
               <div className="space-y-6">
                 <div>
                    <div className="flex items-center justify-between mb-4">
-                     <h3 className="text-xl sm:text-2xl font-bold font-serif flex items-center gap-2 text-[#451a03]">Ingredients</h3>
-                     <Badge variant="outline" className="rounded-full border-amber-200 text-amber-700 bg-amber-50 font-bold">
+                     <h3 className="font-heading text-xl sm:text-2xl font-bold flex items-center gap-2 text-primary">Ingredients</h3>
+                     <Badge variant="outline" className="rounded-full border-border text-primary bg-muted font-semibold">
                        {activeRecipe?.ingredients.length} items
                      </Badge>
                    </div>
                    <div className="grid gap-2 sm:gap-3">
                      {activeRecipe?.ingredients.map((ing, i) => (
-                       <div key={i} className="flex items-center justify-between p-3 sm:p-4 bg-white rounded-xl sm:rounded-2xl border border-amber-50 shadow-sm hover:border-amber-100 transition-colors">
+                       <div key={i} className="flex items-center justify-between p-3 sm:p-4 bg-card rounded-xl sm:rounded-2xl border border-border/50 shadow-sm hover:border-border transition-colors">
                          <div className="flex items-center gap-2 sm:gap-3">
-                           <div className="w-1.5 h-1.5 rounded-full bg-amber-400" />
-                           <span className="font-medium text-[#451a03] text-sm sm:text-base">{ing.name}</span>
+                           <div className="w-1.5 h-1.5 rounded-full bg-primary/60" />
+                           <span className="font-medium text-primary text-sm sm:text-base">{ing.name}</span>
                          </div>
-                         <span className="text-amber-600 font-bold px-2 sm:px-3 py-1 bg-amber-50 rounded-full text-xs sm:text-sm whitespace-nowrap">{ing.amount} {ing.unit}</span>
+                         <span className="text-primary font-semibold px-2 sm:px-3 py-1 bg-muted rounded-full text-xs sm:text-sm whitespace-nowrap">{ing.amount} {ing.unit}</span>
                        </div>
                      ))}
                    </div>
                 </div>
 
                 <div>
-                   <h3 className="text-xl sm:text-2xl font-bold font-serif mb-4 flex items-center gap-2 text-[#451a03]">Preparation Steps</h3>
-                   <div className="space-y-6 sm:space-y-8 relative before:absolute before:left-4 before:top-4 before:bottom-4 before:w-0.5 before:bg-amber-100">
+                   <h3 className="font-heading text-xl sm:text-2xl font-bold mb-4 flex items-center gap-2 text-primary">Preparation Steps</h3>
+                   <div className="space-y-6 sm:space-y-8 relative before:absolute before:left-4 before:top-4 before:bottom-4 before:w-0.5 before:bg-border">
                      {activeRecipe?.instructions.map((step, i) => (
                        <div key={i} className="flex gap-4 sm:gap-6 relative">
-                         <div className="flex-shrink-0 w-8 h-8 rounded-full bg-white border-2 border-amber-500 flex items-center justify-center font-bold text-amber-600 shadow-sm z-10 text-sm sm:text-base">
+                         <div className="flex-shrink-0 w-8 h-8 rounded-full bg-card border-2 border-primary flex items-center justify-center font-bold text-primary shadow-sm z-10 text-sm sm:text-base">
                            {i + 1}
                          </div>
-                         <p className="text-base sm:text-lg leading-relaxed text-[#451a03]/80 pt-0.5">{step}</p>
+                         <p className="text-base sm:text-lg leading-relaxed text-muted-foreground pt-0.5">{step}</p>
                        </div>
                      ))}
                    </div>
                 </div>
               </div>
 
-              <div className="pt-8 border-t border-amber-100 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+              <div className="pt-8 border-t border-border grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <Button variant="outline" className="rounded-xl h-12 order-2 sm:order-1" onClick={() => deleteRecipe(activeRecipe!.id!)}>
                   <Trash2 className="h-4 w-4 mr-2" /> Delete Recipe
                 </Button>
-                <Button className="rounded-xl h-12 bg-[#d97706] order-1 sm:order-2" onClick={() => addRecipeToMealPlan(activeRecipe!)}>
+                <Button className="rounded-xl h-12 bg-primary order-1 sm:order-2" onClick={() => addRecipeToMealPlan(activeRecipe!)}>
                   Add to Meal Plan
                 </Button>
               </div>

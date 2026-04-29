@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;600;700;900&amp;family=Work+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .checklist-item:checked + label {
+            text-decoration: line-through;
+            opacity: 0.5;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #2F353B20;
+            border-radius: 10px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#002424",
+                        "outline-variant": "#c5c6cb",
+                        "surface-container-high": "#e9e9dd",
+                        "on-tertiary-container": "#6aa7a6",
+                        "surface-container-low": "#f5f4e8",
+                        "inverse-surface": "#303129",
+                        "on-error": "#ffffff",
+                        "inverse-primary": "#c1c7cf",
+                        "on-background": "#1b1c15",
+                        "surface-dim": "#dbdbcf",
+                        "on-error-container": "#93000a",
+                        "surface-container": "#efeee3",
+                        "secondary-fixed-dim": "#d1bfe9",
+                        "primary-fixed-dim": "#c1c7cf",
+                        "error": "#ba1a1a",
+                        "primary-container": "#2f353b",
+                        "background": "#fbfaee",
+                        "surface": "#fbfaee",
+                        "surface-tint": "#595f66",
+                        "primary-fixed": "#dde3eb",
+                        "tertiary-fixed": "#b0eeed",
+                        "tertiary-container": "#003b3b",
+                        "on-surface-variant": "#44474a",
+                        "secondary-container": "#e5d2fe",
+                        "secondary": "#67587c",
+                        "tertiary-fixed-dim": "#94d1d0",
+                        "on-secondary-fixed-variant": "#4e4063",
+                        "outline": "#75777b",
+                        "on-surface": "#1b1c15",
+                        "error-container": "#ffdad6",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "surface-variant": "#e4e3d7",
+                        "on-tertiary-fixed": "#002020",
+                        "primary": "#1a2025",
+                        "on-secondary-fixed": "#221535",
+                        "surface-bright": "#fbfaee",
+                        "on-primary-container": "#989da5",
+                        "on-primary-fixed": "#161c22",
+                        "on-tertiary-fixed-variant": "#034f4f",
+                        "secondary-fixed": "#ecdcff",
+                        "on-secondary": "#ffffff",
+                        "on-primary-fixed-variant": "#41474e",
+                        "surface-container-highest": "#e4e3d7",
+                        "on-secondary-container": "#67587d",
+                        "inverse-on-surface": "#f2f1e5"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "base-unit": "4px",
+                        "xl": "4rem",
+                        "xs": "0.5rem",
+                        "sm": "1rem",
+                        "lg": "2.5rem",
+                        "gutter": "24px",
+                        "md": "1.5rem",
+                        "margin": "32px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Noto Serif"],
+                        "title-sm": ["Noto Serif"],
+                        "headline-md": ["Noto Serif"],
+                        "display-lg": ["Noto Serif"],
+                        "label-caps": ["Work Sans"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "title-sm": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "headline-md": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-md min-h-screen pb-24">
+<!-- TopAppBar -->
+<header class="bg-[#F5F5F0] dark:bg-[#1A1C1E] border-b border-[#2F353B]/10 sticky top-0 z-50">
+<div class="flex justify-between items-center px-6 py-4 w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-[#2F353B] dark:text-[#E2E2E6] hover:bg-[#2F353B]/5 p-2 rounded-full transition-colors active:scale-95 duration-150">menu</button>
+</div>
+<h1 class="text-2xl font-['Noto_Serif'] font-black text-[#2F353B] dark:text-white uppercase tracking-widest">BigBadMeals</h1>
+<div class="w-10 h-10 rounded-full overflow-hidden border border-[#2F353B]/10 active:scale-95 duration-150">
+<img alt="Chef profile picture" class="w-full h-full object-cover" data-alt="A professional chef in a crisp white uniform and black apron, standing in a high-end bistro kitchen with soft atmospheric lighting. The background features polished copper cookware and warm wooden accents, consistent with a sophisticated, professional culinary brand. The lighting is high-key and elegant, emphasizing clean lines and professional authority." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKE-s5Sqvm5XzYtLra_hVQBRdk5xOLIYqjv-XBzRWG7Xe8-r6KezsuRYbX6RWIW5B4xEZXnPJ2JhprlTrVCIKLOdv4m7K0p_mf4_XpGZeiVRKcGcJGeLbPEp0SxlwEYC47kXOEflQ_m29voQ-q3NPqVr2QhvII0SYexqxvbPOFUX4MudTl5w-G7Yq983ILY4HpXayRcmRwRZ9h2XOK3Zmx-tXvreR0Mf1z1dyt_9iUUWl8w5QMLfw7E5iO0hWEmknuLoi0B41XCceJ"/>
+</div>
+</div>
+</header>
+<main class="max-w-xl mx-auto px-6 py-8">
+<!-- List Header -->
+<div class="flex justify-between items-end mb-8 border-b border-primary/10 pb-4">
+<div>
+<span class="font-label-caps text-label-caps text-secondary tracking-widest uppercase mb-2 block">Grocery Inventory</span>
+<h2 class="font-headline-md text-headline-md text-primary">Final Shopping List</h2>
+</div>
+<button class="flex items-center gap-2 bg-primary text-background px-4 py-2 rounded-lg hover:opacity-90 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-sm">sync</span>
+<span class="font-label-caps text-[10px] uppercase font-bold tracking-wider">Sync</span>
+</button>
+</div>
+<!-- Categories -->
+<div class="space-y-lg">
+<!-- Produce Section -->
+<section>
+<div class="flex items-center gap-3 mb-4">
+<div class="h-[1px] flex-grow bg-primary/10"></div>
+<h3 class="font-label-caps text-label-caps text-primary/60 uppercase tracking-widest px-2">Produce</h3>
+<div class="h-[1px] flex-grow bg-primary/10"></div>
+</div>
+<div class="space-y-3">
+<div class="flex items-center justify-between p-4 bg-surface-container-low rounded-xl group transition-all hover:bg-surface-container">
+<div class="flex items-center gap-4">
+<div class="relative flex items-center justify-center w-6 h-6 border-2 border-primary rounded-md overflow-hidden">
+<input class="checklist-item absolute inset-0 opacity-0 cursor-pointer z-10" id="item-1" type="checkbox"/>
+<span class="material-symbols-outlined text-primary text-lg opacity-0 peer-checked:opacity-100 transition-opacity">check</span>
+</div>
+<label class="font-title-sm text-body-md text-primary cursor-pointer select-none" for="item-1">Tuscan Kale (2 Bunches)</label>
+</div>
+<span class="font-label-caps text-[10px] text-on-tertiary-container bg-tertiary-fixed px-2 py-1 rounded-full">Fresh</span>
+</div>
+<div class="flex items-center justify-between p-4 bg-surface-container-low rounded-xl group transition-all hover:bg-surface-container">
+<div class="flex items-center gap-4">
+<div class="relative flex items-center justify-center w-6 h-6 border-2 border-primary rounded-md overflow-hidden">
+<input class="checklist-item absolute inset-0 opacity-0 cursor-pointer z-10" id="item-2" type="checkbox"/>
+<span class="material-symbols-outlined text-primary text-lg opacity-0 peer-checked:opacity-100 transition-opacity">check</span>
+</div>
+<label class="font-title-sm text-body-md text-primary cursor-pointer select-none" for="item-2">Shallots (4 Large)</label>
+</div>
+</div>
+<div class="flex items-center justify-between p-4 bg-surface-container-low rounded-xl group transition-all hover:bg-surface-container">
+<div class="flex items-center gap-4">
+<div class="relative flex items-center justify-center w-6 h-6 border-2 border-primary rounded-md overflow-hidden">
+<input class="checklist-item absolute inset-0 opacity-0 cursor-pointer z-10" id="item-3" type="checkbox"/>
+<span class="material-symbols-outlined text-primary text-lg opacity-0 peer-checked:opacity-100 transition-opacity">check</span>
+</div>
+<label class="font-title-sm text-body-md text-primary cursor-pointer select-none" for="item-3">Cremini Mushrooms (500g)</label>
+</div>
+</div>
+</div>
+</section>
+<!-- Dairy Section -->
+<section>
+<div class="flex items-center gap-3 mb-4">
+<div class="h-[1px] flex-grow bg-primary/10"></div>
+<h3 class="font-label-caps text-label-caps text-primary/60 uppercase tracking-widest px-2">Dairy</h3>
+<div class="h-[1px] flex-grow bg-primary/10"></div>
+</div>
+<div class="space-y-3">
+<div class="flex items-center justify-between p-4 bg-surface-container-low rounded-xl group transition-all hover:bg-surface-container">
+<div class="flex items-center gap-4">
+<div class="relative flex items-center justify-center w-6 h-6 border-2 border-primary rounded-md overflow-hidden">
+<input class="checklist-item absolute inset-0 opacity-0 cursor-pointer z-10" id="item-4" type="checkbox"/>
+<span class="material-symbols-outlined text-primary text-lg opacity-0 peer-checked:opacity-100 transition-opacity">check</span>
+</div>
+<label class="font-title-sm text-body-md text-primary cursor-pointer select-none" for="item-4">Pecorino Romano (200g)</label>
+</div>
+<span class="font-label-caps text-[10px] text-on-secondary-container bg-secondary-container px-2 py-1 rounded-full">Aged</span>
+</div>
+<div class="flex items-center justify-between p-4 bg-surface-container-low rounded-xl group transition-all hover:bg-surface-container">
+<div class="flex items-center gap-4">
+<div class="relative flex items-center justify-center w-6 h-6 border-2 border-primary rounded-md overflow-hidden">
+<input checked="" class="checklist-item absolute inset-0 opacity-0 cursor-pointer z-10" id="item-5" type="checkbox"/>
+<span class="material-symbols-outlined text-primary text-lg opacity-100 transition-opacity">check</span>
+</div>
+<label class="font-title-sm text-body-md text-primary cursor-pointer select-none line-through opacity-50" for="item-5">Unsalted Grass-fed Butter</label>
+</div>
+</div>
+</div>
+</section>
+<!-- Pantry Section -->
+<section>
+<div class="flex items-center gap-3 mb-4">
+<div class="h-[1px] flex-grow bg-primary/10"></div>
+<h3 class="font-label-caps text-label-caps text-primary/60 uppercase tracking-widest px-2">Pantry</h3>
+<div class="h-[1px] flex-grow bg-primary/10"></div>
+</div>
+<div class="space-y-3">
+<div class="flex items-center justify-between p-4 bg-surface-container-low rounded-xl group transition-all hover:bg-surface-container">
+<div class="flex items-center gap-4">
+<div class="relative flex items-center justify-center w-6 h-6 border-2 border-primary rounded-md overflow-hidden">
+<input class="checklist-item absolute inset-0 opacity-0 cursor-pointer z-10" id="item-6" type="checkbox"/>
+<span class="material-symbols-outlined text-primary text-lg opacity-0 peer-checked:opacity-100 transition-opacity">check</span>
+</div>
+<label class="font-title-sm text-body-md text-primary cursor-pointer select-none" for="item-6">Arborio Rice (1kg)</label>
+</div>
+</div>
+<div class="flex items-center justify-between p-4 bg-surface-container-low rounded-xl group transition-all hover:bg-surface-container">
+<div class="flex items-center gap-4">
+<div class="relative flex items-center justify-center w-6 h-6 border-2 border-primary rounded-md overflow-hidden">
+<input class="checklist-item absolute inset-0 opacity-0 cursor-pointer z-10" id="item-7" type="checkbox"/>
+<span class="material-symbols-outlined text-primary text-lg opacity-0 peer-checked:opacity-100 transition-opacity">check</span>
+</div>
+<label class="font-title-sm text-body-md text-primary cursor-pointer select-none" for="item-7">Maldon Sea Salt Flakes</label>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Empty State Visual Cue -->
+<div class="mt-xl text-center px-12 py-8 border border-dashed border-primary/20 rounded-xl">
+<span class="material-symbols-outlined text-primary/20 text-4xl mb-2">shopping_basket</span>
+<p class="font-body-md text-primary/40 italic">Planning a masterpiece tonight?</p>
+<p class="font-label-caps text-[10px] text-primary/60 uppercase tracking-tighter mt-2">7 Items Total · 1 Completed</p>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full h-16 flex justify-around items-center bg-[#F5F5F0] dark:bg-[#1A1C1E] border-t border-[#2F353B]/10 z-50 pb-safe shadow-[0_-4px_12px_rgba(47,53,59,0.05)]">
+<a class="flex flex-col items-center justify-center text-[#2F353B]/40 dark:text-[#E2E2E6]/40 hover:opacity-80 transition-transform active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-['Work_Sans'] text-[10px] font-medium uppercase tracking-tighter">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#2F353B]/40 dark:text-[#E2E2E6]/40 hover:opacity-80 transition-transform active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="restaurant_menu">restaurant_menu</span>
+<span class="font-['Work_Sans'] text-[10px] font-medium uppercase tracking-tighter">Recipes</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#2F353B] dark:text-[#E2E2E6] scale-110 transition-transform font-bold active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="event_note" style="font-variation-settings: 'FILL' 1;">event_note</span>
+<span class="font-['Work_Sans'] text-[10px] font-medium uppercase tracking-tighter">Meal Plan</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#2F353B]/40 dark:text-[#E2E2E6]/40 hover:opacity-80 transition-transform active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-['Work_Sans'] text-[10px] font-medium uppercase tracking-tighter">Profile</span>
+</a>
+</nav>
+<!-- FAB (Suppressed based on context of transactional list, but user might need quick add) -->
+<button class="fixed right-6 bottom-24 bg-primary text-background w-14 h-14 rounded-full flex items-center justify-center shadow-lg active:scale-90 transition-transform">
+<span class="material-symbols-outlined">add</span>
+</button>
+</body></html>

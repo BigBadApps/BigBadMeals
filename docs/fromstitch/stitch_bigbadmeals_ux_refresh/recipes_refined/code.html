@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;600;700&amp;family=Work+Sans:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-error-container": "#93000a",
+                    "outline-variant": "#c5c6cb",
+                    "on-surface-variant": "#44474a",
+                    "error-container": "#ffdad6",
+                    "on-surface": "#1b1c15",
+                    "secondary": "#67587c",
+                    "on-secondary-fixed": "#221535",
+                    "error": "#ba1a1a",
+                    "primary-container": "#2f353b",
+                    "inverse-primary": "#c1c7cf",
+                    "tertiary-fixed": "#b0eeed",
+                    "on-primary-fixed-variant": "#41474e",
+                    "surface-dim": "#dbdbcf",
+                    "on-tertiary-fixed": "#002020",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary-fixed": "#ecdcff",
+                    "background": "#fbfaee",
+                    "surface-container": "#efeee3",
+                    "surface-container-highest": "#e4e3d7",
+                    "on-secondary": "#ffffff",
+                    "surface-bright": "#fbfaee",
+                    "on-tertiary-container": "#6aa7a6",
+                    "surface": "#fbfaee",
+                    "on-secondary-fixed-variant": "#4e4063",
+                    "on-background": "#1b1c15",
+                    "on-secondary-container": "#67587d",
+                    "primary-fixed": "#dde3eb",
+                    "tertiary-container": "#003b3b",
+                    "outline": "#75777b",
+                    "primary-fixed-dim": "#c1c7cf",
+                    "on-primary-fixed": "#161c22",
+                    "on-error": "#ffffff",
+                    "primary": "#1a2025",
+                    "on-primary-container": "#989da5",
+                    "inverse-on-surface": "#f2f1e5",
+                    "surface-tint": "#595f66",
+                    "tertiary-fixed-dim": "#94d1d0",
+                    "surface-container-high": "#e9e9dd",
+                    "surface-variant": "#e4e3d7",
+                    "surface-container-low": "#f5f4e8",
+                    "secondary-fixed-dim": "#d1bfe9",
+                    "tertiary": "#002424",
+                    "on-tertiary": "#ffffff",
+                    "secondary-container": "#e5d2fe",
+                    "on-primary": "#ffffff",
+                    "inverse-surface": "#303129",
+                    "on-tertiary-fixed-variant": "#034f4f"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "md": "1.5rem",
+                    "base-unit": "4px",
+                    "sm": "1rem",
+                    "margin": "32px",
+                    "xs": "0.5rem",
+                    "lg": "2.5rem",
+                    "xl": "4rem",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "title-sm": ["Noto Serif"],
+                    "label-caps": ["Work Sans"],
+                    "display-lg": ["Noto Serif"],
+                    "body-md": ["Noto Serif"],
+                    "headline-md": ["Noto Serif"]
+            },
+            "fontSize": {
+                    "title-sm": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-md": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #fbfaee;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface">
+<!-- TopAppBar -->
+<header class="fixed top-0 z-50 w-full bg-[#FCFAF7] dark:bg-stone-950 shadow-[0_2px_15px_-3px_rgba(47,53,59,0.07)] border-b border-stone-200/10 flex justify-between items-center px-6 h-16">
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-stone-100 dark:hover:bg-stone-900 transition-colors rounded-full">
+<span class="material-symbols-outlined text-[#2F353B] dark:text-stone-200" data-icon="menu">menu</span>
+</button>
+<h1 class="text-xl font-serif italic font-semibold text-[#2F353B] dark:text-stone-100 tracking-tight">BISTRO MÉNAGE</h1>
+</div>
+<div class="flex items-center gap-6">
+<nav class="hidden md:flex gap-8">
+<a class="font-serif text-stone-500 hover:text-stone-900 transition-colors" href="#">Dashboard</a>
+<a class="text-stone-900 dark:text-stone-50 font-semibold font-serif" href="#">Recipes</a>
+<a class="font-serif text-stone-500 hover:text-stone-900 transition-colors" href="#">Planner</a>
+</nav>
+<div class="w-10 h-10 rounded-full overflow-hidden border border-outline/20">
+<img alt="User profile avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAY4dGTaN8MenqY5nr83RniRputTEKDxnFDP32Pu1OUQ7Tsd3IBLk2Axr9s1JT72bY_ilPQ7hKqGU2LIvKmWYEGyVVuA1ZcpFhXh_w1SXY52k96CbKRrB4TltS1GVNAnkvbQjuFZWM0p-IoSDA3Wcwr60bEre2Vny6CdGlekwEpOjf3tc4h9ViJXRtlLYgr0XwboTSS2NMaOd7LDbOvgycqj8LKP3P1fhOP-fW5oIVJTqQKtBbEaYNf-B6tSdvAr4Nx5_s2ecd10TYG"/>
+</div>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-6 pt-24 pb-32">
+<!-- Search & Filter Header -->
+<div class="mb-12">
+<h2 class="font-display-lg text-display-lg text-primary mb-8">Culinary Collection</h2>
+<div class="flex flex-col md:flex-row gap-4 items-center">
+<div class="relative w-full md:max-w-md">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline-variant" data-icon="search">search</span>
+<input class="w-full pl-12 pr-4 py-4 bg-surface-container-low border-b border-primary focus:outline-none font-body-md text-body-md" placeholder="Search recipes, ingredients..." type="text"/>
+</div>
+<div class="flex gap-2 w-full md:w-auto">
+<button class="flex items-center gap-2 px-6 py-4 bg-surface-container-highest border border-outline/10 hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="tune">tune</span>
+<span class="font-label-caps text-label-caps uppercase">Filters</span>
+</button>
+<button class="flex items-center gap-2 px-6 py-4 bg-primary text-background hover:bg-primary/90 transition-colors ml-auto md:ml-0">
+<span class="material-symbols-outlined text-[20px]" data-icon="add">add</span>
+<span class="font-label-caps text-label-caps uppercase">New Recipe</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Category Chips -->
+<div class="flex gap-3 overflow-x-auto pb-6 no-scrollbar mb-8">
+<span class="px-5 py-2 rounded-full bg-primary-container text-background font-label-caps text-label-caps cursor-pointer">All Dishes</span>
+<span class="px-5 py-2 rounded-full bg-surface-container-highest text-on-surface-variant font-label-caps text-label-caps hover:bg-surface-container-high cursor-pointer transition-colors">Entrées</span>
+<span class="px-5 py-2 rounded-full bg-surface-container-highest text-on-surface-variant font-label-caps text-label-caps hover:bg-surface-container-high cursor-pointer transition-colors">Vegetarian</span>
+<span class="px-5 py-2 rounded-full bg-surface-container-highest text-on-surface-variant font-label-caps text-label-caps hover:bg-surface-container-high cursor-pointer transition-colors">Seafood</span>
+<span class="px-5 py-2 rounded-full bg-surface-container-highest text-on-surface-variant font-label-caps text-label-caps hover:bg-surface-container-high cursor-pointer transition-colors">Desserts</span>
+<span class="px-5 py-2 rounded-full bg-surface-container-highest text-on-surface-variant font-label-caps text-label-caps hover:bg-surface-container-high cursor-pointer transition-colors">Cocktails</span>
+</div>
+<!-- Recipe Grid (Bento/High-Density Layout) -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<!-- Main Featured Card (Spans 2 columns on large) -->
+<div class="lg:col-span-2 group cursor-pointer">
+<div class="relative overflow-hidden aspect-[16/9] mb-4 bg-surface-container">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A meticulously plated slow-roasted lamb shoulder served on a dark ceramic dish, garnished with fresh herbs and vibrant seasonal vegetables. The lighting is low and moody, characteristic of a high-end bistro at dusk, emphasizing the rich textures and deep slate color palette. The composition is elegant and minimalist, with ample negative space around the central dish." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEYCt83iE70xMG4J4YM2cwN8qlpoz1bcUAG384T29m5ndyiU8MwmmQiPxS3qTAvlcD3vN6xFRbGjqxRB3d82AOPUIpMbRriVoq0XCcDAbdt7P9L9kletXGJTDLPwxTt_Y6AQLUM4-Wz1AGLTXKB81g15jRuR_k_9hLklAJCoRGdrjM0okzl62b4NSAyC823XckGrktIHRDu8pE-RrobCR_ykzhUatWpvwMCDeTQcliDGQHmAnKA27SHit9cRATSSI9UGQ6QM8CYaK_"/>
+<button class="absolute top-4 right-4 w-10 h-10 flex items-center justify-center bg-background/80 backdrop-blur-sm rounded-full shadow-sm hover:bg-background transition-colors">
+<span class="material-symbols-outlined text-error" data-icon="favorite" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</button>
+<div class="absolute bottom-4 left-4 bg-primary px-3 py-1">
+<span class="font-label-caps text-label-caps text-background uppercase">Featured Selection</span>
+</div>
+</div>
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-title-sm text-title-sm text-primary mb-1">Braised Lamb Shoulder with Rosemary Jus</h3>
+<p class="font-body-md text-on-surface-variant/80 italic">Sous-vide prepared for 24 hours, finished over almond wood fire.</p>
+</div>
+<div class="text-right">
+<div class="flex items-center gap-1 text-on-surface-variant mb-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="schedule">schedule</span>
+<span class="font-label-caps text-[11px] uppercase">24h 30m</span>
+</div>
+<span class="font-label-caps text-[10px] uppercase tracking-widest text-outline">Advanced</span>
+</div>
+</div>
+</div>
+<!-- Standard Card 1 -->
+<div class="group cursor-pointer">
+<div class="relative overflow-hidden aspect-square mb-4 bg-surface-container">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A modern interpretation of a classic pasta dish, featuring thick handmade pappardelle tossed in a glossy, dark truffle oil reduction. The dish is presented in a shallow stone-grey bowl with delicate parmesan shavings and microgreens. The lighting is soft and directional, highlighting the silky texture of the pasta against the matte stoneware." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSjS5sVIlUS3h0UurbEedQrFQuVk8zwgMT-zz5PjmLq5IYbHKPA1RSJa-cl9lIzJ3rSyaoqIoQuPprdbl0BlCgGPIHQwphT9C7qMC7mvozowdN2wUjSK9iIoWgFh0ShyGiU8DksooPB4mucG2wdYwuesawmQINBdxVbPPLgERWQzBzptY8XIe0C0eXO0GqQ2xkTStv63_9PXoHqbF0mAkdh8NWS1tfDaJUdTpvazWu-7dEvT1-OadHQwk1kYVda5EXS-b8pctKXksG"/>
+<button class="absolute top-4 right-4 w-10 h-10 flex items-center justify-center bg-background/80 backdrop-blur-sm rounded-full shadow-sm hover:bg-background transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="favorite">favorite</span>
+</button>
+</div>
+<div class="flex justify-between items-start">
+<div>
+<h4 class="font-title-sm text-title-sm text-primary mb-1">Black Truffle Pappardelle</h4>
+<p class="font-body-md text-on-surface-variant/80 italic">House-made egg pasta, aged parmigiano.</p>
+</div>
+<div class="text-right">
+<div class="flex items-center gap-1 text-on-surface-variant mb-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="schedule">schedule</span>
+<span class="font-label-caps text-[11px] uppercase">45m</span>
+</div>
+<span class="font-label-caps text-[10px] uppercase tracking-widest text-outline">Intermediate</span>
+</div>
+</div>
+</div>
+<!-- Standard Card 2 -->
+<div class="group cursor-pointer">
+<div class="relative overflow-hidden aspect-square mb-4 bg-surface-container">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Seared Atlantic salmon with a crisp, golden-brown skin, resting on a bed of vibrant green asparagus spears and lemon-infused butter sauce. The scene is shot from a high angle, emphasizing the clean lines and geometric arrangement of the ingredients. The background is a textured linen tablecloth in a pale cream tone, evoking an upscale dining experience." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAUrYfUZSI1exbjYNpJ9qeBdoOyHy9l0NSh3XH6UbOSUq0q0DRNlml71Gz7z1KBEjk8IjzIlhwba5R9sym9fkCvKgCu8Iypakxcm6Tw6iohN5JTLUsSgBeO8xZ68NngCmNQ3Sb1DR4NwkLSMro6L0HdFBa9L27bLKhJlCnabdiWZ4jwmY8FtvJphW-9QG1pK2zug5CxEP1jWgxNXsEoiuhmG1GwB4dJXEavAnnB-i5d5cC-rsKZcNyo2Ql9RSleV9WZrwZXX_jRcf2L"/>
+<button class="absolute top-4 right-4 w-10 h-10 flex items-center justify-center bg-background/80 backdrop-blur-sm rounded-full shadow-sm hover:bg-background transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="favorite">favorite</span>
+</button>
+</div>
+<div class="flex justify-between items-start">
+<div>
+<h4 class="font-title-sm text-title-sm text-primary mb-1">Atlantic Salmon</h4>
+<p class="font-body-md text-on-surface-variant/80 italic">Citrus emulsion, asparagus crisps.</p>
+</div>
+<div class="text-right">
+<div class="flex items-center gap-1 text-on-surface-variant mb-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="schedule">schedule</span>
+<span class="font-label-caps text-[11px] uppercase">25m</span>
+</div>
+<span class="font-label-caps text-[10px] uppercase tracking-widest text-outline">Easy</span>
+</div>
+</div>
+</div>
+<!-- Standard Card 3 -->
+<div class="group cursor-pointer">
+<div class="relative overflow-hidden aspect-square mb-4 bg-surface-container">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A gourmet dessert featuring a deconstructed dark chocolate ganache, served with shards of sea salt caramel and edible gold leaf. The dessert is arranged asymmetrically on a matte black plate, reflecting the sophisticated Deep Slate Epicurean style. The lighting is dramatic and focused, creating sharp highlights on the glossy chocolate surfaces." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyhSa7a5xDsKxUSbWVJJ9ricgyXXr3yGFCjVmy1-g1P4HlwC139ZqVkGCCX7ET65hVRo6C9wTUjJzNMnuogUoEwiVTTS45B7CfpA5jJAfnIqk0dCxJoMH4eBzo8JZKcqBi-giWmcke8EGWvUxHsYz6i5f2n6vY-yx1uimEZ1B7pPG2Teq70YXDSMRaAEPJy71cqw8F7j1ZxREWMWGfIzBPEMt5_MYOe39J9PSz4XWi3JLdufo7FcaFa4OkwNP27toQ8OIBj1dTMVT7"/>
+<button class="absolute top-4 right-4 w-10 h-10 flex items-center justify-center bg-background/80 backdrop-blur-sm rounded-full shadow-sm hover:bg-background transition-colors">
+<span class="material-symbols-outlined text-error" data-icon="favorite" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</button>
+</div>
+<div class="flex justify-between items-start">
+<div>
+<h4 class="font-title-sm text-title-sm text-primary mb-1">Dark Chocolate Ganache</h4>
+<p class="font-body-md text-on-surface-variant/80 italic">Sea salt, gold leaf, hazelnut praliné.</p>
+</div>
+<div class="text-right">
+<div class="flex items-center gap-1 text-on-surface-variant mb-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="schedule">schedule</span>
+<span class="font-label-caps text-[11px] uppercase">60m</span>
+</div>
+<span class="font-label-caps text-[10px] uppercase tracking-widest text-outline">Intermediate</span>
+</div>
+</div>
+</div>
+<!-- Standard Card 4 -->
+<div class="group cursor-pointer">
+<div class="relative overflow-hidden aspect-square mb-4 bg-surface-container">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A sophisticated craft cocktail presented in a crystal coupe glass, with a single large clear ice sphere and a twist of burnt orange peel. The drink is a deep amber color, set against a dark, moody bar background. The atmosphere is quiet and luxurious, with soft bokeh lights from distant bottles creating a sense of exclusivity and refinement." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBsn50UO-_8KQpeGm0NZ-Fe6dl5sroftlBod668cw27eZKYhV7KRtcD4FFoGM4IO2qi9dMO3EEMEfGgrM4qVoHgQ40lRInMPuTx11VejyAD__B5TqTEMn7iTdQPPakfNtkxKo71F2m7Dyc6XUCpms2QwnzGtUYq6XMzpBF-Ep2AW0-unC3wtAn98SytE7gVr_Az1I0HwGAgNhJheg4JhLhRWJgUKMPnMzYwws9iOvz85QQhC3gFOBM1KkBuROdgz5fndOlRW5w5xSzv"/>
+<button class="absolute top-4 right-4 w-10 h-10 flex items-center justify-center bg-background/80 backdrop-blur-sm rounded-full shadow-sm hover:bg-background transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="favorite">favorite</span>
+</button>
+</div>
+<div class="flex justify-between items-start">
+<div>
+<h4 class="font-title-sm text-title-sm text-primary mb-1">Smoked Old Fashioned</h4>
+<p class="font-body-md text-on-surface-variant/80 italic">Small-batch rye, maple, hickory smoke.</p>
+</div>
+<div class="text-right">
+<div class="flex items-center gap-1 text-on-surface-variant mb-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="schedule">schedule</span>
+<span class="font-label-caps text-[11px] uppercase">10m</span>
+</div>
+<span class="font-label-caps text-[10px] uppercase tracking-widest text-outline">Easy</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-[#FCFAF7] dark:bg-stone-950 shadow-[0_-4px_20px_-5px_rgba(47,53,59,0.05)] border-t border-stone-200/20 flex justify-around items-center h-20 pb-safe px-4">
+<a class="flex flex-col items-center justify-center text-stone-400 dark:text-stone-500 px-3 py-1 hover:text-stone-700 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-serif text-[11px] uppercase tracking-widest mt-1">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#2F353B] dark:text-stone-50 bg-[#E8EAE3] dark:bg-stone-800 rounded-md px-3 py-1 scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="restaurant_menu">restaurant_menu</span>
+<span class="font-serif text-[11px] uppercase tracking-widest mt-1">Recipes</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-400 dark:text-stone-500 px-3 py-1 hover:text-stone-700 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_month">calendar_month</span>
+<span class="font-serif text-[11px] uppercase tracking-widest mt-1">Planner</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-400 dark:text-stone-500 px-3 py-1 hover:text-stone-700 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="shopping_bag">shopping_bag</span>
+<span class="font-serif text-[11px] uppercase tracking-widest mt-1">Shopping</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-400 dark:text-stone-500 px-3 py-1 hover:text-stone-700 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-serif text-[11px] uppercase tracking-widest mt-1">Profile</span>
+</a>
+</nav>
+<!-- Floating Action Button (FAB Contextual) -->
+<button class="fixed right-6 bottom-24 w-14 h-14 bg-primary text-background shadow-xl flex items-center justify-center rounded-full hover:scale-105 active:scale-95 transition-transform z-40 md:hidden">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+</body></html>

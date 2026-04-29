@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;600;700&amp;family=Work+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary": "#002424",
+                    "outline-variant": "#c5c6cb",
+                    "surface-container-high": "#e9e9dd",
+                    "on-tertiary-container": "#6aa7a6",
+                    "surface-container-low": "#f5f4e8",
+                    "inverse-surface": "#303129",
+                    "on-error": "#ffffff",
+                    "inverse-primary": "#c1c7cf",
+                    "on-background": "#1b1c15",
+                    "surface-dim": "#dbdbcf",
+                    "on-error-container": "#93000a",
+                    "surface-container": "#efeee3",
+                    "secondary-fixed-dim": "#d1bfe9",
+                    "primary-fixed-dim": "#c1c7cf",
+                    "error": "#ba1a1a",
+                    "primary-container": "#2f353b",
+                    "background": "#fbfaee",
+                    "surface": "#fbfaee",
+                    "surface-tint": "#595f66",
+                    "primary-fixed": "#dde3eb",
+                    "tertiary-fixed": "#b0eeed",
+                    "tertiary-container": "#003b3b",
+                    "on-surface-variant": "#44474a",
+                    "secondary-container": "#e5d2fe",
+                    "secondary": "#67587c",
+                    "tertiary-fixed-dim": "#94d1d0",
+                    "on-secondary-fixed-variant": "#4e4063",
+                    "outline": "#75777b",
+                    "on-surface": "#1b1c15",
+                    "error-container": "#ffdad6",
+                    "surface-container-lowest": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "on-tertiary": "#ffffff",
+                    "surface-variant": "#e4e3d7",
+                    "on-tertiary-fixed": "#002020",
+                    "primary": "#1a2025",
+                    "on-secondary-fixed": "#221535",
+                    "surface-bright": "#fbfaee",
+                    "on-primary-container": "#989da5",
+                    "on-primary-fixed": "#161c22",
+                    "on-tertiary-fixed-variant": "#034f4f",
+                    "secondary-fixed": "#ecdcff",
+                    "on-secondary": "#ffffff",
+                    "on-primary-fixed-variant": "#41474e",
+                    "surface-container-highest": "#e4e3d7",
+                    "on-secondary-container": "#67587d",
+                    "inverse-on-surface": "#f2f1e5"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "base-unit": "4px",
+                    "xl": "4rem",
+                    "xs": "0.5rem",
+                    "sm": "1rem",
+                    "lg": "2.5rem",
+                    "gutter": "24px",
+                    "md": "1.5rem",
+                    "margin": "32px"
+            },
+            "fontFamily": {
+                    "body-md": ["Noto Serif"],
+                    "title-sm": ["Noto Serif"],
+                    "headline-md": ["Noto Serif"],
+                    "display-lg": ["Noto Serif"],
+                    "label-caps": ["Work Sans"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "title-sm": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "headline-md": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        .recipe-card-shadow {
+            box-shadow: 0 4px 20px -2px rgba(27, 28, 21, 0.05);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col lg:flex-row overflow-hidden">
+<!-- SideNavBar (Shared Component) -->
+<aside class="hidden lg:flex flex-col h-screen w-64 border-r border-slate-900/10 bg-slate-50 p-4 space-y-2 shrink-0">
+<div class="mb-8 px-2 py-4">
+<h1 class="text-xl font-bold font-serif text-slate-900">BigBadMeals</h1>
+<p class="text-xs font-label-caps text-slate-500 mt-1">Epicurean Suite</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-200 transition-all font-serif font-medium text-sm" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-slate-900 text-slate-50 rounded-sm font-serif font-medium text-sm" href="#">
+<span class="material-symbols-outlined" data-icon="restaurant_menu">restaurant_menu</span>
+<span>Recipes</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-200 transition-all font-serif font-medium text-sm" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
+<span>Meal Plans</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-200 transition-all font-serif font-medium text-sm" href="#">
+<span class="material-symbols-outlined" data-icon="shopping_basket">shopping_basket</span>
+<span>Grocery List</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-200 transition-all font-serif font-medium text-sm" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+<div class="mt-auto border-t border-slate-900/10 pt-4 flex items-center gap-3 px-2">
+<div class="w-10 h-10 rounded-full bg-surface-variant overflow-hidden">
+<img alt="Chef profile" data-alt="A professional headshot of a chef wearing a clean white double-breasted culinary coat. The background is a soft, blurred high-end bistro kitchen with warm ambient lighting. The chef has a confident, warm expression. The overall style is editorial and clean, emphasizing professionalism and culinary expertise." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4f8xZkCB5tO3vB3JZQ1nDBV--6qOsP8X_AnUS8eYylvE5f_9iQ8wJ1BHe4tzG3r4D4T-45kBO9kGz__ON5R0i2XzRjopDKsrDXYteKmfvQHIYHUm-RGcI6fXGhLZjsQwQjO6RK1iMdN3NYujlhDEio9GRbzEbh673IkVGRqXTWzZk2dUrsslhouPHqvc3luwrBgdvwd9lUBI5FLxEQkTSP7or4jWJTd_pNYTCzk9fUvwbaSjSGo_UKWHJ6OB1uKH9pgRYItxUYRhp"/>
+</div>
+<div>
+<p class="text-sm font-bold text-slate-900">Julian Voss</p>
+<p class="text-[10px] uppercase font-label-caps text-slate-500">Executive Chef</p>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 flex flex-col h-screen overflow-hidden">
+<!-- TopAppBar (Shared Component) -->
+<header class="bg-slate-50/95 backdrop-blur-md sticky top-0 z-40 border-b border-slate-900/10 shadow-sm">
+<div class="flex justify-between items-center px-6 py-4 w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-bold font-serif text-slate-900 lg:hidden">BigBadMeals</span>
+<div class="hidden md:flex items-center bg-surface-container rounded-full px-4 py-2 w-96 border border-outline/10">
+<span class="material-symbols-outlined text-outline text-sm" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm font-body-md w-full ml-2 placeholder-outline-variant" placeholder="Search culinary archives..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-slate-900/5 transition-colors rounded-full text-slate-900">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="bg-primary text-on-primary px-5 py-2 rounded-full flex items-center gap-2 font-label-caps transition-transform active:scale-95">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+<span>Add Recipe</span>
+</button>
+<button class="p-2 hover:bg-slate-900/5 transition-colors rounded-full text-slate-900 md:hidden">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Scrollable Content -->
+<div class="flex-1 overflow-y-auto bg-background p-6 md:p-8 lg:p-12">
+<div class="max-w-7xl mx-auto space-y-12">
+<!-- Gallery Header -->
+<section class="space-y-4">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<h2 class="font-display-lg text-primary">Recipe Gallery</h2>
+<p class="font-body-md text-on-surface-variant max-w-2xl mt-2">A curated collection of contemporary culinary creations, organized for the discerning kitchen.</p>
+</div>
+<div class="flex items-center gap-3 border-b border-outline/20 pb-2">
+<span class="font-label-caps text-on-surface-variant">Filter by:</span>
+<select class="bg-transparent border-none font-label-caps text-primary focus:ring-0 cursor-pointer">
+<option>Recently Added</option>
+<option>Prep Time</option>
+<option>Complexity</option>
+</select>
+</div>
+</div>
+</section>
+<!-- High-Density Bento Grid -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-gutter">
+<!-- Recipe Card 1 -->
+<div class="group bg-surface-container-low rounded-xl overflow-hidden recipe-card-shadow border border-white transition-all hover:bg-surface-container-high">
+<div class="aspect-[4/3] overflow-hidden relative">
+<img alt="Avocado Bowl" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="A top-down photograph of a vibrant, healthy harvest bowl featuring perfectly sliced avocado, grilled tofu, fresh microgreens, and roasted sweet potatoes. The composition is artistic and minimalist, set against a matte gray stoneware background. The lighting is bright and natural, coming from the side to create soft, detailed textures. The overall aesthetic is professional, modern, and healthy." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1MwbIhtB4mqgLMAexARreH4fjsiJo5QSouj8xVbbMnedEQn_ULYZBPmV-6J-AG7EEuDrWU8MTO0t7K17xvhrH1rrt95R5wu-5KsWQcXI-mKx4w4pS8m00yL5UQAgBLvUr2SsSrHEqXZXpIZIfm2jOD31NvrwfZYXpOABVnTYN7fppFN7IvNTHiKKj6QqKd4DNSg3Kux7PgpuOZxQDepRgYvjxw1Fha_pQBr0qnnxlR33-XStzGPa4KYxCi-I_2fiUF1GYIa94n8Io"/>
+<div class="absolute top-3 left-3 flex flex-wrap gap-2">
+<span class="bg-white/90 backdrop-blur-sm text-primary px-2 py-1 rounded-full font-label-caps text-[10px]">Vegetarian</span>
+<span class="bg-tertiary-fixed text-on-tertiary-fixed-variant px-2 py-1 rounded-full font-label-caps text-[10px]">Entree</span>
+</div>
+</div>
+<div class="p-5 space-y-3">
+<div class="flex justify-between items-start">
+<h3 class="font-title-sm text-primary group-hover:text-tertiary transition-colors">Truffle Harvest Bowl</h3>
+<button class="text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="favorite">favorite</span>
+</button>
+</div>
+<div class="flex items-center gap-4 text-outline font-label-caps text-[11px]">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm" data-icon="schedule">schedule</span> 20m Prep</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm" data-icon="signal_cellular_alt">signal_cellular_alt</span> Beginner</span>
+</div>
+</div>
+</div>
+<!-- Recipe Card 2 -->
+<div class="group bg-surface-container-low rounded-xl overflow-hidden recipe-card-shadow border border-white transition-all hover:bg-surface-container-high">
+<div class="aspect-[4/3] overflow-hidden relative">
+<img alt="Seared Steak" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="A close-up shot of a perfectly seared ribeye steak resting on a bed of rosemary-infused butter sauce. The meat is sliced to reveal a perfect medium-rare pink center. The plate is elegant, dark ceramic, and the background is a moody, dimly lit fine-dining setting. Glistening juices and sea salt crystals are visible on the surface of the meat. High-end culinary photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBaGI9Vizb04ls08TBacjMvgiWwze-bOAhD-vZVltP9AYVBzPWB6t8qP170C2phXRA7qkjyAx1WBlTCqKsiDXFjNdCqwuCKTdK-GBidr6CLYP04_f-AklzOd8IZky6R8tbXCzHGT1VGtoU2Uw9lmvk1bIN4u27ZCTk9eWX5hyP4Mrwlbha3cc5EURHZI7S_046GmLq2JGL3c92jEPYln6ulgkBgsZODS7l-PaaqymJcTkTWv0EPSPCXltk7JFKvKOPy14nkZEN-SnQD"/>
+<div class="absolute top-3 left-3 flex flex-wrap gap-2">
+<span class="bg-white/90 backdrop-blur-sm text-primary px-2 py-1 rounded-full font-label-caps text-[10px]">Premium</span>
+<span class="bg-tertiary-fixed text-on-tertiary-fixed-variant px-2 py-1 rounded-full font-label-caps text-[10px]">Main</span>
+</div>
+</div>
+<div class="p-5 space-y-3">
+<div class="flex justify-between items-start">
+<h3 class="font-title-sm text-primary group-hover:text-tertiary transition-colors">Rosemary Prime Rib</h3>
+<button class="text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="favorite">favorite</span>
+</button>
+</div>
+<div class="flex items-center gap-4 text-outline font-label-caps text-[11px]">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm" data-icon="schedule">schedule</span> 45m Prep</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm" data-icon="signal_cellular_alt">signal_cellular_alt</span> Advanced</span>
+</div>
+</div>
+</div>
+<!-- Recipe Card 3 -->
+<div class="group bg-surface-container-low rounded-xl overflow-hidden recipe-card-shadow border border-white transition-all hover:bg-surface-container-high">
+<div class="aspect-[4/3] overflow-hidden relative">
+<img alt="Grilled Salmon" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="A beautifully plated piece of grilled Atlantic salmon with charred lemon halves and grilled asparagus. The plate is a crisp white porcelain set against a rustic light oak wooden table. Soft morning light streams in, highlighting the flaky texture of the fish and the vibrant green of the vegetables. The mood is sophisticated yet approachable, evoking a high-end coastal bistro vibe." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCg7pHlze-wyAz_Nm-qhS3_6uXfYQ7wUnGKc-4TKmPMma8X6YRSd_Mb66cYMSMitIkaOAIgNO18qG7JiP39miHNLVHK2a4skqajyTtdMDBggwjY1Cze65IU4WE8pZPaKifr0UvqzIPt-SU-XuEVwwQtq1s9rNrhBjpUiLJ2Pvuiw8ZLGYMPnvhrMUiKMQukSuAgWfdcu-uL1-SFrkq7ShIlVwh-ZxAA_Z1pYxfnIsaSDXwiWrsk9UPZ1T2mP-YPVU2RyHvwujZPnsj5"/>
+<div class="absolute top-3 left-3 flex flex-wrap gap-2">
+<span class="bg-white/90 backdrop-blur-sm text-primary px-2 py-1 rounded-full font-label-caps text-[10px]">Keto</span>
+<span class="bg-tertiary-fixed text-on-tertiary-fixed-variant px-2 py-1 rounded-full font-label-caps text-[10px]">Seafood</span>
+</div>
+</div>
+<div class="p-5 space-y-3">
+<div class="flex justify-between items-start">
+<h3 class="font-title-sm text-primary group-hover:text-tertiary transition-colors">Citrus Cedar Salmon</h3>
+<button class="text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="favorite">favorite</span>
+</button>
+</div>
+<div class="flex items-center gap-4 text-outline font-label-caps text-[11px]">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm" data-icon="schedule">schedule</span> 25m Prep</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm" data-icon="signal_cellular_alt">signal_cellular_alt</span> Intermediate</span>
+</div>
+</div>
+</div>
+<!-- Recipe Card 4 -->
+<div class="group bg-surface-container-low rounded-xl overflow-hidden recipe-card-shadow border border-white transition-all hover:bg-surface-container-high">
+<div class="aspect-[4/3] overflow-hidden relative">
+<img alt="Pasta Aglio" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="A stylized plate of Spaghetti Aglio e Olio with generous sprinkles of fresh parsley and red pepper flakes. The pasta is perfectly swirled in the center of a minimalist matte black plate. The background features a dark, moody kitchen environment with selective spotlighting on the dish, creating an intimate, premium editorial look. Authentic textures and subtle steam are visible." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYRVaTRgRW6MzwpvkZlbiCjzF5QyId2Ko6eKpXJttc8v5w2qAyLqOACMht7RAYZt-XCjkOHrDEmO4DxeHDBJEPQmwi-l6WJ2n7reP2YPBRSE9lGZuo3PlcFdOLAO_oZails6F0LMbcUAmof8Ojx98WVBX8ML3BxXJ03t8mG9rC10gFxuTtQUwIMWRkZD8QaHr8mER83O_U8pl8ER5xT9Sn_tA67SQcpdxf4BYjRYrZYla7KMEzRIBcP5lR6CW1oNK6gCWjQwF_mupC"/>
+<div class="absolute top-3 left-3 flex flex-wrap gap-2">
+<span class="bg-white/90 backdrop-blur-sm text-primary px-2 py-1 rounded-full font-label-caps text-[10px]">Italian</span>
+<span class="bg-tertiary-fixed text-on-tertiary-fixed-variant px-2 py-1 rounded-full font-label-caps text-[10px]">Pasta</span>
+</div>
+</div>
+<div class="p-5 space-y-3">
+<div class="flex justify-between items-start">
+<h3 class="font-title-sm text-primary group-hover:text-tertiary transition-colors">Signature Aglio e Olio</h3>
+<button class="text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="favorite">favorite</span>
+</button>
+</div>
+<div class="flex items-center gap-4 text-outline font-label-caps text-[11px]">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm" data-icon="schedule">schedule</span> 15m Prep</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm" data-icon="signal_cellular_alt">signal_cellular_alt</span> Beginner</span>
+</div>
+</div>
+</div>
+<!-- Recipe Card 5 -->
+<div class="group bg-surface-container-low rounded-xl overflow-hidden recipe-card-shadow border border-white transition-all hover:bg-surface-container-high">
+<div class="aspect-[4/3] overflow-hidden relative">
+<img alt="Berry Tart" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="A delicate berry tart with a crisp buttery crust, filled with vanilla bean custard and topped with fresh raspberries, blueberries, and a light dusting of powdered sugar. The tart is presented on a minimalist white ceramic pedestal. The lighting is ethereal and soft, creating a high-end patisserie aesthetic. Every berry looks fresh and vibrant against the creamy custard background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLCVLb5S0RImvlx264LHRhxFDqoCA5x65jspRF-k9xc-qgAOEsvaUkfgLi5nbTSvf7OEsYIIBPPHk5Sl1xkYxYo8kpeLBEIoQARSg-c0WFhHAkhgJIC9Xvuc1FmH9PnPxrEyDfGRSpmxjOo-NvIKnF9eL00cMBCs5U3pek4MASeit-3czvce8BN8faUno4pID0GThSbsYEcHgqBFDTxoaOvG4QzBOujhpXHwdl7uGrHx1eflP0FbgTbxXB2vz_0pljeMiHl8iq5PPk"/>
+<div class="absolute top-3 left-3 flex flex-wrap gap-2">
+<span class="bg-white/90 backdrop-blur-sm text-primary px-2 py-1 rounded-full font-label-caps text-[10px]">Dessert</span>
+<span class="bg-tertiary-fixed text-on-tertiary-fixed-variant px-2 py-1 rounded-full font-label-caps text-[10px]">Pastry</span>
+</div>
+</div>
+<div class="p-5 space-y-3">
+<div class="flex justify-between items-start">
+<h3 class="font-title-sm text-primary group-hover:text-tertiary transition-colors">Wild Berry Custard Tart</h3>
+<button class="text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="favorite">favorite</span>
+</button>
+</div>
+<div class="flex items-center gap-4 text-outline font-label-caps text-[11px]">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm" data-icon="schedule">schedule</span> 60m Prep</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm" data-icon="signal_cellular_alt">signal_cellular_alt</span> Advanced</span>
+</div>
+</div>
+</div>
+<!-- Recipe Card 6 -->
+<div class="group bg-surface-container-low rounded-xl overflow-hidden recipe-card-shadow border border-white transition-all hover:bg-surface-container-high">
+<div class="aspect-[4/3] overflow-hidden relative">
+<img alt="Garden Salad" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="A vibrant Mediterranean garden salad with kalamata olives, feta cheese cubes, heirloom tomatoes, and crisp cucumber slices. A light vinaigrette is being drizzled over the salad, captured with a fast shutter speed to show individual droplets. The salad is in a large, handmade stoneware bowl. The style is bright, fresh, and emphasizes organic, high-quality ingredients in a lifestyle culinary setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgWGbjdO9f8-5F3UuaKD4A0ljqsrm9eR0jSWGkubNa6HRzZsCzfYA1nCTWv80Y5d_92bLYy-KbInWoY29wTTnLySnr4peCWU_apyczkk9vbsQtpduJWFZgLEN0T5Pe4qksg3N_E-ze2bj8hOjPj7kxNPYyR9dEQuCctgYg3x4bw1DiibnHZIWA_usVAf-HNexhBLcYmF_yhwUORPvYoFkenLu3gMouH5JxrHpq-ppWkXNyieUu4Hceo2-6G_EUGoLLYJsOrW19xxs1"/>
+<div class="absolute top-3 left-3 flex flex-wrap gap-2">
+<span class="bg-white/90 backdrop-blur-sm text-primary px-2 py-1 rounded-full font-label-caps text-[10px]">Healthy</span>
+<span class="bg-tertiary-fixed text-on-tertiary-fixed-variant px-2 py-1 rounded-full font-label-caps text-[10px]">Salad</span>
+</div>
+</div>
+<div class="p-5 space-y-3">
+<div class="flex justify-between items-start">
+<h3 class="font-title-sm text-primary group-hover:text-tertiary transition-colors">Mediterranean Harvest</h3>
+<button class="text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="favorite">favorite</span>
+</button>
+</div>
+<div class="flex items-center gap-4 text-outline font-label-caps text-[11px]">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm" data-icon="schedule">schedule</span> 15m Prep</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm" data-icon="signal_cellular_alt">signal_cellular_alt</span> Beginner</span>
+</div>
+</div>
+</div>
+<!-- Recipe Card 7 -->
+<div class="group bg-surface-container-low rounded-xl overflow-hidden recipe-card-shadow border border-white transition-all hover:bg-surface-container-high">
+<div class="aspect-[4/3] overflow-hidden relative">
+<img alt="Autumn Soup" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="A warm, creamy butternut squash soup served in a rustic ceramic bowl. Swirls of crème fraîche and roasted pumpkin seeds garnish the surface. A crusty sourdough baguette slice rests on the side. The lighting is warm and golden, evoking a cozy autumn evening. The photography focus is tight on the bowl, highlighting the velvety texture of the soup and the crispness of the seeds." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCD3-XehTHuqE0tMsSnDtcGd6lTlCR3MaYh22l2JNz7Xvupp5zeQiWRMK8jSnuI9JHc-sL6k6FAXAlCO1q-4qL-CaY9g0MhXm5utpzsSlVo6W0cvbcU55r6JQlq_wOuRGPveUiy_URwAGoolvudIlDCjQV3rZtQWfMJQNlQzBjXfxhavQUjDrDq30goW2F93xu2Y_5CKW_r5S3zauwXv0dBs-1kjLDWHmn1V46Uy6p5ntZevvoBblJEFDnNY7IN7Qc2nIq4yWsBBdlN"/>
+<div class="absolute top-3 left-3 flex flex-wrap gap-2">
+<span class="bg-white/90 backdrop-blur-sm text-primary px-2 py-1 rounded-full font-label-caps text-[10px]">Vegan</span>
+<span class="bg-tertiary-fixed text-on-tertiary-fixed-variant px-2 py-1 rounded-full font-label-caps text-[10px]">Soup</span>
+</div>
+</div>
+<div class="p-5 space-y-3">
+<div class="flex justify-between items-start">
+<h3 class="font-title-sm text-primary group-hover:text-tertiary transition-colors">Roasted Squash Velouté</h3>
+<button class="text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="favorite">favorite</span>
+</button>
+</div>
+<div class="flex items-center gap-4 text-outline font-label-caps text-[11px]">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm" data-icon="schedule">schedule</span> 40m Prep</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm" data-icon="signal_cellular_alt">signal_cellular_alt</span> Intermediate</span>
+</div>
+</div>
+</div>
+<!-- Recipe Card 8 -->
+<div class="group bg-surface-container-low rounded-xl overflow-hidden recipe-card-shadow border border-white transition-all hover:bg-surface-container-high">
+<div class="aspect-[4/3] overflow-hidden relative">
+<img alt="Wood-fired Pizza" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="An authentic Neapolitan-style pizza with charred leopard spots on the crust, topped with fresh mozzarella, vibrant red tomato sauce, and whole basil leaves. The pizza is shown being lifted from a traditional brick oven on a wooden paddle. The environment is warm, with sparks of fire and a rustic kitchen aesthetic. The photography is dynamic and artisanal, highlighting the handcrafted nature of the meal." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDbXuHIeaAYzmf1aFidh0d3tTLtsPctI-7x_p3GPTOVkPYUEKPM5m5ICi64jjGvMbQN_6ag05fvjBT0_rUXXPQYFWOjGwDBkaYh4rRWY874rg61Zjp1-cRV-0GuZXnA67bz48raP7IIvLkfNm259PquTPU8NtlUvfj_Fnhb1OBGQjIIvt0RP7NqbKIci8Q01nsTU00IxMD95MByuhydTYF-2OTCc6nQ3pSuTiaPvYsT5xDSF5OEUIcGZl7cuePzSBz-QBUdl9wS03nq"/>
+<div class="absolute top-3 left-3 flex flex-wrap gap-2">
+<span class="bg-white/90 backdrop-blur-sm text-primary px-2 py-1 rounded-full font-label-caps text-[10px]">Classic</span>
+<span class="bg-tertiary-fixed text-on-tertiary-fixed-variant px-2 py-1 rounded-full font-label-caps text-[10px]">Dinner</span>
+</div>
+</div>
+<div class="p-5 space-y-3">
+<div class="flex justify-between items-start">
+<h3 class="font-title-sm text-primary group-hover:text-tertiary transition-colors">Brick Oven Margherita</h3>
+<button class="text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="favorite">favorite</span>
+</button>
+</div>
+<div class="flex items-center gap-4 text-outline font-label-caps text-[11px]">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm" data-icon="schedule">schedule</span> 30m Prep</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm" data-icon="signal_cellular_alt">signal_cellular_alt</span> Intermediate</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Load More / Pagination -->
+<div class="flex justify-center pt-8 pb-12">
+<button class="border border-primary text-primary px-10 py-3 rounded-full font-label-caps hover:bg-primary hover:text-on-primary transition-colors active:scale-95">
+                        Discover More Recipes
+                    </button>
+</div>
+</div>
+</div>
+<!-- BottomNavBar (Shared Component - Mobile Only) -->
+<nav class="lg:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-3 pb-safe bg-slate-50 border-t border-slate-900/10 shadow-[0_-2px_10px_rgba(0,0,0,0.05)] z-50">
+<a class="flex flex-col items-center justify-center text-slate-500 py-1 px-3" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-sans text-[10px] uppercase tracking-widest font-bold mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-900 bg-slate-200 rounded-lg py-1 px-3" href="#">
+<span class="material-symbols-outlined" data-icon="restaurant">restaurant</span>
+<span class="font-sans text-[10px] uppercase tracking-widest font-bold mt-1">Recipes</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 py-1 px-3" href="#">
+<span class="material-symbols-outlined" data-icon="event_note">event_note</span>
+<span class="font-sans text-[10px] uppercase tracking-widest font-bold mt-1">Plans</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 py-1 px-3" href="#">
+<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+<span class="font-sans text-[10px] uppercase tracking-widest font-bold mt-1">List</span>
+</a>
+</nav>
+</main>
+</body></html>

@@ -70,26 +70,26 @@ export const Planner = () => {
     <div className="p-6 pb-24 space-y-6 max-w-4xl mx-auto">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold font-serif text-[#451a03]">Meal Planner</h1>
+          <h1 className="font-heading text-3xl font-black tracking-tight text-primary">Meal Planner</h1>
           <p className="text-sm text-muted-foreground italic">Balance your week with AI assistance</p>
         </div>
         <Button
           data-testid="planner-generate"
           onClick={handleGenerate} 
           disabled={generating}
-          className="rounded-2xl bg-gradient-to-r from-amber-500 to-orange-600 border-none shadow-xl shadow-amber-200 h-12 px-6"
+          className="rounded-2xl bg-primary hover:bg-primary/90 border-none shadow-sm h-12 px-6"
         >
           {generating ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Sparkles className="h-4 w-4 mr-2" />}
           Auto-Generate
         </Button>
       </div>
 
-      <div className="flex items-center justify-between bg-white rounded-[2rem] p-4 shadow-sm border border-amber-50">
+      <div className="flex items-center justify-between bg-card rounded-[1.5rem] p-4 shadow-sm border border-border/50">
         <Button variant="ghost" size="icon" onClick={() => setSelectedDate(addDays(selectedDate, -7))}>
           <ChevronLeft className="h-5 w-5" />
         </Button>
         <div className="flex items-center gap-2">
-          <CalendarIcon className="h-4 w-4 text-amber-500" />
+          <CalendarIcon className="h-4 w-4 text-primary" />
           <span className="font-bold">Week of {format(startOfWeek(selectedDate, { weekStartsOn: 1 }), 'MMM d, yyyy')}</span>
         </div>
         <Button variant="ghost" size="icon" onClick={() => setSelectedDate(addDays(selectedDate, 7))}>
@@ -104,49 +104,49 @@ export const Planner = () => {
           
           return (
             <Card key={i} className={cn(
-              "rounded-[2rem] border-none shadow-xl shadow-amber-900/5 overflow-hidden",
-              isToday ? "ring-2 ring-[#d97706] scale-[1.02]" : "opacity-80"
+              "rounded-[1.5rem] border border-border/50 shadow-sm overflow-hidden bg-card",
+              isToday ? "ring-2 ring-primary/30 scale-[1.01]" : "opacity-90"
             )}>
               <div className={cn(
                 "px-6 py-4 flex items-center justify-between",
-                isToday ? "bg-amber-100/50" : "bg-white"
+                isToday ? "bg-muted/60" : "bg-card"
               )}>
                 <div className="flex items-center gap-3">
                   <div className={cn(
                     "w-10 h-10 rounded-full flex items-center justify-center font-bold",
-                    isToday ? "bg-[#d97706] text-white" : "bg-amber-50 text-amber-600"
+                    isToday ? "bg-primary text-primary-foreground" : "bg-muted text-primary"
                   )}>
                     {format(day, 'd')}
                   </div>
                   <div>
                     <p className="font-bold text-lg">{format(day, 'EEEE')}</p>
-                    {isToday && <p className="text-[10px] uppercase font-bold text-amber-600 tracking-tighter">TODAY</p>}
+                    {isToday && <p className="font-label text-[10px] uppercase font-semibold text-primary tracking-widest">TODAY</p>}
                   </div>
                 </div>
-                <Button size="icon" variant="ghost" className="rounded-xl hover:bg-amber-100">
-                  <Plus className="h-5 w-5 text-amber-500" />
+                <Button size="icon" variant="ghost" className="rounded-xl hover:bg-muted">
+                  <Plus className="h-5 w-5 text-muted-foreground" />
                 </Button>
               </div>
-              <CardContent className="p-0 bg-white">
-                <div className="divide-y divide-amber-50/50">
+              <CardContent className="p-0 bg-card">
+                <div className="divide-y divide-border/60">
                   {['breakfast', 'lunch', 'dinner'].map((mealType) => {
                     const meal = meals.find(m => m.type === mealType);
                     return (
                       <div key={mealType} className="px-6 py-4 flex items-center justify-between group">
                         <div className="flex items-center gap-4">
-                          <div className="w-4 h-4 rounded-full border-2 border-amber-100 flex-shrink-0" />
+                          <div className="w-4 h-4 rounded-full border-2 border-border flex-shrink-0" />
                           <div>
-                            <p className="text-[10px] uppercase font-bold text-amber-500/50 tracking-widest">{mealType}</p>
+                            <p className="font-label text-[10px] uppercase font-semibold text-muted-foreground tracking-[0.22em]">{mealType}</p>
                             <p className={cn(
                               "font-medium",
-                              meal ? "text-[#451a03]" : "text-[#92400e]/30 italic"
+                              meal ? "text-primary" : "text-muted-foreground/50 italic"
                             )}>
                               {meal ? meal.recipeTitle : 'Tap to select meal'}
                             </p>
                           </div>
                         </div>
                         {meal && (
-                          <Badge variant="secondary" className="bg-amber-50 border-none group-hover:bg-amber-100 cursor-pointer">
+                          <Badge variant="secondary" className="bg-muted border-none group-hover:bg-muted/80 cursor-pointer text-primary">
                             View 
                           </Badge>
                         )}

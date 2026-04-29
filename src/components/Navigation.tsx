@@ -20,7 +20,7 @@ export const Navigation: React.FC<NavigationProps> = ({ activeTab, setActiveTab 
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-50 flex h-20 items-center justify-around border-t border-amber-100 bg-white/80 px-4 pb-2 backdrop-blur-xl"
+      className="fixed bottom-0 left-0 right-0 z-50 flex h-20 items-center justify-around border-t border-border bg-background/80 px-4 pb-2 backdrop-blur-xl shadow-[0_-4px_20px_-5px_rgba(47,53,59,0.06)]"
       aria-label="Primary navigation"
       data-testid="nav-primary"
     >
@@ -34,16 +34,18 @@ export const Navigation: React.FC<NavigationProps> = ({ activeTab, setActiveTab 
             data-testid={`nav-${item.id}`}
             className={cn(
               "flex flex-col items-center justify-center space-y-1 transition-all duration-300",
-              isActive ? "text-[#d97706]" : "text-[#92400e]/40 hover:text-[#92400e]/60"
+              isActive ? "text-primary" : "text-muted-foreground hover:text-foreground"
             )}
           >
-            <div className={cn(
-              "rounded-2xl p-2 transition-all duration-300",
-              isActive ? "bg-amber-100/50 scale-110 shadow-sm" : ""
-            )}>
+            <div
+              className={cn(
+                "rounded-2xl p-2 transition-all duration-300",
+                isActive ? "bg-muted scale-110 shadow-sm shadow-black/5" : ""
+              )}
+            >
               <Icon className="h-6 w-6" />
             </div>
-            <span className="text-[10px] font-bold uppercase tracking-widest">{item.label}</span>
+            <span className="font-label text-[10px] font-semibold uppercase tracking-widest">{item.label}</span>
           </button>
         );
       })}
