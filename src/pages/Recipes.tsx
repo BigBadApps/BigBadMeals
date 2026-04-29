@@ -8,10 +8,11 @@ import { Badge } from '@/components/ui/badge';
 import { Search, Plus, Filter, ChefHat, Timer, Flame, Heart, Trash2, Camera, Link, FileText, Loader2, X } from 'lucide-react';
 import { dataService } from '../services/dataService';
 import { extractRecipeFromText, extractRecipeFromImage, extractRecipeFromUrl } from '../services/geminiService';
-import { Recipe } from '../types';
+import { DayPlan, MealPlan, Recipe } from '../types';
 import { toast } from 'sonner';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
+import { addDays, format, startOfWeek } from 'date-fns';
 
 export const Recipes = () => {
   const { user } = useContext(AuthContext);
@@ -33,6 +34,67 @@ export const Recipes = () => {
     const data = await dataService.getRecipes(user!.uid);
     setRecipes(data);
     setLoading(false);
+  };
+
+  const addRecipeToMealPlan = async (recipe: Recipe) => {
+    if (!user) {
+      toast.error('Please sign in to add meals to your plan');
+      return;
+    }
+    if (!recipe.id) {
+      toast.error('Recipe is missing an id');
+      return;
+    }
+
+    const plans = await dataService.getMealPlans(user.uid);
+
+    const todayIso = format(new Date(), 'yyyy-MM-dd');
+    const weekStartIso = format(startOfWeek(new Date(), { weekStartsOn: 1 }), 'yyyy-MM-dd');
+    const weekEndIso = format(addDays(new Date(`${weekStartIso}T00:00:00.000Z`), 6), 'yyyy-MM-dd');
+
+    let plan: MealPlan | null = plans.length > 0 ? plans[0] : null;
+    if (!plan) {
+      const newPlan: Omit<MealPlan, 'id'> = {
+        ownerId: user.uid,
+        startDate: weekStartIso,
+        endDate: weekEndIso,
+        days: [],
+      };
+      const id = await dataService.addMealPlan(user.uid, newPlan);
+      if (!id) {
+        toast.error('Failed to create meal plan');
+        return;
+      }
+      plan = { ...newPlan, id };
+    }
+
+    const existingDay = plan.days.find((d) => d.date === todayIso);
+    const nextMeals = existingDay ? [...existingDay.meals] : [];
+    const alreadyAdded = nextMeals.some((m) => m.recipeId === recipe.id);
+    if (alreadyAdded) {
+      toast.message('Already in today’s plan');
+      return;
+    }
+
+    nextMeals.push({
+      type: 'dinner',
+      recipeId: recipe.id,
+      recipeTitle: recipe.title,
+    });
+
+    const nextDays: DayPlan[] = existingDay
+      ? plan.days.map((d) => (d.date === todayIso ? { ...d, meals: nextMeals } : d))
+      : [...plan.days, { date: todayIso, meals: nextMeals }];
+
+    await dataService.updateMealPlan(user.uid, plan.id!, {
+      ownerId: plan.ownerId,
+      startDate: plan.startDate,
+      endDate: plan.endDate,
+      days: nextDays,
+    });
+
+    toast.success('Added to today’s meal plan');
+    setActiveRecipe(null);
   };
 
   const handleImportUrl = async () => {
@@ -522,7 +584,7 @@ export const Recipes = () => {
                 <Button variant="outline" className="rounded-xl h-12 order-2 sm:order-1" onClick={() => deleteRecipe(activeRecipe!.id!)}>
                   <Trash2 className="h-4 w-4 mr-2" /> Delete Recipe
                 </Button>
-                <Button className="rounded-xl h-12 bg-[#d97706] order-1 sm:order-2">
+                <Button className="rounded-xl h-12 bg-[#d97706] order-1 sm:order-2" onClick={() => addRecipeToMealPlan(activeRecipe!)}>
                   Add to Meal Plan
                 </Button>
               </div>

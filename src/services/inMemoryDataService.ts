@@ -75,6 +75,13 @@ export const inMemoryDataService = {
     return id;
   },
 
+  async updateMealPlan(userId: string, planId: string, updates: Partial<MealPlan>): Promise<void> {
+    const s = getStore(userId);
+    const existing = s.mealPlans.get(planId);
+    if (!existing) return;
+    s.mealPlans.set(planId, { ...existing, ...updates, id: planId });
+  },
+
   async getGroceryLists(userId: string): Promise<GroceryList[]> {
     const s = getStore(userId);
     return Array.from(s.groceryLists.values()).sort((a, b) => descByIso(a.createdAt, b.createdAt));

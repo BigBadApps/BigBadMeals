@@ -135,6 +135,15 @@ export const firestoreService = {
     }
   },
 
+  async updateMealPlan(userId: string, planId: string, updates: Partial<MealPlan>): Promise<void> {
+    const path = `users/${userId}/mealPlans/${planId}`;
+    try {
+      await updateDoc(doc(db, 'users', userId, 'mealPlans', planId), sanitizeData(updates) as any);
+    } catch (e) {
+      handleFirestoreError(e, OperationType.UPDATE, path);
+    }
+  },
+
   // Grocery Lists
   async getGroceryLists(userId: string): Promise<GroceryList[]> {
     const path = `users/${userId}/groceryLists`;
