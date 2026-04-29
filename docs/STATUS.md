@@ -18,7 +18,7 @@ _Last updated: 2026-04-28 (paused — save progress)._
 
 ## Shipping & automation
 
-- **GitHub:** CI (`build`, `e2e`), squash auto-merge for PR author `bigbadmn-sys`, `pr-publish.sh` / `--wait`, PR CI notify (see [`AGENTS.md`](../AGENTS.md)).
+- **GitHub:** repo moved to org **`BigBadApps`** (`BigBadApps/BigBadMeals`). CI (`build`, `e2e`), squash auto-merge for allowlisted PR author login (`bigbadmn-sys`), `pr-publish.sh` / `--wait`, PR CI notify (see [`AGENTS.md`](../AGENTS.md)).
 - **Cursor:** `.cursor/sandbox.json` (network allow + shared build cache); agent notes in `AGENTS.md`.
 - **Deploy (documented, not run for you):** `Dockerfile`, `.dockerignore`, `.gcloudignore` + **Cloud Run** steps in [`README.md`](../README.md) (same product family as AI Studio → Cloud Run). **You** still run `gcloud` with your project and secrets.
 
