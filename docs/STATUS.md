@@ -2,7 +2,7 @@
 
 This file is the **handoff anchor** when work pauses: what is true in the repo, what was verified, and what to do next.
 
-_Last updated: 2026-04-28 (paused — save progress)._
+_Last updated: 2026-04-29._
 
 ## Product shape
 
@@ -20,12 +20,14 @@ _Last updated: 2026-04-28 (paused — save progress)._
 
 - **GitHub:** repo moved to org **`BigBadApps`** (`BigBadApps/BigBadMeals`). CI (`build`, `e2e`), squash auto-merge for allowlisted PR author login (`bigbadmn-sys`), `pr-publish.sh` / `--wait`, PR CI notify (see [`AGENTS.md`](../AGENTS.md)).
 - **Cursor:** `.cursor/sandbox.json` (network allow + shared build cache); agent notes in `AGENTS.md`.
-- **Deploy (documented, not run for you):** `Dockerfile`, `.dockerignore`, `.gcloudignore` + **Cloud Run** steps in [`README.md`](../README.md) (same product family as AI Studio → Cloud Run). **You** still run `gcloud` with your project and secrets.
+- **Deploy (Cloud Run):** `Dockerfile`, `.dockerignore`, `.gcloudignore` + `npm run deploy:cloudrun`.
+  - **Live URL:** `https://bigbad-meals-2d4qqtkkza-uc.a.run.app`
+  - **Verify:** `curl -fsSL https://bigbad-meals-2d4qqtkkza-uc.a.run.app/api/health` and confirm a fresh `latestReadyRevisionName` (see `docs/runbooks/cloud-run.md`).
 
 ## Next session (suggested order)
 
-1. **Deploy to Cloud Run** — follow README “Deploy to Google Cloud Run”; create Secret Manager `gemini-api-key`; deploy image; copy **Service URL**.
-2. **Firebase** — Authentication → Authorized domains → add your **`*.run.app`** host (and keep `localhost` for dev).
+1. **Confirm Firebase domains** — Authentication → Authorized domains → ensure the Cloud Run host is present (and keep `localhost` for dev).
+2. **Smoke on iPhone** — open the Cloud Run URL in Safari; exercise sign-in and main tabs.
 3. **iPhone** — Open the Cloud Run HTTPS URL in Safari; exercise sign-in and main tabs.
 4. **Optional:** `REQUIRE_AI_AUTH=true` on the Cloud Run service for production AI routes; tune rate limits / memory.
 

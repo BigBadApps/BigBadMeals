@@ -28,6 +28,27 @@ Use a long enough tool wait when running `pr:publish:wait` in automation (this r
 
 Use this when you push work and need a PR, CI, merge, or status without guessing URLs.
 
+---
+
+## Deployment (Cloud Run) — how to know it’s “fully pushed”
+
+Merging a PR does **not** automatically deploy in this repo. Treat deployment as a separate step with explicit verification.
+
+### Recommended procedure (agents)
+
+After merging a PR (or when asked to “push updates through Cloud”):
+
+1. Sync `main` locally.
+2. Deploy: `npm run deploy:cloudrun`
+3. Verify:
+   - `gcloud run services describe bigbad-meals --region us-central1 --format='value(status.latestReadyRevisionName)'`
+   - `curl -fsSL https://bigbad-meals-2d4qqtkkza-uc.a.run.app/api/health`
+4. External systems (as applicable):
+   - Firebase Auth authorized domains includes the current `*.run.app` hostname.
+   - Secret Manager bindings are intact (`gemini-api-key` accessible to Cloud Run runtime SA).
+
+Record the result (URL + revision) in `docs/STATUS.md` when pausing.
+
 ### Prerequisites (human / org settings)
 
 - **Pull requests:** [Allow auto-merge](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-auto-merge) enabled on the repo.

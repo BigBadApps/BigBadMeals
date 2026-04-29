@@ -105,6 +105,15 @@ gcloud run deploy "${SERVICE}" \
 
 Runbook: [`docs/runbooks/cloud-run.md`](docs/runbooks/cloud-run.md)
 
+### Verify the deploy
+
+After deploying, confirm the Cloud Run service is updated and healthy:
+
+```bash
+gcloud run services describe bigbad-meals --region us-central1 --format='value(status.latestReadyRevisionName)'
+curl -fsSL "https://bigbad-meals-2d4qqtkkza-uc.a.run.app/api/health"
+```
+
 ### Optional: deploy again from AI Studio
 
 If you still have the original app in **AI Studio**, its **Deploy** flow can target **Cloud Run** on a chosen project. That path is best for **stock** AI Studio exports; for this GitHub repo, **`gcloud builds submit` + `gcloud run deploy`** (above) is the repeatable source of truth.

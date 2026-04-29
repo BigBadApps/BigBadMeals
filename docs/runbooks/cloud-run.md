@@ -47,6 +47,25 @@ Recommended (script):
 REGION=us-central1 SERVICE=bigbad-meals bash scripts/deploy-cloudrun.sh
 ```
 
+## Verify the deploy (required)
+
+After the script completes, verify **Cloud Build**, **Cloud Run revision**, and the app **health endpoint**.
+
+```bash
+# Confirm the service has a new latestReadyRevisionName
+gcloud run services describe bigbad-meals --region us-central1 --format='value(status.latestReadyRevisionName)'
+
+# Confirm the service URL responds
+curl -fsSL "https://$(gcloud run services describe bigbad-meals --region us-central1 --format='value(status.url)' | sed 's#https\\?://##')/api/health"
+```
+
+If you need deeper verification:
+
+```bash
+REV="$(gcloud run services describe bigbad-meals --region us-central1 --format='value(status.latestReadyRevisionName)')"
+gcloud run revisions describe "$REV" --region us-central1 --format='yaml(metadata.creationTimestamp,spec.containers[0].image)'
+```
+
 ## After deploy
 
 1. Copy the Cloud Run **service URL** printed by the script.
@@ -54,6 +73,12 @@ REGION=us-central1 SERVICE=bigbad-meals bash scripts/deploy-cloudrun.sh
    - Authentication → Settings → **Authorized domains**
    - Add the Cloud Run host (e.g. `your-service-xxxxx-uc.a.run.app`)
 3. Open the Cloud Run URL on iPhone Safari.
+
+## External systems checklist
+
+- **Secret Manager**: `gemini-api-key` exists and Cloud Run runtime service account has `roles/secretmanager.secretAccessor`.
+- **Artifact Registry**: Docker repo exists (`cloud-run-source-deploy`) and Cloud Build has `roles/artifactregistry.writer`.
+- **Firebase Auth domains**: add the `*.run.app` hostname (otherwise sign-in fails).
 
 ## Production hardening (optional)
 
