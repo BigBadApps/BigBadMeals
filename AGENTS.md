@@ -1,6 +1,7 @@
 ## BigBadMeals agent entrypoint
 
 This repo adopts **BigBadCodingStandards** (vendored under `docs/coding-standards/`).
+Repository host: **`BigBadApps/BigBadMeals`** on GitHub.
 
 - **Standards (all agents, including Claude):** `docs/coding-standards/AGENTS.md`
 - **Lifecycle:** `docs/coding-standards/standards/PLAYBOOK.md`
@@ -52,7 +53,7 @@ Optional env for `pr-publish`: `PR_BASE` (default `main`), `PR_REMOTE` (default 
 | Workflow | Role |
 | --- | --- |
 | **CI** | `build` then `e2e` (Playwright smoke); gates merge. |
-| **Enable PR auto-merge** | For PRs into `main` whose **author** is `bigbadmn-sys`, enables **squash** auto-merge and deletes the head branch after merge. Filter uses `github.event.pull_request.user.login`, not `github.actor`. |
+| **Enable PR auto-merge** | For PRs into `main` in **`BigBadApps/BigBadMeals`** whose **author login** is allowlisted (currently `bigbadmn-sys`), enables **squash** auto-merge and deletes the head branch after merge. Filter uses `github.event.pull_request.user.login`, not `github.actor`. |
 | **PR CI notify** | After **CI** completes for a PR, posts a **PR comment** with conclusion, Actions run link, and the same `pr-status.sh` / `gh` commands—useful as a durable “CI finished” signal. |
 
 ### How an agent gets “notified” (no webhook into the IDE)

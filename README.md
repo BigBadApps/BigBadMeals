@@ -128,4 +128,4 @@ This repo adopts **BigBadCodingStandards**.
 
 ## Repository
 
-https://github.com/bigbadmn-sys/BigBadMeals
+https://github.com/BigBadApps/BigBadMeals
