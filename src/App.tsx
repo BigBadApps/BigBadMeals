@@ -13,12 +13,12 @@ export default function App() {
 
   const renderTab = () => {
     switch (activeTab) {
-      case 'dashboard': return <Dashboard />;
+      case 'dashboard': return <Dashboard navigate={setActiveTab} />;
       case 'recipes': return <Recipes />;
       case 'planner': return <Planner />;
       case 'shopping': return <Shopping />;
       case 'profile': return <Profile />;
-      default: return <Dashboard />;
+      default: return <Dashboard navigate={setActiveTab} />;
     }
   };
 
