@@ -15,7 +15,7 @@ export default function App() {
     switch (activeTab) {
       case 'dashboard': return <Dashboard navigate={setActiveTab} />;
       case 'recipes': return <Recipes />;
-      case 'planner': return <Planner />;
+      case 'planner': return <Planner navigate={setActiveTab} />;
       case 'shopping': return <Shopping />;
       case 'profile': return <Profile />;
       default: return <Dashboard navigate={setActiveTab} />;

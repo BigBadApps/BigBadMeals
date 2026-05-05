@@ -179,5 +179,14 @@ export const firestoreService = {
     } catch (e) {
       handleFirestoreError(e, OperationType.UPDATE, path);
     }
-  }
+  },
+
+  async deleteGroceryList(userId: string, listId: string): Promise<void> {
+    const path = `users/${userId}/groceryLists/${listId}`;
+    try {
+      await deleteDoc(doc(db, 'users', userId, 'groceryLists', listId));
+    } catch (e) {
+      handleFirestoreError(e, OperationType.DELETE, path);
+    }
+  },
 };

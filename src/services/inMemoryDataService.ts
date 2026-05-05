@@ -100,5 +100,9 @@ export const inMemoryDataService = {
     if (!existing) return;
     s.groceryLists.set(listId, { ...existing, ...updates, id: listId });
   },
+
+  async deleteGroceryList(userId: string, listId: string): Promise<void> {
+    getStore(userId).groceryLists.delete(listId);
+  },
 };
 

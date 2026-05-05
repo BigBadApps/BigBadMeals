@@ -4,6 +4,30 @@ export interface Ingredient {
   unit: string;
 }
 
+export type GroceryCategory =
+  | 'Bakery'
+  | 'Beverages'
+  | 'Canned & Jarred'
+  | 'Condiments & Spices'
+  | 'Dairy & Eggs'
+  | 'Frozen'
+  | 'Meat & Seafood'
+  | 'Pantry'
+  | 'Produce'
+  | 'Snacks'
+  | 'Supplies'
+  | 'Other';
+
+export interface CleanIngredient {
+  /** Display name suitable for shopping list */
+  name: string;
+  amount: string;
+  unit: string;
+  category: GroceryCategory;
+  /** Optional normalization key for de-duping */
+  key?: string;
+}
+
 export interface NutritionalInfo {
   calories: number;
   protein: number;
@@ -11,18 +35,27 @@ export interface NutritionalInfo {
   fat: number;
 }
 
+export type RecipeTag = 'breakfast' | 'lunch' | 'dinner' | 'snack' | 'appetizer' | 'drink' | 'main';
+
 export interface Recipe {
   id?: string;
   ownerId: string;
   title: string;
   description?: string;
   ingredients: Ingredient[];
+  /**
+   * Ingredients normalized for shopping lists (generated on import).
+   * Optional for backward compatibility with older saved recipes.
+   */
+  cleanIngredients?: CleanIngredient[];
   instructions: string[];
   nutritionalInfo?: NutritionalInfo;
   prepTime?: number;
   cookTime?: number;
   servings?: number;
   category?: string;
+  /** Multi-tag assignment used for sorting/filtering */
+  tags?: RecipeTag[];
   isFavorite?: boolean;
   sourceUrl?: string;
   imageUrl?: string;
@@ -53,6 +86,8 @@ export interface UserProfile {
 
 export interface Meal {
   type: 'breakfast' | 'lunch' | 'dinner' | 'snack';
+  /** Party Plan support: multiple meals per slot + sub-role */
+  slot?: 'main' | 'appetizer' | 'drink' | 'side' | 'dessert' | 'snack';
   recipeId: string;
   recipeTitle: string;
 }
@@ -68,6 +103,11 @@ export interface MealPlan {
   startDate: string;
   endDate: string;
   days: DayPlan[];
+  /**
+   * Weekly extras not tied to a specific day/meal (typed items or URL-derived items).
+   * Optional for backward compatibility.
+   */
+  snacksAndSupplies?: CleanIngredient[];
 }
 
 export interface GroceryItem {
@@ -75,7 +115,7 @@ export interface GroceryItem {
   amount: string;
   unit: string;
   checked: boolean;
-  category: string;
+  category: GroceryCategory | string;
   estimatedPrice?: number;
 }
 

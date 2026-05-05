@@ -8,11 +8,12 @@ import { Badge } from '@/components/ui/badge';
 import { Search, Plus, Filter, ChefHat, Timer, Flame, Heart, Trash2, Camera, Link, FileText, Loader2, X } from 'lucide-react';
 import { dataService } from '../services/dataService';
 import { extractRecipeFromText, extractRecipeFromImage, extractRecipeFromUrl } from '../services/geminiService';
-import { DayPlan, MealPlan, Recipe } from '../types';
+import type { DayPlan, MealPlan, Recipe, RecipeTag } from '../types';
 import { toast } from 'sonner';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { addDays, format, startOfWeek } from 'date-fns';
+import { deriveRecipeTags, normalizeIngredients, suggestRecipeImageUrl } from '../lib/ingredientUtils';
 
 export const Recipes = () => {
   const { user } = useContext(AuthContext);
@@ -25,6 +26,8 @@ export const Recipes = () => {
   const [importUrl, setImportUrl] = useState('');
   const [activeRecipe, setActiveRecipe] = useState<Recipe | null>(null);
   const [showUrlInput, setShowUrlInput] = useState(false);
+  const [tagFilter, setTagFilter] = useState<'all' | RecipeTag>('all');
+  const [filterOpen, setFilterOpen] = useState(false);
 
   useEffect(() => {
     if (user) loadRecipes();
@@ -52,6 +55,27 @@ export const Recipes = () => {
     const data = await dataService.getRecipes(user!.uid);
     setRecipes(data);
     setLoading(false);
+
+    // Backfill newer fields for older saved recipes (best-effort, cost-free).
+    const needsBackfill = data.filter((r) => !!r.id && (!r.tags || r.tags.length === 0 || !r.cleanIngredients || r.cleanIngredients.length === 0 || !r.imageUrl));
+    if (needsBackfill.length > 0) {
+      // Fire-and-forget style: update in background, then reload once.
+      Promise.all(
+        needsBackfill.map(async (r) => {
+          if (!r.id) return;
+          const updates: Partial<Recipe> = {};
+          if (!r.cleanIngredients || r.cleanIngredients.length === 0) updates.cleanIngredients = normalizeIngredients(r.ingredients);
+          if (!r.tags || r.tags.length === 0) updates.tags = deriveRecipeTags(r);
+          if (!r.imageUrl) updates.imageUrl = suggestRecipeImageUrl(r);
+          await dataService.updateRecipe(user!.uid, r.id, updates);
+        })
+      )
+        .then(() => dataService.getRecipes(user!.uid))
+        .then((next) => setRecipes(next))
+        .catch(() => {
+          // ignore backfill failures
+        });
+    }
   };
 
   const addRecipeToMealPlan = async (recipe: Recipe) => {
@@ -67,6 +91,33 @@ export const Recipes = () => {
     const plans = await dataService.getMealPlans(user.uid);
 
     const todayIso = format(new Date(), 'yyyy-MM-dd');
+    const planTargetRaw = sessionStorage.getItem('bb:plan:addTarget');
+    let targetDate = todayIso;
+    let targetType: 'breakfast' | 'lunch' | 'dinner' | 'snack' = 'dinner';
+    let targetSlot: 'main' | 'appetizer' | 'drink' | 'side' | 'dessert' | 'snack' | undefined = 'main';
+    try {
+      if (planTargetRaw) {
+        const parsed = JSON.parse(planTargetRaw);
+        if (typeof parsed?.date === 'string') targetDate = parsed.date;
+        if (parsed?.type === 'breakfast' || parsed?.type === 'lunch' || parsed?.type === 'dinner' || parsed?.type === 'snack') {
+          targetType = parsed.type;
+        }
+        if (
+          parsed?.slot === 'main' ||
+          parsed?.slot === 'appetizer' ||
+          parsed?.slot === 'drink' ||
+          parsed?.slot === 'side' ||
+          parsed?.slot === 'dessert' ||
+          parsed?.slot === 'snack'
+        ) {
+          targetSlot = parsed.slot;
+        }
+      }
+    } catch {
+      // ignore parse errors
+    } finally {
+      sessionStorage.removeItem('bb:plan:addTarget');
+    }
     const weekStartIso = format(startOfWeek(new Date(), { weekStartsOn: 1 }), 'yyyy-MM-dd');
     const weekEndIso = format(addDays(new Date(`${weekStartIso}T00:00:00.000Z`), 6), 'yyyy-MM-dd');
 
@@ -86,23 +137,24 @@ export const Recipes = () => {
       plan = { ...newPlan, id };
     }
 
-    const existingDay = plan.days.find((d) => d.date === todayIso);
+    const existingDay = plan.days.find((d) => d.date === targetDate);
     const nextMeals = existingDay ? [...existingDay.meals] : [];
-    const alreadyAdded = nextMeals.some((m) => m.recipeId === recipe.id);
+    const alreadyAdded = nextMeals.some((m) => m.recipeId === recipe.id && m.type === targetType && (m.slot || 'main') === (targetSlot || 'main'));
     if (alreadyAdded) {
-      toast.message('Already in today’s plan');
+      toast.message('Already in this slot');
       return;
     }
 
     nextMeals.push({
-      type: 'dinner',
+      type: targetType,
+      slot: targetSlot,
       recipeId: recipe.id,
       recipeTitle: recipe.title,
     });
 
     const nextDays: DayPlan[] = existingDay
-      ? plan.days.map((d) => (d.date === todayIso ? { ...d, meals: nextMeals } : d))
-      : [...plan.days, { date: todayIso, meals: nextMeals }];
+      ? plan.days.map((d) => (d.date === targetDate ? { ...d, meals: nextMeals } : d))
+      : [...plan.days, { date: targetDate, meals: nextMeals }];
 
     await dataService.updateMealPlan(user.uid, plan.id!, {
       ownerId: plan.ownerId,
@@ -111,7 +163,7 @@ export const Recipes = () => {
       days: nextDays,
     });
 
-    toast.success('Added to today’s meal plan');
+    toast.success('Added to meal plan');
     setActiveRecipe(null);
   };
 
@@ -120,7 +172,7 @@ export const Recipes = () => {
     setImporting(true);
     try {
       const extracted = await extractRecipeFromUrl(importUrl);
-      const recipe: Omit<Recipe, 'id'> = {
+      const baseRecipe: Omit<Recipe, 'id'> = {
         ownerId: user!.uid,
         title: extracted.title || 'Extracted Recipe',
         description: extracted.description || '',
@@ -132,7 +184,15 @@ export const Recipes = () => {
         servings: extracted.servings,
         category: extracted.category,
         isFavorite: false,
+        sourceUrl: importUrl.trim(),
+        imageUrl: extracted.imageUrl,
         createdAt: new Date().toISOString(),
+      };
+      const recipe: Omit<Recipe, 'id'> = {
+        ...baseRecipe,
+        cleanIngredients: normalizeIngredients(baseRecipe.ingredients),
+        tags: deriveRecipeTags(baseRecipe),
+        imageUrl: baseRecipe.imageUrl || suggestRecipeImageUrl(baseRecipe),
       };
       await dataService.addRecipe(user!.uid, recipe);
       await loadRecipes();
@@ -154,7 +214,7 @@ export const Recipes = () => {
     try {
       console.log('[Recipes] Importing from text...');
       const extracted = await extractRecipeFromText(importText);
-      const recipe: Omit<Recipe, 'id'> = {
+      const baseRecipe: Omit<Recipe, 'id'> = {
         ownerId: user!.uid,
         title: extracted.title || 'Extracted Recipe',
         description: extracted.description || '',
@@ -166,7 +226,14 @@ export const Recipes = () => {
         servings: extracted.servings,
         category: extracted.category,
         isFavorite: false,
+        imageUrl: extracted.imageUrl,
         createdAt: new Date().toISOString(),
+      };
+      const recipe: Omit<Recipe, 'id'> = {
+        ...baseRecipe,
+        cleanIngredients: normalizeIngredients(baseRecipe.ingredients),
+        tags: deriveRecipeTags(baseRecipe),
+        imageUrl: baseRecipe.imageUrl || suggestRecipeImageUrl(baseRecipe),
       };
       await dataService.addRecipe(user!.uid, recipe);
       await loadRecipes();
@@ -261,7 +328,7 @@ export const Recipes = () => {
         console.log('[Recipes] Extracting from image...');
         const extracted = await extractRecipeFromImage(base64, "image/jpeg");
         
-        const recipe: Omit<Recipe, "id"> = {
+        const baseRecipe: Omit<Recipe, "id"> = {
           ownerId: user!.uid,
           title: extracted.title || 'Untitled Recipe',
           description: extracted.description || '',
@@ -269,7 +336,14 @@ export const Recipes = () => {
           instructions: extracted.instructions || [],
           nutritionalInfo: extracted.nutritionalInfo,
           isFavorite: false,
+          imageUrl: extracted.imageUrl,
           createdAt: new Date().toISOString(),
+        };
+        const recipe: Omit<Recipe, "id"> = {
+          ...baseRecipe,
+          cleanIngredients: normalizeIngredients(baseRecipe.ingredients),
+          tags: deriveRecipeTags(baseRecipe),
+          imageUrl: baseRecipe.imageUrl || suggestRecipeImageUrl(baseRecipe),
         };
         await dataService.addRecipe(user!.uid, recipe);
         await loadRecipes();
@@ -301,7 +375,23 @@ export const Recipes = () => {
     toast.success('Recipe deleted');
   };
 
-  const filteredRecipes = recipes.filter(r => r.title.toLowerCase().includes(search.toLowerCase()));
+  const filteredRecipes = recipes
+    .filter((r) => {
+      const q = search.toLowerCase().trim();
+      const matchesSearch =
+        !q ||
+        r.title.toLowerCase().includes(q) ||
+        (r.ingredients || []).some((i) => (i.name || '').toLowerCase().includes(q));
+      const matchesTag = tagFilter === 'all' ? true : (r.tags || []).includes(tagFilter);
+      return matchesSearch && matchesTag;
+    })
+    .sort((a, b) => {
+      // default: newest first (createdAt), with fallback to title
+      const ad = a.createdAt || '';
+      const bd = b.createdAt || '';
+      if (ad !== bd) return bd.localeCompare(ad);
+      return a.title.localeCompare(b.title);
+    });
 
   return (
     <div className="p-6 pb-24 space-y-6 max-w-4xl mx-auto">
@@ -392,9 +482,65 @@ export const Recipes = () => {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <Button size="icon" variant="ghost" className="absolute right-2 top-1/2 -translate-y-1/2 h-10 w-10 text-muted-foreground hover:bg-muted rounded-xl">
+        <Button
+          size="icon"
+          variant="ghost"
+          className="absolute right-2 top-1/2 -translate-y-1/2 h-10 w-10 text-muted-foreground hover:bg-muted rounded-xl"
+          onClick={() => setFilterOpen((v) => !v)}
+          aria-label="Filter recipes"
+        >
           <Filter className="h-5 w-5" />
         </Button>
+
+        {filterOpen && (
+          <div className="absolute z-50 right-0 mt-3 w-full sm:w-[420px] bg-card border border-border/60 shadow-xl rounded-2xl p-4">
+            <div className="flex items-center justify-between mb-3">
+              <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Sort / Filter</p>
+              <Button variant="ghost" size="sm" className="rounded-xl" onClick={() => setFilterOpen(false)}>
+                Close
+              </Button>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {(
+                [
+                  ['all', 'All'],
+                  ['breakfast', 'Breakfast'],
+                  ['lunch', 'Lunch'],
+                  ['dinner', 'Dinner'],
+                  ['snack', 'Snack'],
+                  ['appetizer', 'Appetizer'],
+                  ['drink', 'Drink'],
+                  ['main', 'Main'],
+                ] as const
+              ).map(([value, label]) => (
+                <Button
+                  key={value}
+                  type="button"
+                  variant={tagFilter === value ? 'default' : 'outline'}
+                  className="rounded-xl h-9"
+                  onClick={() => setTagFilter(value as any)}
+                >
+                  {label}
+                </Button>
+              ))}
+            </div>
+            <div className="mt-3 flex items-center justify-between">
+              <p className="text-xs text-muted-foreground">
+                Showing <span className="font-semibold text-foreground">{filteredRecipes.length}</span>
+              </p>
+              <Button
+                variant="ghost"
+                className="rounded-xl"
+                onClick={() => {
+                  setTagFilter('all');
+                  setSearch('');
+                }}
+              >
+                Clear
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
 
       {loading ? (
