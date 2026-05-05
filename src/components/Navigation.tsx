@@ -13,8 +13,8 @@ export const Navigation: React.FC<NavigationProps> = ({ activeTab, setActiveTab 
   const navItems = [
     { id: 'dashboard', label: 'Home', icon: Home },
     { id: 'recipes', label: 'Recipes', icon: UtensilsCrossed },
-    { id: 'planner', label: 'Meal Prep', icon: Calendar },
-    { id: 'shopping', label: 'Cart', icon: ShoppingCart },
+    { id: 'planner', label: 'Meal Plan', icon: Calendar },
+    { id: 'shopping', label: 'Shopping', icon: ShoppingCart },
     { id: 'profile', label: 'Me', icon: User },
   ];
 
@@ -33,13 +33,13 @@ export const Navigation: React.FC<NavigationProps> = ({ activeTab, setActiveTab 
             onClick={() => setActiveTab(item.id as Tab)}
             data-testid={`nav-${item.id}`}
             className={cn(
-              "flex flex-col items-center justify-center space-y-1 transition-all duration-300",
+              "group flex flex-col items-center justify-center space-y-1 transition-all duration-300",
               isActive ? "text-primary" : "text-muted-foreground hover:text-foreground"
             )}
           >
             <div
               className={cn(
-                "rounded-2xl p-2 transition-all duration-300",
+                "rounded-2xl p-2 transition-all duration-300 group-hover:text-primary/80",
                 isActive ? "bg-muted scale-110 shadow-sm shadow-black/5" : ""
               )}
             >

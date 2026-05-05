@@ -2,7 +2,7 @@ import express from "express";
 import { createServer as createViteServer } from "vite";
 import path from "path";
 import { fileURLToPath } from "url";
-import "dotenv/config";
+import dotenv from "dotenv";
 import { GoogleGenAI, Type } from "@google/genai";
 import { randomUUID } from "crypto";
 import rateLimit from "express-rate-limit";
@@ -12,6 +12,34 @@ import { loadServerConfig } from "./server/config.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+function loadEnvFiles() {
+  // dotenv's default `import "dotenv/config"` only loads `.env`.
+  // Vite commonly uses `.env.local` for local secrets; mirror that for the Express server.
+  const root = process.cwd();
+  // Preserve vars explicitly set in the parent process (e.g. `PORT=3001 npm run dev`)
+  // so `.env.local` cannot accidentally override ad-hoc CLI overrides.
+  const preserveKeys = ["PORT", "HOST", "NODE_ENV"] as const;
+  const preserved = new Map<string, string | undefined>();
+  for (const key of preserveKeys) {
+    if (Object.prototype.hasOwnProperty.call(process.env, key)) {
+      preserved.set(key, process.env[key]);
+    }
+  }
+
+  dotenv.config({ path: path.join(root, ".env") });
+  dotenv.config({ path: path.join(root, ".env.local"), override: true });
+
+  for (const [key, value] of preserved.entries()) {
+    if (value === undefined) {
+      delete process.env[key];
+    } else {
+      process.env[key] = value;
+    }
+  }
+}
+
+loadEnvFiles();
 
 type ApiErrorCode =
   | "AUTH_REQUIRED"
@@ -381,7 +409,7 @@ Available Recipes: ${JSON.stringify(availableRecipes)}`,
     console.log(`[Server] Running on http://localhost:${PORT}`);
     const key = process.env.GEMINI_API_KEY || process.env.API_KEY || process.env.GOOGLE_API_KEY;
     if (key) {
-      console.log(`[Server] AI Key found (Length: ${key.length})`);
+      console.log(`[Server] AI key configured (GEMINI_API_KEY/API_KEY/GOOGLE_API_KEY)`);
     } else {
       console.warn(`[Server] WARNING: No AI Key found in environment variables.`);
     }

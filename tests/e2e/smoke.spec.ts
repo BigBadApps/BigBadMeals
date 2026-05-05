@@ -14,10 +14,10 @@ test('can navigate between main tabs without auth @smoke', async ({ page }) => {
   await expect(page.getByText('Recipe Vault')).toBeVisible();
 
   await page.getByTestId('nav-planner').click();
-  await expect(page.getByText('Meal Planner')).toBeVisible();
+  await expect(page.getByText('Meal Plan')).toBeVisible();
 
   await page.getByTestId('nav-shopping').click();
-  await expect(page.getByText('Kitchen Stock')).toBeVisible();
+  await expect(page.getByText('Shopping')).toBeVisible();
 
   await page.getByTestId('nav-profile').click();
   await expect(page.getByText('Family Kitchen')).toBeVisible();
