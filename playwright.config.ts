@@ -8,6 +8,8 @@ const PLAYWRIGHT_BASE_URL = `http://127.0.0.1:${PLAYWRIGHT_PORT}`;
 const PLAYWRIGHT_CLIENT_BUILD_ENV =
   'VITE_DISABLE_AUTH=false VITE_E2E_AUTH=true VITE_USE_INMEMORY_DB=true';
 const PLAYWRIGHT_SERVER_START_ENV = `NODE_ENV=production REQUIRE_AI_AUTH=false PORT=${PLAYWRIGHT_PORT}`;
+// Production server startup requires a non-empty Gemini key; smoke tests mock /api/ai/* and do not call Google.
+const PLAYWRIGHT_GEMINI_KEY = process.env.GEMINI_API_KEY || 'ci-e2e-placeholder-not-used';
 
 export default defineConfig({
   testDir: './tests/e2e',
@@ -29,6 +31,9 @@ export default defineConfig({
     url: `${PLAYWRIGHT_BASE_URL}/api/health`,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
+    env: {
+      GEMINI_API_KEY: PLAYWRIGHT_GEMINI_KEY,
+    },
   },
   projects: [
     {
