@@ -73,6 +73,7 @@ describe("isUnsafeFetchUrl – SSRF guard", () => {
   it("blocks userinfo", () => assert.equal(isUnsafeFetchUrl("http://allowed.com@127.0.0.1/"), true));
   it("blocks userinfo even with a public host", () => assert.equal(isUnsafeFetchUrl("http://user:pass@example.com/"), true));
   it("blocks localhost with a trailing dot", () => assert.equal(isUnsafeFetchUrl("http://localhost./"), true));
+  it("blocks localhost with several trailing dots", () => assert.equal(isUnsafeFetchUrl("http://localhost../"), true));
   it("blocks numeric IPv4 forms of 127.0.0.1", () => {
     for (const host of ["2130706433", "0177.0.0.1", "0x7f.1", "127.1"]) {
       assert.equal(isUnsafeFetchUrl(`http://${host}/`), true, host);
@@ -109,6 +110,11 @@ describe("isBlockedAddress – resolved addresses", () => {
   it("allows public addresses", () => {
     assert.equal(isBlockedAddress("8.8.8.8"), false);
     assert.equal(isBlockedAddress("2606:4700:4700::1111"), false);
+  });
+  it("blocks uncompressed and zero-padded IPv6 forms", () => {
+    for (const ip of ["0:0:0:0:0:0:0:1", "0:0::ffff:7f00:1", "0000:0000:0000:0000:0000:ffff:a9fe:a9fe", "FE80::1"]) {
+      assert.equal(isBlockedAddress(ip), true, ip);
+    }
   });
   it("fails closed on input that is not an IP address", () => {
     assert.equal(isBlockedAddress("example.com"), true);

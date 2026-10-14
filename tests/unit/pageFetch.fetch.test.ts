@@ -71,6 +71,13 @@ before(async () => {
       case "/gzip-bomb":
         res.writeHead(200, { "content-type": "text/html", "content-encoding": "gzip" });
         return res.end(gzipSync(Buffer.alloc(MAX_HTML_BYTES * 20, "a")));
+      case "/gzip-reset":
+        res.writeHead(200, { "content-type": "text/html", "content-encoding": "gzip" });
+        res.write(gzipSync("<h1>partial</h1>".repeat(100)).subarray(0, 50));
+        return void setTimeout(() => res.socket?.destroy(), 50);
+      case "/gzip-stall":
+        res.writeHead(200, { "content-type": "text/html", "content-encoding": "gzip" });
+        return void res.write(gzipSync("<h1>partial</h1>".repeat(100)).subarray(0, 50));
       case "/hang":
         return; // never responds
       default:
@@ -107,14 +114,20 @@ describe("fetchPublicHtml – network path", () => {
 
   it("checks the resolved address on the connect path (real address check)", async () => {
     hits.length = 0;
-    const lookup = createSafeLookup(resolver({ "public.test": [SERVER_IP] }));
+    let calls = 0;
+    const lookup = createSafeLookup(async () => (calls++, [SERVER_IP]));
     assert.equal(await fetchPublicHtml(url("public.test", "/ok"), { lookup }), null);
+    assert.equal(calls, 1, "the guarded lookup must be the one the socket used");
     assert.deepEqual(hits, [], "the blocked address must never be contacted");
   });
 
   it("rejects a hostname whose answer mixes public and private addresses", async () => {
-    const lookup = createSafeLookup(resolver({ "mixed.test": [SERVER_IP, "10.0.0.1"] }), treatServerAsPublic);
+    hits.length = 0;
+    let calls = 0;
+    const lookup = createSafeLookup(async () => (calls++, [SERVER_IP, "10.0.0.1"]), treatServerAsPublic);
     assert.equal(await fetchPublicHtml(url("mixed.test", "/ok"), { lookup }), null);
+    assert.equal(calls, 1, "the guarded lookup must be the one the socket used");
+    assert.deepEqual(hits, []);
   });
 
   it("checks every connection, so a rebinding answer on a later lookup is rejected", async () => {
@@ -171,6 +184,20 @@ describe("fetchPublicHtml – network path", () => {
     const doc = await fetchPublicHtml(url("public.test", "/gzip-bomb"), { lookup: publicLookup });
     assert.ok(doc, "expected a truncated document");
     assert.ok(doc.html.length <= MAX_HTML_BYTES, `got ${doc.html.length} bytes`);
+  });
+
+  it("returns null when a gzip body is reset mid-stream", async () => {
+    const started = Date.now();
+    const doc = await fetchPublicHtml(url("public.test", "/gzip-reset"), { lookup: publicLookup, timeoutMs: 500 });
+    assert.equal(doc, null);
+    assert.ok(Date.now() - started < 2_000, "must settle within the timeout");
+  });
+
+  it("returns null when a gzip body stalls past the timeout", async () => {
+    const started = Date.now();
+    const doc = await fetchPublicHtml(url("public.test", "/gzip-stall"), { lookup: publicLookup, timeoutMs: 500 });
+    assert.equal(doc, null);
+    assert.ok(Date.now() - started < 2_000, "must settle within the timeout");
   });
 
   it("returns null on timeout", async () => {

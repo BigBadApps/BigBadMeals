@@ -2,7 +2,7 @@ import { lookup as dnsLookup } from "node:dns/promises";
 import { request as httpRequest, type IncomingMessage } from "node:http";
 import { request as httpsRequest } from "node:https";
 import { isIPv4, isIPv6, type LookupFunction } from "node:net";
-import type { Readable } from "node:stream";
+import { addAbortSignal, pipeline, type Readable } from "node:stream";
 import { URL } from "node:url";
 import { createBrotliDecompress, createGunzip, createInflate } from "node:zlib";
 
@@ -17,7 +17,7 @@ const REDIRECT_STATUSES = new Set([301, 302, 303, 307, 308]);
 
 function isBlockedHostname(hostname: string): boolean {
   // Node's WHATWG URL parser includes brackets in .hostname for IPv6 (e.g. "[::1]") — strip them.
-  const h = hostname.replace(/^\[|\]$/g, "").replace(/\.$/, "").toLowerCase();
+  const h = hostname.replace(/^\[|\]$/g, "").replace(/\.+$/, "").toLowerCase();
 
   // Named special hosts
   if (h === "localhost" || h.endsWith(".localhost")) return true;
@@ -69,8 +69,10 @@ function isBlockedHostname(hostname: string): boolean {
 /** True if a resolved IP address must not be connected to. Fails closed on non-IP input. */
 export function isBlockedAddress(ip: string): boolean {
   const h = ip.replace(/^\[|\]$/g, "").replace(/%.*$/, "");
-  if (!isIPv4(h) && !isIPv6(h)) return true;
-  return isBlockedHostname(h);
+  if (isIPv4(h)) return isBlockedHostname(h);
+  if (!isIPv6(h)) return true;
+  // Canonicalize (compress, lowercase) with the platform parser so prefix checks see one form.
+  return isBlockedHostname(new URL(`http://[${h}]/`).hostname);
 }
 
 /** True if the URL must not be fetched (SSRF guard, string-level checks). */
@@ -138,13 +140,19 @@ function get(url: URL, lookup: LookupFunction, signal: AbortSignal): Promise<Inc
 }
 
 /** The response body, decompressed. Null for an encoding we don't support. */
-function decodedBody(res: IncomingMessage): Readable | null {
+function decodedBody(res: IncomingMessage, signal: AbortSignal): Readable | null {
   const encoding = (res.headers["content-encoding"] || "identity").toLowerCase().trim();
   if (encoding === "identity") return res;
-  if (encoding === "gzip" || encoding === "x-gzip") return res.pipe(createGunzip());
-  if (encoding === "deflate") return res.pipe(createInflate());
-  if (encoding === "br") return res.pipe(createBrotliDecompress());
-  return null;
+  const decoder =
+    encoding === "gzip" || encoding === "x-gzip" ? createGunzip()
+    : encoding === "deflate" ? createInflate()
+    : encoding === "br" ? createBrotliDecompress()
+    : null;
+  if (!decoder) return null;
+  // pipeline (not pipe) propagates a reset or abort of `res` to the decoder, so a stalled or
+  // truncated compressed body still settles within the timeout.
+  pipeline(res, decoder, () => {});
+  return addAbortSignal(signal, decoder);
 }
 
 /** Reads at most maxBytes of decompressed body, so a compression bomb is capped too. */
@@ -177,23 +185,23 @@ export async function fetchPublicHtml(pageUrlRaw: string, deps: FetchDeps = {}):
       const res = await get(url, lookup, signal);
       const status = res.statusCode ?? 0;
       if (REDIRECT_STATUSES.has(status)) {
-        res.resume();
+        res.destroy();
         if (!res.headers.location) return null;
         url = new URL(res.headers.location, url);
         continue;
       }
       if (status < 200 || status >= 300) {
-        res.resume();
+        res.destroy();
         return null;
       }
       const ct = (res.headers["content-type"] || "").toLowerCase();
       if (!ct.includes("text/html") && !ct.includes("application/xhtml")) {
-        res.resume();
+        res.destroy();
         return null;
       }
-      const decoded = decodedBody(res);
+      const decoded = decodedBody(res, signal);
       if (!decoded) {
-        res.resume();
+        res.destroy();
         return null;
       }
       const body = await readCapped(decoded, res, MAX_HTML_BYTES);
