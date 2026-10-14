@@ -1,12 +1,13 @@
 ## BigBadMeals agent entrypoint
 
-This repo adopts **BigBadCodingStandards** (vendored under `docs/coding-standards/`).
+This repo adopts **BigBadCodingStandards** as a git submodule at `docs/coding-standards/`, pinned to a release tag. After cloning, run `git submodule update --init`.
 Repository host: **`BigBadApps/BigBadMeals`** on GitHub.
 
 - **Standards (all agents, including Claude):** `docs/coding-standards/AGENTS.md`
 - **Lifecycle:** `docs/coding-standards/standards/PLAYBOOK.md`
 - **Index:** `docs/coding-standards/standards/INDEX.md`
 - **PRs → ship:** `docs/coding-standards/standards/DELIVERY.md`
+- **SSRF guard (how this repo meets the standard):** `docs/security/SSRF.md`
 
 ---
 
