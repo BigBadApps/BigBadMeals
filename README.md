@@ -149,7 +149,7 @@ Until then, Google sign-in from `http://localhost:3000` will not complete. **Pro
 This repo adopts **BigBadCodingStandards**.
 
 - Agent entrypoint: [`AGENTS.md`](AGENTS.md) (GitHub PR automation, Cursor autonomy notes)
-- Vendored standards: `docs/coding-standards/`
+- Standards: `docs/coding-standards/` (git submodule; run `git submodule update --init` after cloning)
 
 ## Repository
 
