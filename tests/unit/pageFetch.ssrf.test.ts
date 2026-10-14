@@ -1,6 +1,6 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
-import { isUnsafeFetchUrl } from "../../server/pageFetch.js";
+import { isBlockedAddress, isUnsafeFetchUrl } from "../../server/pageFetch.js";
 
 describe("isUnsafeFetchUrl – SSRF guard", () => {
   // ── Blocked: protocol ────────────────────────────────────────────────
@@ -63,4 +63,55 @@ describe("isUnsafeFetchUrl – SSRF guard", () => {
   it("does not block 172.32.x.x (just outside private range)", () => assert.equal(isUnsafeFetchUrl("http://172.32.0.0/"), false));
   it("does not block 100.63.x.x (just below CGNAT)", () => assert.equal(isUnsafeFetchUrl("http://100.63.255.255/"), false));
   it("does not block 100.128.x.x (just above CGNAT)", () => assert.equal(isUnsafeFetchUrl("http://100.128.0.0/"), false));
+
+  // ── Blocked: forms required by standards/SECURITY.md (SSRF) ──────────
+  it("blocks mixed-case scheme FILE://", () => assert.equal(isUnsafeFetchUrl("FILE:///etc/passwd"), true));
+  it("blocks gopher: and data:", () => {
+    assert.equal(isUnsafeFetchUrl("gopher://example.com/"), true);
+    assert.equal(isUnsafeFetchUrl("data:text/html,hi"), true);
+  });
+  it("blocks userinfo", () => assert.equal(isUnsafeFetchUrl("http://allowed.com@127.0.0.1/"), true));
+  it("blocks userinfo even with a public host", () => assert.equal(isUnsafeFetchUrl("http://user:pass@example.com/"), true));
+  it("blocks localhost with a trailing dot", () => assert.equal(isUnsafeFetchUrl("http://localhost./"), true));
+  it("blocks numeric IPv4 forms of 127.0.0.1", () => {
+    for (const host of ["2130706433", "0177.0.0.1", "0x7f.1", "127.1"]) {
+      assert.equal(isUnsafeFetchUrl(`http://${host}/`), true, host);
+    }
+  });
+  it("blocks IPv4-mapped hex form ::ffff:7f00:1", () => assert.equal(isUnsafeFetchUrl("http://[::ffff:7f00:1]/"), true));
+  it("blocks IPv4-compatible hex form ::7f00:1", () => assert.equal(isUnsafeFetchUrl("http://[::7f00:1]/"), true));
+  it("blocks AWS IMDS over IPv6 fd00:ec2::254", () => assert.equal(isUnsafeFetchUrl("http://[fd00:ec2::254]/"), true));
+  it("blocks Alibaba metadata 100.100.100.200", () => assert.equal(isUnsafeFetchUrl("http://100.100.100.200/"), true));
+  it("blocks Azure WireServer 168.63.129.16", () => assert.equal(isUnsafeFetchUrl("http://168.63.129.16/"), true));
+  it("blocks IETF protocol assignments 192.0.0.0/24", () => assert.equal(isUnsafeFetchUrl("http://192.0.0.192/"), true));
+  it("blocks documentation ranges", () => {
+    for (const host of ["192.0.2.1", "198.51.100.1", "203.0.113.1", "[2001:db8::1]"]) {
+      assert.equal(isUnsafeFetchUrl(`http://${host}/`), true, host);
+    }
+  });
+  it("blocks multicast", () => {
+    assert.equal(isUnsafeFetchUrl("http://224.0.0.1/"), true);
+    assert.equal(isUnsafeFetchUrl("http://[ff02::1]/"), true);
+  });
+  it("blocks Teredo 2001::/32 and site-local fec0::/10", () => {
+    assert.equal(isUnsafeFetchUrl("http://[2001:0:4136:e378::1]/"), true);
+    assert.equal(isUnsafeFetchUrl("http://[fec0::1]/"), true);
+  });
+  it("allows a public IPv6 address", () => assert.equal(isUnsafeFetchUrl("http://[2606:4700:4700::1111]/"), false));
+});
+
+describe("isBlockedAddress – resolved addresses", () => {
+  it("blocks private, metadata, and NAT64 addresses", () => {
+    for (const ip of ["10.0.0.1", "169.254.169.254", "::1", "fd00:ec2::254", "64:ff9b::a9fe:a9fe"]) {
+      assert.equal(isBlockedAddress(ip), true, ip);
+    }
+  });
+  it("allows public addresses", () => {
+    assert.equal(isBlockedAddress("8.8.8.8"), false);
+    assert.equal(isBlockedAddress("2606:4700:4700::1111"), false);
+  });
+  it("fails closed on input that is not an IP address", () => {
+    assert.equal(isBlockedAddress("example.com"), true);
+    assert.equal(isBlockedAddress(""), true);
+  });
 });
