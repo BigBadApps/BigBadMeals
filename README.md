@@ -24,6 +24,7 @@ When work pauses, read **[`docs/STATUS.md`](docs/STATUS.md)** for the latest sna
 | `npm run build` | Production client (`dist/`) + server (`build/`) |
 | `npm run start` | Run compiled server (`node build/server.js`) after `build` |
 | `npm run typecheck` | TypeScript check (also `npm run lint`) |
+| `npm run test:unit` | Node built-in test runner — SSRF guard unit tests (zero extra deps) |
 | `npm run test:e2e:smoke` | Playwright smoke subset (matches CI) |
 | `npm run test:e2e` | Full Playwright suite |
 | `npm run pr:publish` / `pr:publish:wait` / `pr:status` | GitHub PR helpers — see [`AGENTS.md`](AGENTS.md) |
@@ -33,9 +34,24 @@ When work pauses, read **[`docs/STATUS.md`](docs/STATUS.md)** for the latest sna
 Playwright starts **`npm run build && npm start`** with in-memory DB and mocked AI routes where needed (see `playwright.config.ts` and `tests/e2e/`).
 
 ```bash
+npm run test:unit        # SSRF guard unit tests (fast, no server needed)
 npm run test:e2e:smoke   # fast gate (~3 tests)
 npm run test:e2e         # full suite
 ```
+
+### Security — SSRF protection
+
+All user-supplied URLs fetched server-side pass through `server/pageFetch.ts:isUnsafeFetchUrl()`, which blocks:
+
+- **Protocols** — only `http:` and `https:` are allowed
+- **Loopback** — `localhost`, `*.localhost`, `127.0.0.0/8`, `::1`, `::`
+- **Private IPv4** — `10/8`, `172.16/12`, `192.168/16`
+- **Cloud metadata** — `169.254.0.0/16` (AWS/GCP IMDS at `169.254.169.254`)
+- **CGNAT** — `100.64.0.0/10`
+- **Reserved** — `0.0.0.0/8`, `198.18.0.0/15`, `240.0.0.0/4`
+- **IPv6 internals** — `fe80::/10` (link-local), `fc00::/7` (ULA), `::ffff:0:0/96` (IPv4-mapped)
+- **IPv6 transition** — `64:ff9b::/96` (NAT64 well-known, exploitable on GCP Cloud Run), `2002::/16` (6to4)
+- **Redirect bypass** — `res.url` (final URL after redirects) is re-validated, blocking 301-to-internal attacks
 
 ## Deploy to Google Cloud Run (same stack as AI Studio)
 

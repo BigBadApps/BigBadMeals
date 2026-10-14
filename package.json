@@ -16,6 +16,7 @@
     "clean": "rm -rf dist build",
     "typecheck": "tsc --noEmit",
     "lint": "npm run typecheck",
+    "test:unit": "tsx --test tests/unit/**/*.test.ts",
     "test:e2e": "playwright test",
     "test:e2e:smoke": "playwright test --grep @smoke",
     "test:e2e:ui": "playwright test --ui",

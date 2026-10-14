@@ -2,7 +2,7 @@
 
 This file is the **handoff anchor** when work pauses: what is true in the repo, what was verified, and what to do next.
 
-_Last updated: 2026-04-29._
+_Last updated: 2026-06-25._
 
 ## Product shape
 
@@ -36,6 +36,10 @@ _Last updated: 2026-04-29._
 ```bash
 npm run typecheck && npm run build && npm run test:e2e:smoke
 ```
+
+## Security
+
+**SSRF guard** (`server/pageFetch.ts`) — hardened 2026-06-25. Blocks all RFC-standard internal/private ranges (IPv4 + IPv6), cloud metadata at `169.254.169.254`, NAT64 well-known prefix `64:ff9b::/96` (critical on GCP Cloud Run), and 6to4 `2002::/16`. Post-redirect re-validation closes the 301-to-internal bypass. 43 regression tests: `pnpm test:unit`.
 
 ## Known gaps / decisions later
 
